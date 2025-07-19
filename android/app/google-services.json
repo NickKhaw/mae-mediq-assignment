@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "777711238454",
+    "project_id": "m-a-e-medi-q-gmdamg",
+    "storage_bucket": "m-a-e-medi-q-gmdamg.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:777711238454:android:63cfaf6537d17541ee8797",
+        "android_client_info": {
+          "package_name": "com.mycompany.maemediqassignment"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_vgiuNhhKaEv3BDhBByNWvieEXZUyMYU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

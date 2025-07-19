@@ -466,7 +466,9 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 16.0),
                                   child: FFButtonWidget(
-                                    onPressed: () async {},
+                                    onPressed: () {
+                                      print('Button pressed ...');
+                                    },
                                     text: 'Create Account',
                                     options: FFButtonOptions(
                                       width: 370.0,
