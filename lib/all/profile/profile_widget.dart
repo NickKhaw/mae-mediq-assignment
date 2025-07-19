@@ -5,7 +5,6 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'profile_model.dart';
@@ -33,11 +32,6 @@ class _ProfileWidgetState extends State<ProfileWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => ProfileModel());
-
-    // On page load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      context.pushNamed(DoctorDashbaordWidget.routeName);
-    });
 
     animationsMap.addAll({
       'cardOnPageLoadAnimation': AnimationInfo(

@@ -352,6 +352,12 @@ class _LoginWidgetState extends State<LoginWidget> {
                                     onPressed: () async {
                                       context.pushNamed(
                                           PatientDashboardWidget.routeName);
+
+                                      context.pushNamed(
+                                          AdminDashboardWidget.routeName);
+
+                                      context.pushNamed(
+                                          DoctorDashbaordWidget.routeName);
                                     },
                                     text: 'Sign In',
                                     options: FFButtonOptions(
