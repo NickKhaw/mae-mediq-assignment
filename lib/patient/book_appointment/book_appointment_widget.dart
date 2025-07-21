@@ -1,3 +1,5 @@
+import 'package:mae_mediq_assignment/globals.dart';
+
 import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -11,6 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'book_appointment_model.dart';
 export 'book_appointment_model.dart';
+import '../../globals.dart' as globals;
 
 class BookAppointmentWidget extends StatefulWidget {
   const BookAppointmentWidget({super.key});
@@ -770,6 +773,25 @@ class _BookAppointmentWidgetState extends State<BookAppointmentWidget> {
                             !_model.formKey.currentState!.validate()) {
                           return;
                         }
+                        final Name = _model.fullNameTextController.text.trim();
+                        final IC = _model.dateOfBirthTextController.text.trim();
+                        final PhoneNum = _model.ageTextController.text.trim();
+                        final Gender = _model.choiceChipsValue;
+                        final Department = _model.dropDownValue;
+
+                        if(Name == globalName &&
+                           IC == globalIC &&
+                           PhoneNum == globalPhone &&
+                           Gender == globalGender){
+                            ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Booking successfully'),
+                              backgroundColor: Colors.green,
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
+
                       },
                       text: 'Take Number',
                       options: FFButtonOptions(
