@@ -1,3 +1,5 @@
+import 'package:mae_mediq_assignment/globals.dart';
+
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -251,7 +253,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                   ),
                             ),
                             Text(
-                              'John Tan',
+                              globalName,
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
                                   .override(
@@ -297,7 +299,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                   ),
                             ),
                             Text(
-                              '990101-10-5678',
+                              globalIC,
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
                                   .override(
@@ -343,7 +345,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                   ),
                             ),
                             Text(
-                              '012-3456789',
+                              globalPhone,
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
                                   .override(
@@ -389,7 +391,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                   ),
                             ),
                             Text(
-                              'Male',
+                              globalGender,
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
                                   .override(
@@ -435,7 +437,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                   ),
                             ),
                             Text(
-                              'johntan@gmail.com',
+                              globalEmail,
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
                                   .override(
