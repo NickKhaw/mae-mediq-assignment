@@ -17,7 +17,6 @@ void main() async {
   await initFirebase();
 
   await FlutterFlowTheme.initialize();
-
   runApp(MyApp());
 }
 

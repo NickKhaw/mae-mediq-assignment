@@ -7,6 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'register_model.dart';
 export 'register_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import '/firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:math';
 
 class RegisterWidget extends StatefulWidget {
   const RegisterWidget({super.key});
@@ -22,6 +27,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
   late RegisterModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -36,6 +42,9 @@ class _RegisterWidgetState extends State<RegisterWidget> {
 
     _model.passwordConfirmTextController ??= TextEditingController();
     _model.passwordConfirmFocusNode ??= FocusNode();
+
+    _model.ICTextController ??= TextEditingController();
+    _model.ICTextFocusNode ??= FocusNode();
   }
 
   @override
@@ -145,101 +154,125 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                         ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 0.0, 16.0),
-                                  child: Container(
-                                    width: 370.0,
-                                    child: TextFormField(
-                                      controller:
-                                          _model.emailAddressTextController,
-                                      focusNode: _model.emailAddressFocusNode,
-                                      autofocus: true,
-                                      autofillHints: [AutofillHints.email],
-                                      obscureText: false,
-                                      decoration: InputDecoration(
-                                        labelText: 'Email',
-                                        labelStyle: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .override(
-                                              font: GoogleFonts.plusJakartaSans(
+                                Form(
+                                  key: _formKey,
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 16.0),
+                                    child: Container(
+                                      width: 370.0,
+                                      child: Column(
+                                        children: [
+                                          // First Email Field
+                                          TextFormField(
+                                            controller: _model.emailAddressTextController,
+                                            focusNode: _model.emailAddressFocusNode,
+                                            autofillHints: [AutofillHints.email],
+                                            keyboardType: TextInputType.emailAddress,
+                                            cursorColor: Color(0xFF5BAAF5),
+                                            obscureText: false,
+                                            decoration: InputDecoration(
+                                              labelText: 'Email',
+                                              labelStyle: TextStyle(
+                                                color: Color(0xFF888888),
+                                                fontSize: 14.0,
                                                 fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontStyle,
                                               ),
-                                              color: Color(0xFF888888),
+                                              filled: true,
+                                              fillColor: Colors.white,
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(color: Color(0xFFB0C4DE), width: 2.0),
+                                                borderRadius: BorderRadius.circular(12.0),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(color: Color(0xFF5BAAF5), width: 2.0),
+                                                borderRadius: BorderRadius.circular(12.0),
+                                              ),
+                                              errorBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(color: Color(0xFFE57373), width: 2.0),
+                                                borderRadius: BorderRadius.circular(12.0),
+                                              ),
+                                              focusedErrorBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(color: Color(0xFFE57373), width: 2.0),
+                                                borderRadius: BorderRadius.circular(12.0),
+                                              ),
+                                              prefixIcon: Icon(Icons.email_outlined, color: Color(0xFF888888)),
+                                            ),
+                                            style: TextStyle(
+                                              color: Color(0xFF2C3E50),
                                               fontSize: 14.0,
-                                              letterSpacing: 0.0,
                                               fontWeight: FontWeight.w500,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelMedium
-                                                      .fontStyle,
                                             ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Color(0xFFB0C4DE),
-                                            width: 2.0,
+                                            validator: (value) {
+                                              if (value == null || value.isEmpty) {
+                                                return 'Please enter your Gmail address';
+                                              }
+                                              final gmailRegex = RegExp(
+                                                r'^[a-zA-Z0-9._%+-]+@gmail\.com$',
+                                                caseSensitive: false,
+                                              );
+                                              if (!gmailRegex.hasMatch(value)) {
+                                                return 'Only Gmail addresses are allowed';
+                                              }
+                                              return null;
+                                            },
                                           ),
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Color(0xFF5BAAF5),
-                                            width: 2.0,
+
+                                          SizedBox(height: 16.0),
+
+                                          TextFormField(
+                                            controller: _model.ICTextController,
+                                            focusNode: _model.ICTextFocusNode,
+                                            keyboardType: TextInputType.number,
+                                            cursorColor: Color(0xFF5BAAF5),
+                                            decoration: InputDecoration(
+                                              labelText: 'IC Number',
+                                              labelStyle: TextStyle(
+                                                color: Color(0xFF888888),
+                                                fontSize: 14.0,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                              filled: true,
+                                              fillColor: Colors.white,
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(color: Color(0xFFB0C4DE), width: 2.0),
+                                                borderRadius: BorderRadius.circular(12.0),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(color: Color(0xFF5BAAF5), width: 2.0),
+                                                borderRadius: BorderRadius.circular(12.0),
+                                              ),
+                                              errorBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(color: Color(0xFFE57373), width: 2.0),
+                                                borderRadius: BorderRadius.circular(12.0),
+                                              ),
+                                              focusedErrorBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(color: Color(0xFFE57373), width: 2.0),
+                                                borderRadius: BorderRadius.circular(12.0),
+                                              ),
+                                              prefixIcon: Icon(Icons.badge_outlined, color: Color(0xFF888888)),
+                                            ),
+                                            style: TextStyle(
+                                              color: Color(0xFF2C3E50),
+                                              fontSize: 14.0,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                            validator: (value) {
+                                              if (value == null || value.isEmpty) {
+                                                return 'Please enter your IC number';
+                                              }
+                                              final icRegex = RegExp(r'^\d{12}$'); // Malaysian NRIC
+                                              if (!icRegex.hasMatch(value)) {
+                                                return 'IC must be 12 digits';
+                                              }
+                                              return null;
+                                            },
                                           ),
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                        ),
-                                        errorBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Color(0xFFE57373),
-                                            width: 2.0,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                        ),
-                                        focusedErrorBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Color(0xFFE57373),
-                                            width: 2.0,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                        ),
-                                        filled: true,
-                                        fillColor: Colors.white,
+                                        ],
                                       ),
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            font: GoogleFonts.plusJakartaSans(
-                                              fontWeight: FontWeight.w500,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .fontStyle,
-                                            ),
-                                            color: Color(0xFF2C3E50),
-                                            fontSize: 14.0,
-                                            letterSpacing: 0.0,
-                                            fontWeight: FontWeight.w500,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMedium
-                                                    .fontStyle,
-                                          ),
-                                      keyboardType: TextInputType.emailAddress,
-                                      cursorColor: Color(0xFF5BAAF5),
-                                      validator: _model
-                                          .emailAddressTextControllerValidator
-                                          .asValidator(context),
                                     ),
                                   ),
                                 ),
+
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 16.0),
@@ -466,8 +499,125 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 16.0),
                                   child: FFButtonWidget(
-                                    onPressed: () {
+                                    onPressed: () async {
                                       print('Button pressed ...');
+                                      print(_model
+                                          .passwordConfirmTextController.text);
+
+                                      if (_formKey.currentState!.validate()) {
+                                        print("Form is valid");
+
+                                        if (_model.passwordConfirmTextController
+                                                .text ==
+                                            _model
+                                                .passwordTextController.text) {
+                                          if (_model
+                                                  .passwordConfirmTextController
+                                                  .text
+                                                  .isEmpty ||
+                                              _model.passwordTextController.text
+                                                  .isEmpty ||
+                                              _model.ICTextController.text
+                                                  .isEmpty) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                    "Please fill in all fields."),
+                                              ),
+                                            );
+                                            return;
+                                          } else {
+                                            try {
+                                              await FirebaseAuth.instance
+                                                  .createUserWithEmailAndPassword(
+                                                email: _model
+                                                    .emailAddressTextController
+                                                    .text,
+                                                password: _model
+                                                    .passwordTextController
+                                                    .text,
+                                              );
+
+                                              // If successful, proceed with Firestore
+                                              addUserToFirestore(
+                                                  _model
+                                                      .emailAddressTextController
+                                                      .text,
+                                                  _model.passwordTextController
+                                                      .text,
+                                                  _model.ICTextController.text, genderIndentifier(_model.ICTextController.text));
+
+                                              // Show success dialog
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text("Success"),
+                                                    content: Text(
+                                                        "Your account has been successfully registered."),
+                                                    actions: [
+                                                      TextButton(
+                                                        child: Text("OK"),
+                                                        onPressed: () {
+                                                          context.pushNamed(
+                                                              LoginWidget
+                                                                  .routeName);
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            } on FirebaseAuthException catch (e) {
+                                              if (e.code ==
+                                                  'email-already-in-use') {
+                                                //  Show custom dialog
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      title: Text("Alert"),
+                                                      content: Text(
+                                                          "Email is already registered."),
+                                                      actions: [
+                                                        TextButton(
+                                                          child: Text("OK"),
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              } else {
+                                                // Handle other errors (e.g., weak-password)
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                      content: Text(
+                                                          "Error: ${e.message}")),
+                                                );
+                                              }
+                                            }
+                                          }
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                  "Different Password, Please make sure the password is consistent."),
+                                            ),
+                                          );
+                                        }
+                                      } else {
+                                        print("Form is NOT valid");
+                                      }
                                     },
                                     text: 'Create Account',
                                     options: FFButtonOptions(
@@ -617,5 +767,56 @@ class _RegisterWidgetState extends State<RegisterWidget> {
         ),
       ),
     );
+  }
+}
+
+Future<void> addUserToFirestore(
+  String Email,
+  String Password,
+  String IC,
+  String Gender
+) async {
+  var db = FirebaseFirestore.instance;
+
+  final record = <String, dynamic>{
+    "Email": Email,
+    "Password": Password,
+    "IC": IC,
+    "Name": await generateRandomUsername(),
+    "Gender": Gender
+  };
+
+  try {
+    final docRef = await db.collection("Patient").add(record);
+    print('DocumentSnapshot added with ID: ${docRef.id}');
+  } catch (e) {
+    print("Failed to add user: $e");
+  }
+}
+
+Future<String> generateRandomUsername() async {
+  final random = Random();
+  var db = FirebaseFirestore.instance;
+
+  while (true) {
+    int randomNumber = random.nextInt(90000000) + 10000000;
+    String number = 'user$randomNumber';
+    final snapshot = await db
+        .collection("Patient")
+        .where("Username", isEqualTo: number)
+        .get();
+
+    if (snapshot.docs.isEmpty) {
+      return number;
+    }
+  }
+}
+
+String genderIndentifier(String IC) {
+  int lastDigit = int.parse(IC[IC.length - 1]);
+  if (lastDigit % 2 == 0) {
+    return "Female";
+  }else{
+    return "Male";
   }
 }

@@ -9,6 +9,8 @@ class RegisterModel extends FlutterFlowModel<RegisterWidget> {
   // State field(s) for emailAddress widget.
   FocusNode? emailAddressFocusNode;
   TextEditingController? emailAddressTextController;
+  FocusNode? ICTextFocusNode;
+  TextEditingController? ICTextController;
   String? Function(BuildContext, String?)? emailAddressTextControllerValidator;
   // State field(s) for password widget.
   FocusNode? passwordFocusNode;
@@ -38,5 +40,8 @@ class RegisterModel extends FlutterFlowModel<RegisterWidget> {
 
     passwordConfirmFocusNode?.dispose();
     passwordConfirmTextController?.dispose();
+
+    ICTextFocusNode?.dispose();
+    ICTextController?.dispose();
   }
 }
