@@ -8,3 +8,4 @@ String globalName = '';
 String globalPhone = '';
 String globalIC = '';
 String globalGender = '';
+String globalUserID = '';

@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'doctor_dashbaord_model.dart';
 export 'doctor_dashbaord_model.dart';
+import '../../globals.dart' as globals;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../firebase_options.dart';
 
 /// a main page for patient.
 ///
@@ -30,8 +33,22 @@ class _DoctorDashbaordWidgetState extends State<DoctorDashbaordWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => DoctorDashbaordModel());
+    _model.switchValue = false;
+    fetchStatusFromFirestore();
+  }
 
-    _model.switchValue = true;
+  void fetchStatusFromFirestore() async {
+    var db = FirebaseFirestore.instance;
+    final snapshot =
+        await db.collection('Doctor').doc(globals.globalUserID).get();
+
+    if (snapshot.exists) {
+      bool status = snapshot.data()?['Status'] ?? false;
+
+      setState(() {
+        _model.switchValue = status;
+      });
+    }
   }
 
   @override
@@ -116,7 +133,7 @@ class _DoctorDashbaordWidgetState extends State<DoctorDashbaordWidget> {
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 4.0, 0.0, 0.0),
                             child: Text(
-                              'Sarah Johnson',
+                              '${globals.globalName}',
                               style: FlutterFlowTheme.of(context)
                                   .displaySmall
                                   .override(
@@ -221,6 +238,7 @@ class _DoctorDashbaordWidgetState extends State<DoctorDashbaordWidget> {
                               onChanged: (newValue) async {
                                 safeSetState(
                                     () => _model.switchValue = newValue);
+                                SaveStatus(newValue);
                               },
                               activeColor: FlutterFlowTheme.of(context).primary,
                               activeTrackColor:
@@ -754,4 +772,12 @@ class _DoctorDashbaordWidgetState extends State<DoctorDashbaordWidget> {
       ),
     );
   }
+}
+
+void SaveStatus(bool Status) async {
+  var db = FirebaseFirestore.instance;
+  final store = db
+      .collection('Doctor')
+      .doc(globals.globalUserID)
+      .update({'Status': Status});
 }

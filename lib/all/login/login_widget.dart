@@ -11,9 +11,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mae_mediq_assignment/firebase_options.dart';
 import '../../globals.dart' as globals;
 
-
-
-
 class LoginWidget extends StatefulWidget {
   const LoginWidget({super.key});
 
@@ -353,7 +350,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 16.0),
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 0.0, 16.0),
                                   child: Container(
                                     width: 370.0,
                                     child: DropdownButtonFormField<String>(
@@ -361,21 +359,27 @@ class _LoginWidgetState extends State<LoginWidget> {
                                       decoration: InputDecoration(
                                         labelText: 'Select Role',
                                         border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(12.0),
-                                          borderSide: BorderSide(color: Color(0xFFB0C4DE), width: 2.0),
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                          borderSide: BorderSide(
+                                              color: Color(0xFFB0C4DE),
+                                              width: 2.0),
                                         ),
                                         filled: true,
                                         fillColor: Colors.white,
                                       ),
                                       items: ['Patient', 'Doctor', 'Admin']
-                                          .map((role) => DropdownMenuItem<String>(
+                                          .map((role) =>
+                                              DropdownMenuItem<String>(
                                                 value: role,
                                                 child: Text(role),
                                               ))
                                           .toList(),
-                                      onChanged: (value) => setState(() => _model.selectedRole = value),
-                                      validator: (value) =>
-                                          value == null ? 'Please select a role' : null,
+                                      onChanged: (value) => setState(
+                                          () => _model.selectedRole = value),
+                                      validator: (value) => value == null
+                                          ? 'Please select a role'
+                                          : null,
                                     ),
                                   ),
                                 ),
@@ -383,72 +387,100 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 16.0),
-                                  
                                   child: FFButtonWidget(
                                     onPressed: () async {
-                                    final email = _model.emailAddressTextController.text.trim();
-                                    final password = _model.passwordTextController.text.trim();
-                                    final role = _model.selectedRole;
+                                      final email = _model
+                                          .emailAddressTextController.text
+                                          .trim();
+                                      final password = _model
+                                          .passwordTextController.text
+                                          .trim();
+                                      final role = _model.selectedRole;
 
-                                    if (email.isEmpty || password.isEmpty || role == null) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(content: Text('Please fill all fields and select a role.')),
-                                      );
-                                      return;
-                                    }
-      
-                                    if (_model.selectedRole == null) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(content: Text('Please select a role.')),
-                                      );
-                                      return;
-                                    }
+                                      if (email.isEmpty ||
+                                          password.isEmpty ||
+                                          role == null) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content: Text(
+                                                  'Please fill all fields and select a role.')),
+                                        );
+                                        return;
+                                      }
 
-                                    final querySnapshot = await FirebaseFirestore.instance
-                                    .collection(role) 
-                                    .where('Email', isEqualTo: email)
-                                    .where('Password', isEqualTo: password)
-                                    .get();
+                                      if (_model.selectedRole == null) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content: Text(
+                                                  'Please select a role.')),
+                                        );
+                                        return;
+                                      }
+                                      print("$email, $password, $role");
+                                      final querySnapshot =
+                                          await FirebaseFirestore.instance
+                                              .collection(role)
+                                              .where('Email', isEqualTo: email)
+                                              .where('Password',
+                                                  isEqualTo: password)
+                                              .get();
 
-                                    if (querySnapshot.docs.isNotEmpty) {
+                                      if (querySnapshot.docs.isNotEmpty) {
+                                        print("$role");
                                         final uid = querySnapshot.docs.first.id;
-                                        final doc = await FirebaseFirestore.instance.collection(role).doc(uid).get();
+                                        final doc = await FirebaseFirestore
+                                            .instance
+                                            .collection(role)
+                                            .doc(uid)
+                                            .get();
                                         if (doc.exists) {
                                           globalEmail = email;
                                           globalPassword = password;
-                                          globalName = doc.get('Name'); 
+                                          globalName = doc.get('Name');
                                           globalPhone = doc.get('Phone Num');
                                           globalGender = doc.get('Gender');
                                           globalIC = doc.get('IC');
                                           globalRole = role;
+                                          globalUserID = uid;
                                         }
-                                        
-                                        
+
                                         switch (_model.selectedRole) {
                                           case 'Patient':
-                                            context.pushNamed(PatientDashboardWidget.routeName);
-                                            
+                                            context.pushNamed(
+                                                PatientDashboardWidget
+                                                    .routeName);
+
                                             break;
                                           case 'Doctor':
-                                            context.pushNamed(DoctorDashbaordWidget.routeName);
-                              
+                                            context.pushNamed(
+                                                DoctorDashbaordWidget
+                                                    .routeName);
+
                                             break;
                                           case 'Admin':
-                                            context.pushNamed(AdminDashboardWidget.routeName);
-                                            
+                                            context.pushNamed(
+                                                AdminDashboardWidget.routeName);
+
                                             break;
                                           default:
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                              SnackBar(content: Text('Invalid role selected.')),
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                  content: Text(
+                                                      'Invalid role selected.')),
                                             );
                                         }
-                                    }else{
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(content: Text('Invalid email or password.')),
-                                      );
-                                    }
-                                    
-                                  },
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content: Text(
+                                                  'Invalid email or password.')),
+                                        );
+                                      }
+                                    },
                                     text: 'Sign In',
                                     options: FFButtonOptions(
                                       width: 370.0,
