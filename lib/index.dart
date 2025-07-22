@@ -23,3 +23,4 @@ export '/patient/record_history/record_history_widget.dart'
     show RecordHistoryWidget;
 export '/admin/edit_doctor/edit_doctor_widget.dart' show EditDoctorWidget;
 export '/patient/edit_user/edit_user_widget.dart' show EditUserWidget;
+export '/doctor/current_booking.dart' show DoctorBookingListPage;

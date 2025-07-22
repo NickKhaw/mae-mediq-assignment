@@ -164,6 +164,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: EditUserWidget.routeName,
           path: EditUserWidget.routePath,
           builder: (context, params) => EditUserWidget(),
+        ),
+        FFRoute(
+          name: DoctorBookingListPage.routeName,
+          path: DoctorBookingListPage.routePath,
+          builder: (context, params) => DoctorBookingListPage(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
