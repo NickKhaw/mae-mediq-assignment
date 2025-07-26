@@ -96,7 +96,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Admin Dashboard"),backgroundColor: const Color(0xFF4A90E2),),
-      backgroundColor: const Color(0xFFE6F1F7),
+      backgroundColor: const Color.fromARGB(255, 114, 137, 216),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -105,7 +105,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Container(
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.blue.shade100,
+                color: const Color.fromARGB(255, 0, 0, 0),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(
@@ -147,7 +147,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       return BarChartGroupData(
         x: index,
         barRods: [
-          BarChartRodData(toY: value.toDouble(), color: Colors.blue),
+          BarChartRodData(toY: value.toDouble(), color: const Color.fromARGB(255, 7, 72, 125)),
         ],
       );
     }).toList();
