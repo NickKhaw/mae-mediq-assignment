@@ -1,6 +1,7 @@
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
 import 'register_widget.dart' show RegisterWidget;
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 
 class RegisterModel extends FlutterFlowModel<RegisterWidget> {
@@ -23,6 +24,11 @@ class RegisterModel extends FlutterFlowModel<RegisterWidget> {
   late bool passwordConfirmVisibility;
   String? Function(BuildContext, String?)?
       passwordConfirmTextControllerValidator;
+    FocusNode? phoneNumFocusNode;
+  TextEditingController? phoneNumTextController ;
+  late MaskTextInputFormatter icNumberMask;
+  late MaskTextInputFormatter phoneNumberMask;
+
 
   @override
   void initState(BuildContext context) {

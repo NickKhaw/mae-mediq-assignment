@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/index.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'register_model.dart';
@@ -12,6 +13,8 @@ import 'package:firebase_core/firebase_core.dart';
 import '/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:math';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class RegisterWidget extends StatefulWidget {
   const RegisterWidget({super.key});
@@ -29,9 +32,21 @@ class _RegisterWidgetState extends State<RegisterWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
 
+  late MaskTextInputFormatter icNumberMask;
+  late MaskTextInputFormatter phoneNumberMask;
+
   @override
   void initState() {
     super.initState();
+
+    icNumberMask = MaskTextInputFormatter(
+      mask: '######-##-####',
+      filter: {"#": RegExp(r'[0-9]')},
+    );
+    phoneNumberMask = MaskTextInputFormatter(
+      mask: '###-#######',
+      filter: {"#": RegExp(r'[0-9]')},
+    );
     _model = createModel(context, () => RegisterModel());
 
     _model.emailAddressTextController ??= TextEditingController();
@@ -45,12 +60,14 @@ class _RegisterWidgetState extends State<RegisterWidget> {
 
     _model.ICTextController ??= TextEditingController();
     _model.ICTextFocusNode ??= FocusNode();
+
+    _model.phoneNumTextController ??= TextEditingController();
+    _model.phoneNumFocusNode ??= FocusNode();
   }
 
   @override
   void dispose() {
     _model.dispose();
-
     super.dispose();
   }
 
@@ -114,18 +131,10 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                       .override(
                                         font: GoogleFonts.plusJakartaSans(
                                           fontWeight: FontWeight.w600,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .displaySmall
-                                                  .fontStyle,
                                         ),
                                         color: Color(0xFF101213),
                                         fontSize: 36.0,
-                                        letterSpacing: 0.0,
                                         fontWeight: FontWeight.w600,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .displaySmall
-                                            .fontStyle,
                                       ),
                                 ),
                                 Padding(
@@ -138,36 +147,33 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                         .override(
                                           font: GoogleFonts.plusJakartaSans(
                                             fontWeight: FontWeight.w500,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelMedium
-                                                    .fontStyle,
                                           ),
                                           color: Color(0xFF57636C),
                                           fontSize: 14.0,
-                                          letterSpacing: 0.0,
                                           fontWeight: FontWeight.w500,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .fontStyle,
                                         ),
                                   ),
                                 ),
                                 Form(
                                   key: _formKey,
                                   child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 16.0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 0.0, 16.0),
                                     child: Container(
                                       width: 370.0,
                                       child: Column(
                                         children: [
-                                          // First Email Field
+                                          // Email Field (without icon)
                                           TextFormField(
-                                            controller: _model.emailAddressTextController,
-                                            focusNode: _model.emailAddressFocusNode,
-                                            autofillHints: [AutofillHints.email],
-                                            keyboardType: TextInputType.emailAddress,
+                                            controller: _model
+                                                .emailAddressTextController,
+                                            focusNode:
+                                                _model.emailAddressFocusNode,
+                                            autofillHints: [
+                                              AutofillHints.email
+                                            ],
+                                            keyboardType:
+                                                TextInputType.emailAddress,
                                             cursorColor: Color(0xFF5BAAF5),
                                             obscureText: false,
                                             decoration: InputDecoration(
@@ -180,22 +186,38 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                               filled: true,
                                               fillColor: Colors.white,
                                               enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(color: Color(0xFFB0C4DE), width: 2.0),
-                                                borderRadius: BorderRadius.circular(12.0),
+                                                borderSide: BorderSide(
+                                                    color: Color(0xFFB0C4DE),
+                                                    width: 2.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
                                               ),
                                               focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(color: Color(0xFF5BAAF5), width: 2.0),
-                                                borderRadius: BorderRadius.circular(12.0),
+                                                borderSide: BorderSide(
+                                                    color: Color(0xFF5BAAF5),
+                                                    width: 2.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
                                               ),
                                               errorBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(color: Color(0xFFE57373), width: 2.0),
-                                                borderRadius: BorderRadius.circular(12.0),
+                                                borderSide: BorderSide(
+                                                    color: Color(0xFFE57373),
+                                                    width: 2.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
                                               ),
-                                              focusedErrorBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(color: Color(0xFFE57373), width: 2.0),
-                                                borderRadius: BorderRadius.circular(12.0),
+                                              focusedErrorBorder:
+                                                  OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Color(0xFFE57373),
+                                                    width: 2.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
                                               ),
-                                              prefixIcon: Icon(Icons.email_outlined, color: Color(0xFF888888)),
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 16,
+                                                      horizontal: 16),
                                             ),
                                             style: TextStyle(
                                               color: Color(0xFF2C3E50),
@@ -203,7 +225,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                               fontWeight: FontWeight.w500,
                                             ),
                                             validator: (value) {
-                                              if (value == null || value.isEmpty) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
                                                 return 'Please enter your Gmail address';
                                               }
                                               final gmailRegex = RegExp(
@@ -219,13 +242,16 @@ class _RegisterWidgetState extends State<RegisterWidget> {
 
                                           SizedBox(height: 16.0),
 
+                                          // IC Field (without icon)
                                           TextFormField(
                                             controller: _model.ICTextController,
                                             focusNode: _model.ICTextFocusNode,
                                             keyboardType: TextInputType.number,
+                                            inputFormatters: [icNumberMask],
                                             cursorColor: Color(0xFF5BAAF5),
                                             decoration: InputDecoration(
-                                              labelText: 'IC Number',
+                                              labelText:
+                                                  'IC Number (e.g. 041226-05-0053)',
                                               labelStyle: TextStyle(
                                                 color: Color(0xFF888888),
                                                 fontSize: 14.0,
@@ -234,22 +260,38 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                               filled: true,
                                               fillColor: Colors.white,
                                               enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(color: Color(0xFFB0C4DE), width: 2.0),
-                                                borderRadius: BorderRadius.circular(12.0),
+                                                borderSide: BorderSide(
+                                                    color: Color(0xFFB0C4DE),
+                                                    width: 2.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
                                               ),
                                               focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(color: Color(0xFF5BAAF5), width: 2.0),
-                                                borderRadius: BorderRadius.circular(12.0),
+                                                borderSide: BorderSide(
+                                                    color: Color(0xFF5BAAF5),
+                                                    width: 2.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
                                               ),
                                               errorBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(color: Color(0xFFE57373), width: 2.0),
-                                                borderRadius: BorderRadius.circular(12.0),
+                                                borderSide: BorderSide(
+                                                    color: Color(0xFFE57373),
+                                                    width: 2.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
                                               ),
-                                              focusedErrorBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(color: Color(0xFFE57373), width: 2.0),
-                                                borderRadius: BorderRadius.circular(12.0),
+                                              focusedErrorBorder:
+                                                  OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Color(0xFFE57373),
+                                                    width: 2.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
                                               ),
-                                              prefixIcon: Icon(Icons.badge_outlined, color: Color(0xFF888888)),
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 16,
+                                                      horizontal: 16),
                                             ),
                                             style: TextStyle(
                                               color: Color(0xFF2C3E50),
@@ -257,12 +299,87 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                               fontWeight: FontWeight.w500,
                                             ),
                                             validator: (value) {
-                                              if (value == null || value.isEmpty) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
                                                 return 'Please enter your IC number';
                                               }
-                                              final icRegex = RegExp(r'^\d{12}$'); // Malaysian NRIC
+                                              final icRegex = RegExp(
+                                                  r'^\d{6}-\d{2}-\d{4}$');
                                               if (!icRegex.hasMatch(value)) {
-                                                return 'IC must be 12 digits';
+                                                return 'IC must be in format 041226-05-0053';
+                                              }
+                                              return null;
+                                            },
+                                          ),
+
+                                          SizedBox(height: 16.0),
+
+                                          // Phone Number Field
+                                          TextFormField(
+                                            controller:
+                                                _model.phoneNumTextController,
+                                            focusNode: _model.phoneNumFocusNode,
+                                            keyboardType: TextInputType.phone,
+                                            inputFormatters: [phoneNumberMask],
+                                            cursorColor: Color(0xFF5BAAF5),
+                                            decoration: InputDecoration(
+                                              labelText:
+                                                  'Phone Number (e.g. 017-6682365)',
+                                              labelStyle: TextStyle(
+                                                color: Color(0xFF888888),
+                                                fontSize: 14.0,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                              filled: true,
+                                              fillColor: Colors.white,
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Color(0xFFB0C4DE),
+                                                    width: 2.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Color(0xFF5BAAF5),
+                                                    width: 2.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
+                                              ),
+                                              errorBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Color(0xFFE57373),
+                                                    width: 2.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
+                                              ),
+                                              focusedErrorBorder:
+                                                  OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Color(0xFFE57373),
+                                                    width: 2.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
+                                              ),
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 16,
+                                                      horizontal: 16),
+                                            ),
+                                            style: TextStyle(
+                                              color: Color(0xFF2C3E50),
+                                              fontSize: 14.0,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Please enter your phone number';
+                                              }
+                                              final phoneRegex =
+                                                  RegExp(r'^\d{3}-\d{7,8}$');
+                                              if (!phoneRegex.hasMatch(value)) {
+                                                return 'Phone must be in format 017-6682365';
                                               }
                                               return null;
                                             },
@@ -273,6 +390,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   ),
                                 ),
 
+                                // Password fields remain the same
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 16.0),
@@ -281,30 +399,15 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                     child: TextFormField(
                                       controller: _model.passwordTextController,
                                       focusNode: _model.passwordFocusNode,
-                                      autofocus: true,
                                       autofillHints: [AutofillHints.password],
                                       obscureText: !_model.passwordVisibility,
                                       decoration: InputDecoration(
                                         labelText: 'Password',
-                                        labelStyle: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .override(
-                                              font: GoogleFonts.plusJakartaSans(
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontStyle,
-                                              ),
-                                              color: Color(0xFF888888),
-                                              fontSize: 14.0,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.w500,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelMedium
-                                                      .fontStyle,
-                                            ),
+                                        labelStyle: TextStyle(
+                                          color: Color(0xFF888888),
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                         enabledBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: Color(0xFFB0C4DE),
@@ -339,13 +442,13 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                         ),
                                         filled: true,
                                         fillColor: Colors.white,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 16, horizontal: 16),
                                         suffixIcon: InkWell(
                                           onTap: () => safeSetState(
                                             () => _model.passwordVisibility =
                                                 !_model.passwordVisibility,
                                           ),
-                                          focusNode:
-                                              FocusNode(skipTraversal: true),
                                           child: Icon(
                                             _model.passwordVisibility
                                                 ? Icons.visibility_outlined
@@ -355,25 +458,11 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                           ),
                                         ),
                                       ),
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            font: GoogleFonts.plusJakartaSans(
-                                              fontWeight: FontWeight.w500,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .fontStyle,
-                                            ),
-                                            color: Color(0xFF2C3E50),
-                                            fontSize: 14.0,
-                                            letterSpacing: 0.0,
-                                            fontWeight: FontWeight.w500,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMedium
-                                                    .fontStyle,
-                                          ),
+                                      style: TextStyle(
+                                        color: Color(0xFF2C3E50),
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                       cursorColor: Color(0xFF5BAAF5),
                                       validator: _model
                                           .passwordTextControllerValidator
@@ -381,6 +470,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                     ),
                                   ),
                                 ),
+
+                                // Confirm Password field
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 16.0),
@@ -391,31 +482,16 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                           _model.passwordConfirmTextController,
                                       focusNode:
                                           _model.passwordConfirmFocusNode,
-                                      autofocus: true,
                                       autofillHints: [AutofillHints.password],
                                       obscureText:
                                           !_model.passwordConfirmVisibility,
                                       decoration: InputDecoration(
                                         labelText: 'Confirm Password',
-                                        labelStyle: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .override(
-                                              font: GoogleFonts.plusJakartaSans(
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelMedium
-                                                        .fontStyle,
-                                              ),
-                                              color: Color(0xFF888888),
-                                              fontSize: 14.0,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.w500,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelMedium
-                                                      .fontStyle,
-                                            ),
+                                        labelStyle: TextStyle(
+                                          color: Color(0xFF888888),
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                         enabledBorder: OutlineInputBorder(
                                           borderSide: BorderSide(
                                             color: Color(0xFFB0C4DE),
@@ -450,6 +526,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                         ),
                                         filled: true,
                                         fillColor: Colors.white,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 16, horizontal: 16),
                                         suffixIcon: InkWell(
                                           onTap: () => safeSetState(
                                             () => _model
@@ -457,8 +535,6 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                                 !_model
                                                     .passwordConfirmVisibility,
                                           ),
-                                          focusNode:
-                                              FocusNode(skipTraversal: true),
                                           child: Icon(
                                             _model.passwordConfirmVisibility
                                                 ? Icons.visibility_outlined
@@ -468,26 +544,11 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                           ),
                                         ),
                                       ),
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            font: GoogleFonts.plusJakartaSans(
-                                              fontWeight: FontWeight.w500,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .fontStyle,
-                                            ),
-                                            color: Color(0xFF2C3E50),
-                                            fontSize: 14.0,
-                                            letterSpacing: 0.0,
-                                            fontWeight: FontWeight.w500,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMedium
-                                                    .fontStyle,
-                                          ),
-                                      minLines: 1,
+                                      style: TextStyle(
+                                        color: Color(0xFF2C3E50),
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                       cursorColor: Color(0xFF5BAAF5),
                                       validator: _model
                                           .passwordConfirmTextControllerValidator
@@ -495,18 +556,14 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                     ),
                                   ),
                                 ),
+
+                                // Create Account Button
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 16.0),
                                   child: FFButtonWidget(
                                     onPressed: () async {
-                                      print('Button pressed ...');
-                                      print(_model
-                                          .passwordConfirmTextController.text);
-
                                       if (_formKey.currentState!.validate()) {
-                                        print("Form is valid");
-
                                         if (_model.passwordConfirmTextController
                                                 .text ==
                                             _model
@@ -518,6 +575,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                               _model.passwordTextController.text
                                                   .isEmpty ||
                                               _model.ICTextController.text
+                                                  .isEmpty ||
+                                              _model.phoneNumTextController.text
                                                   .isEmpty) {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
@@ -527,7 +586,30 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                               ),
                                             );
                                             return;
+
+
                                           } else {
+
+                                            bool icExists = await checkIcExisting(_model.ICTextController.text);
+
+                                            if (icExists) {
+                                              await showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    title: Text("Duplicate IC"),
+                                                    content: Text("This IC is already registered. Please use a different one."),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () => Navigator.pop(context),
+                                                        child: Text("OK"),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                              return; 
+                                            }
                                             try {
                                               await FirebaseAuth.instance
                                                   .createUserWithEmailAndPassword(
@@ -539,14 +621,18 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                                     .text,
                                               );
 
-                                              // If successful, proceed with Firestore
+                                              // Add user to Firestore with phone number
                                               addUserToFirestore(
                                                   _model
                                                       .emailAddressTextController
                                                       .text,
                                                   _model.passwordTextController
                                                       .text,
-                                                  _model.ICTextController.text, genderIndentifier(_model.ICTextController.text));
+                                                  _model.ICTextController.text,
+                                                  genderIndentifier(_model
+                                                      .ICTextController.text),
+                                                  _model.phoneNumTextController
+                                                      .text);
 
                                               // Show success dialog
                                               showDialog(
@@ -573,7 +659,6 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                             } on FirebaseAuthException catch (e) {
                                               if (e.code ==
                                                   'email-already-in-use') {
-                                                //  Show custom dialog
                                                 showDialog(
                                                   context: context,
                                                   builder:
@@ -596,7 +681,6 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                                   },
                                                 );
                                               } else {
-                                                // Handle other errors (e.g., weak-password)
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
                                                   SnackBar(
@@ -611,12 +695,10 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                               .showSnackBar(
                                             SnackBar(
                                               content: Text(
-                                                  "Different Password, Please make sure the password is consistent."),
+                                                  "Passwords do not match."),
                                             ),
                                           );
                                         }
-                                      } else {
-                                        print("Form is NOT valid");
                                       }
                                     },
                                     text: 'Create Account',
@@ -625,29 +707,12 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                       height: 44.0,
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           0.0, 0.0, 0.0, 0.0),
-                                      iconPadding:
-                                          EdgeInsetsDirectional.fromSTEB(
-                                              0.0, 0.0, 0.0, 0.0),
                                       color: Color(0xFF4A90E2),
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .titleSmall
-                                          .override(
-                                            font: GoogleFonts.plusJakartaSans(
-                                              fontWeight: FontWeight.w500,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .titleSmall
-                                                      .fontStyle,
-                                            ),
-                                            color: Colors.white,
-                                            fontSize: 16.0,
-                                            letterSpacing: 0.0,
-                                            fontWeight: FontWeight.w500,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleSmall
-                                                    .fontStyle,
-                                          ),
+                                      textStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                       elevation: 3.0,
                                       borderSide: BorderSide(
                                         color: Colors.transparent,
@@ -658,72 +723,34 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   ),
                                 ),
 
-                                // You will have to add an action on this rich text to go to your login page.
+                                // Sign In link
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 12.0, 0.0, 12.0),
                                   child: InkWell(
-                                    splashColor: Colors.transparent,
-                                    focusColor: Colors.transparent,
-                                    hoverColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
                                     onTap: () async {
                                       context.pushNamed(LoginWidget.routeName);
                                     },
                                     child: RichText(
-                                      textScaler:
-                                          MediaQuery.of(context).textScaler,
                                       text: TextSpan(
                                         children: [
                                           TextSpan(
                                             text: 'Already have an account? ',
-                                            style: TextStyle(),
+                                            style: TextStyle(
+                                              color: Color(0xFF57636C),
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                           ),
                                           TextSpan(
                                             text: 'Sign In here',
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium
-                                                .override(
-                                                  font: GoogleFonts
-                                                      .plusJakartaSans(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontStyle:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .bodyMedium
-                                                            .fontStyle,
-                                                  ),
-                                                  color: Color(0xFF4B39EF),
-                                                  fontSize: 16.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyMedium
-                                                          .fontStyle,
-                                                ),
+                                            style: TextStyle(
+                                              color: Color(0xFF4B39EF),
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           )
                                         ],
-                                        style: FlutterFlowTheme.of(context)
-                                            .labelLarge
-                                            .override(
-                                              font: GoogleFonts.plusJakartaSans(
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .labelLarge
-                                                        .fontStyle,
-                                              ),
-                                              color: Color(0xFF57636C),
-                                              fontSize: 16.0,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.w500,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelLarge
-                                                      .fontStyle,
-                                            ),
                                       ),
                                     ),
                                   ),
@@ -770,12 +797,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
   }
 }
 
-Future<void> addUserToFirestore(
-  String Email,
-  String Password,
-  String IC,
-  String Gender
-) async {
+Future<void> addUserToFirestore(String Email, String Password, String IC,
+    String Gender, String PhoneNum) async {
   var db = FirebaseFirestore.instance;
 
   final record = <String, dynamic>{
@@ -783,7 +806,8 @@ Future<void> addUserToFirestore(
     "Password": Password,
     "IC": IC,
     "Name": await generateRandomUsername(),
-    "Gender": Gender
+    "Gender": Gender,
+    "Phone Num": PhoneNum,
   };
 
   try {
@@ -816,7 +840,19 @@ String genderIndentifier(String IC) {
   int lastDigit = int.parse(IC[IC.length - 1]);
   if (lastDigit % 2 == 0) {
     return "Female";
-  }else{
+  } else {
     return "Male";
+  }
+}
+
+Future<bool> checkIcExisting(String ic) async {
+  var db = FirebaseFirestore.instance;
+  final snapshot =
+      await db.collection('Patient').where('IC', isEqualTo: ic).get();
+
+  if (snapshot.docs.isNotEmpty) {
+    return true;
+  } else {
+    return false;
   }
 }

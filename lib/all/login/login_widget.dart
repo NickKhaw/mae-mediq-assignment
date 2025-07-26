@@ -428,7 +428,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                                               .get();
 
                                       if (querySnapshot.docs.isNotEmpty) {
-                                        print("$role");
                                         final uid = querySnapshot.docs.first.id;
                                         final doc = await FirebaseFirestore
                                             .instance
@@ -436,14 +435,57 @@ class _LoginWidgetState extends State<LoginWidget> {
                                             .doc(uid)
                                             .get();
                                         if (doc.exists) {
-                                          globalEmail = email;
-                                          globalPassword = password;
-                                          globalName = doc.get('Name');
-                                          globalPhone = doc.get('Phone Num');
-                                          globalGender = doc.get('Gender');
-                                          globalIC = doc.get('IC');
-                                          globalRole = role;
-                                          globalUserID = uid;
+                                          final data = doc.data()
+                                              as Map<String, dynamic>?;
+
+                                          if (data != null &&
+                                              role == "Patient") {
+                                            globalEmail = email;
+                                            globalPassword = password;
+                                            globalName = doc.get('Name');
+                                            globalPhone = doc.get('Phone Num');
+                                            globalGender = doc.get('Gender');
+                                            globalIC = doc.get('IC');
+                                            globalRole = role;
+                                            globalUserID = uid;
+                                            if (data
+                                                .containsKey('Profile Pic')) {
+                                              globalUrl =
+                                                  doc.get('Profile Pic');
+                                            } 
+                                          } else if (data != null &&
+                                              role == "Doctor") {
+                                            globalEmail = email;
+                                            globalPassword = password;
+                                            globalName = doc.get('Name');
+                                            globalPhone = doc.get('Phone Num');
+                                            globalGender = doc.get('Gender');
+                                            globalIC = doc.get('IC');
+                                            globalRole = role;
+                                            globalUserID = uid;
+                                            globalDepartment =
+                                                doc.get('Department');
+                                            if (data
+                                            .containsKey('Profile Pic')) {
+                                              globalUrl =
+                                                doc.get('Profile Pic');
+                                            } 
+                                          }else if (data != null &&
+                                              role == "Admin") {
+                                            globalEmail = email;
+                                            globalPassword = password;
+                                            globalName = doc.get('Name');
+                                            globalPhone = doc.get('Phone Num');
+                                            globalGender = doc.get('Gender');
+                                            globalIC = doc.get('IC');
+                                            globalRole = role;
+                                            globalUserID = uid;
+                                            if (data
+                                            .containsKey('Profile Pic')) {
+                                              globalUrl =
+                                                doc.get('Profile Pic');
+                                            } 
+                                          }
                                         }
 
                                         switch (_model.selectedRole) {

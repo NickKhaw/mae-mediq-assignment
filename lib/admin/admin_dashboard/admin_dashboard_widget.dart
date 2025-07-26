@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
@@ -6,10 +8,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'admin_dashboard_model.dart';
 export 'admin_dashboard_model.dart';
 
-/// a main page for patient.
-///
-/// with book appointment button, view appointment button, view notification
-/// button, view history button and profile button
 class AdminDashboardWidget extends StatefulWidget {
   const AdminDashboardWidget({super.key});
 
@@ -24,19 +22,68 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget> {
   late AdminDashboardModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  String total_patient = "";
+  String doctor_active = "";
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => AdminDashboardModel());
+
+    calculateTodayTotalAmount("Record").then((value)=>{
+      setState(() {
+        total_patient = value;
+      })
+    });
+
+    calculateAmountByCondition("Doctor", "Status", true).then((value) {
+      setState(() {
+        doctor_active = value;
+      });
+    });
   }
 
   @override
   void dispose() {
     _model.dispose();
-
     super.dispose();
   }
+
+  Future<String> calculateAmountByCondition(
+      String collection, String field, dynamic ConditionValue) async {
+    var db = FirebaseFirestore.instance;
+    int count = 0;
+    final snapshot = await db
+        .collection(collection)
+        .where(field, isEqualTo: ConditionValue)
+        .get();
+    for (var doc in snapshot.docs) {
+      count++;
+    }
+    return count.toString();
+  }
+
+ Future<String> calculateTodayTotalAmount(String collection) async {
+  var db = FirebaseFirestore.instance;
+  int count = 0;
+  DateTime now = DateTime.now();
+
+  final snapshot = await db.collection(collection).get();
+
+  for (var doc in snapshot.docs) {
+    Timestamp ts = doc["Timestamp"];
+    DateTime date = ts.toDate();
+
+    if (date.year == now.year &&
+        date.month == now.month &&
+        date.day == now.day) {
+      count++;
+    }
+  }
+
+  return count.toString();
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -163,128 +210,75 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget> {
                       ),
                     ],
                   ),
-                  Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      InkWell(
-                        splashColor: Colors.transparent,
-                        focusColor: Colors.transparent,
-                        hoverColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        onTap: () async {
-                          context.pushNamed(DepartmentStatusWidget.routeName);
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 8.0,
-                                color: Color(0x1A000000),
-                                offset: Offset(
-                                  0.0,
-                                  2.0,
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 8.0,
+                          color: Color(0x1A000000),
+                          offset: Offset(0.0, 2.0),
+                        )
+                      ],
+                      borderRadius: BorderRadius.circular(16.0),
+                      border: Border.all(
+                        color: Color(0xFFB0C4DE),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(20.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          InkWell(
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onTap: () async {
+                              context
+                                  .pushNamed(DashboardScreen.routeName);
+                            },
+                            child: Container(
+                              width: 125.0,
+                              height: 150.0,
+                              decoration: BoxDecoration(
+                                color: Color(0xFF4A90E2),
+                                borderRadius: BorderRadius.circular(16.0),
+                                shape: BoxShape.rectangle,
+                                border: Border.all(
+                                  color: Color(0xFFB0C4DE),
                                 ),
-                              )
-                            ],
-                            borderRadius: BorderRadius.circular(16.0),
-                            border: Border.all(
-                              color: Color(0xFFB0C4DE),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(20.0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.all(16.0),
-                                  child: Container(
-                                    width: 125.0,
-                                    height: 150.0,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xFF4A90E2),
-                                      borderRadius: BorderRadius.circular(16.0),
-                                      shape: BoxShape.rectangle,
-                                      border: Border.all(
-                                        color: Color(0xFFB0C4DE),
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsets.all(10.0),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(0.0, 0.0),
-                                            child: Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      0.0, 15.0, 0.0, 0.0),
-                                              child: Container(
-                                                width: 50.0,
-                                                height: 50.0,
-                                                decoration: BoxDecoration(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .secondaryBackground,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          16.0),
-                                                  border: Border.all(
-                                                    color: Color(0xFFB0C4DE),
-                                                  ),
-                                                ),
-                                                child: Align(
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          0.0, 0.0),
-                                                  child: Text(
-                                                    '#1',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          font:
-                                                              GoogleFonts.inter(
-                                                            fontWeight:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontWeight,
-                                                            fontStyle:
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .fontStyle,
-                                                          ),
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMedium
-                                                                  .fontWeight,
-                                                          fontStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMedium
-                                                                  .fontStyle,
-                                                        ),
-                                                  ),
-                                                ),
-                                              ),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.all(10.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Align(
+                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 15.0, 0.0, 0.0),
+                                        child: Container(
+                                          width: 50.0,
+                                          height: 50.0,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                            borderRadius:
+                                                BorderRadius.circular(16.0),
+                                            border: Border.all(
+                                              color: Color(0xFFB0C4DE),
                                             ),
                                           ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 15.0, 0.0, 0.0),
+                                          child: Align(
+                                            alignment:
+                                                AlignmentDirectional(0.0, 0.0),
                                             child: Text(
-                                              'Total Patient Today',
-                                              textAlign: TextAlign.center,
+                                              total_patient,
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .bodyMedium
@@ -315,102 +309,83 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget> {
                                                       ),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: AlignmentDirectional(-1.0, 0.0),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(16.0),
-                                    child: Container(
-                                      width: 125.0,
-                                      height: 150.0,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFF4A90E2),
-                                        borderRadius:
-                                            BorderRadius.circular(16.0),
-                                        border: Border.all(
-                                          color: Color(0xFFB0C4DE),
                                         ),
                                       ),
-                                      child: Padding(
-                                        padding: EdgeInsets.all(10.0),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Align(
-                                              alignment: AlignmentDirectional(
-                                                  0.0, 0.0),
-                                              child: Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(
-                                                        0.0, 15.0, 0.0, 0.0),
-                                                child: Container(
-                                                  width: 50.0,
-                                                  height: 50.0,
-                                                  decoration: BoxDecoration(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .secondaryBackground,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            16.0),
-                                                    border: Border.all(
-                                                      color: Color(0xFFB0C4DE),
-                                                    ),
-                                                  ),
-                                                  child: Align(
-                                                    alignment:
-                                                        AlignmentDirectional(
-                                                            0.0, 0.0),
-                                                    child: Padding(
-                                                      padding:
-                                                          EdgeInsets.all(1.0),
-                                                      child: Text(
-                                                        '#1',
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  font:
-                                                                      GoogleFonts
-                                                                          .inter(
-                                                                    fontWeight: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .fontWeight,
-                                                                    fontStyle: FlutterFlowTheme.of(
-                                                                            context)
-                                                                        .bodyMedium
-                                                                        .fontStyle,
-                                                                  ),
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .fontWeight,
-                                                                  fontStyle: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .fontStyle,
-                                                                ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 15.0, 0.0, 0.0),
+                                      child: Text(
+                                        'Total Patient',
+                                        textAlign: TextAlign.center,
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Inter',
+                                              fontWeight:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMedium
+                                                      .fontWeight,
+                                              fontStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMedium
+                                                      .fontStyle,
+                                              letterSpacing: 0.0,
                                             ),
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      0.0, 15.0, 0.0, 0.0),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onTap: () async {
+                              context.pushNamed(DoctorActiveWidget.routeName);
+                            },
+                            child: Container(
+                              width: 125.0,
+                              height: 150.0,
+                              decoration: BoxDecoration(
+                                color: Color(0xFF4A90E2),
+                                borderRadius: BorderRadius.circular(16.0),
+                                border: Border.all(
+                                  color: Color(0xFFB0C4DE),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.all(10.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Align(
+                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 15.0, 0.0, 0.0),
+                                        child: Container(
+                                          width: 50.0,
+                                          height: 50.0,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                            borderRadius:
+                                                BorderRadius.circular(16.0),
+                                            border: Border.all(
+                                              color: Color(0xFFB0C4DE),
+                                            ),
+                                          ),
+                                          child: Align(
+                                            alignment:
+                                                AlignmentDirectional(0.0, 0.0),
+                                            child: Padding(
+                                              padding: EdgeInsets.all(1.0),
                                               child: Text(
-                                                'Doctors Active',
-                                                textAlign: TextAlign.center,
+                                                doctor_active,
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .bodyMedium
@@ -442,18 +417,49 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget> {
                                                         ),
                                               ),
                                             ),
-                                          ],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 15.0, 0.0, 0.0),
+                                      child: Text(
+                                        'Doctors Active',
+                                        textAlign: TextAlign.center,
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              font: GoogleFonts.inter(
+                                                fontWeight:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMedium
+                                                        .fontWeight,
+                                                fontStyle:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMedium
+                                                        .fontStyle,
+                                              ),
+                                              letterSpacing: 0.0,
+                                              fontWeight:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMedium
+                                                      .fontWeight,
+                                              fontStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMedium
+                                                      .fontStyle,
+                                            ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                   InkWell(
                     splashColor: Colors.transparent,
@@ -471,10 +477,7 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget> {
                           BoxShadow(
                             blurRadius: 8.0,
                             color: Color(0x1A000000),
-                            offset: Offset(
-                              0.0,
-                              2.0,
-                            ),
+                            offset: Offset(0.0, 2.0),
                           )
                         ],
                         borderRadius: BorderRadius.circular(16.0),
@@ -607,10 +610,7 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget> {
                           BoxShadow(
                             blurRadius: 8.0,
                             color: Color(0x1A000000),
-                            offset: Offset(
-                              0.0,
-                              2.0,
-                            ),
+                            offset: Offset(0.0, 2.0),
                           )
                         ],
                         borderRadius: BorderRadius.circular(16.0),

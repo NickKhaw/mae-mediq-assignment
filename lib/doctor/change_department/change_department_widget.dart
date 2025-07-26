@@ -6,8 +6,12 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mae_mediq_assignment/globals.dart';
+import '../../globals.dart' as globals;
 import 'change_department_model.dart';
 export 'change_department_model.dart';
+import '/index.dart';
 
 /// Create a change department  page
 ///
@@ -44,6 +48,8 @@ class ChangeDepartmentWidget extends StatefulWidget {
 }
 
 class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
+  List<dynamic> patientStatus = [];
+  Map<String, dynamic> patientData = {};
   late ChangeDepartmentModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -52,6 +58,188 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => ChangeDepartmentModel());
+    loadInProgressPatientInfo();
+  }
+
+  void loadInProgressPatientInfo() {
+    final db = FirebaseFirestore.instance;
+
+    db
+        .collection('Selected')
+        .where("Doctor_IC", isEqualTo: globals.globalIC)
+        .get()
+        .then((selectedSnapshot) async {
+      // No matching document
+      if (selectedSnapshot.docs.isEmpty) {
+        print("No patient document found with IC");
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("No Patients Found"),
+                content:
+                    Text("Please select the patient before adding a record."),
+                actions: [
+                  TextButton(
+                    child: Text("OK"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      context.pushNamed(DoctorDashbaordWidget.routeName);
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        });
+
+        return;
+      }
+
+      final selectedDoc = selectedSnapshot.docs.first;
+      final List<dynamic> patientICs =
+          selectedDoc.data()['Patients_Selected'] ?? [];
+
+      final List<dynamic>? statusList =
+          selectedDoc.data()['Selected_Status'] as List<dynamic>?;
+
+      // No status list found
+      if (statusList == null || statusList.isEmpty) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("No Status Found"),
+                content: Text("There is no status for selected patients."),
+                actions: [
+                  TextButton(
+                    child: Text("OK"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      context.pushNamed(DoctorDashbaordWidget.routeName);
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        });
+        return;
+      }
+
+      setState(() {
+        patientStatus = statusList;
+      });
+
+      // Find first patient with status "In Progress"
+      final int index = patientStatus.indexOf(1);
+
+      if (index == -1 || index >= patientICs.length) {
+        print("No patient is currently in progress.");
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("No Patient In Progress"),
+                content: Text("Please start a call before adding a record."),
+                actions: [
+                  TextButton(
+                    child: Text("OK"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      context.pushNamed(DoctorDashbaordWidget.routeName);
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        });
+        return;
+      }
+
+      String inProgressPatientIC = patientICs[index];
+
+      final snapshot = await db
+          .collection('Patient')
+          .where("IC", isEqualTo: inProgressPatientIC)
+          .get();
+
+      if (snapshot.docs.isEmpty) {
+        print("No patient data found with IC: $inProgressPatientIC");
+        return;
+      }
+
+      setState(() {
+        patientData = snapshot.docs.first.data();
+      });
+    });
+  }
+
+  Future<void> updatePatientBookingByDoctorIC({
+    required String patientIC,
+    required String Field,
+    required dynamic updatedData,
+    required String collection,
+    required String condition,
+  }) async {
+    final db = FirebaseFirestore.instance;
+
+    try {
+      final snapshot = await db
+          .collection('$collection')
+          .where('$condition', isEqualTo: patientIC)
+          .get();
+
+      if (snapshot.docs.isEmpty) {
+        print("No document found for Patient_IC");
+        return;
+      }
+
+      final docId = snapshot.docs.first.id;
+
+      await db.collection('Booking').doc(docId).update({'$Field': updatedData});
+
+      print('Patient status updated successfully.');
+    } catch (e) {
+      print('Error updating patient status: $e');
+    }
+  }
+
+  Future<void> updateSelectedByDoctorIC({
+    required String data,
+    required String Field,
+    required dynamic updatedData,
+    required String field,
+  }) async {
+    final db = FirebaseFirestore.instance;
+
+    try {
+      final snapshot = await db
+          .collection('Selected')
+          .where('$field', isEqualTo: data)
+          .get();
+
+      if (snapshot.docs.isEmpty) {
+        print("No document found for doctor ID");
+        return;
+      }
+
+      final docId = snapshot.docs.first.id;
+
+      await db
+          .collection('Selected')
+          .doc(docId)
+          .update({'$Field': updatedData});
+
+      print('Patient status updated successfully.');
+    } catch (e) {
+      print('Error updating patient status: $e');
+    }
   }
 
   @override
@@ -247,7 +435,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                                         ),
                                   ),
                                   Text(
-                                    'John Tan',
+                                    patientData['Name'] ?? 'N/A',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyMedium
                                         .override(
@@ -296,7 +484,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                                         ),
                                   ),
                                   Text(
-                                    '990101-10-5678',
+                                    patientData['IC'] ?? 'N/A',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyMedium
                                         .override(
@@ -345,7 +533,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                                         ),
                                   ),
                                   Text(
-                                    '012-3456789',
+                                    patientData['Phone Num'] ?? 'N/A',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyMedium
                                         .override(
@@ -394,7 +582,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                                         ),
                                   ),
                                   Text(
-                                    'Male',
+                                    patientData['Gender'] ?? 'N/A',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyMedium
                                         .override(
@@ -443,7 +631,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                                         ),
                                   ),
                                   Text(
-                                    'ENT (Ear, Nose, Throat)',
+                                    globalDepartment,
                                     style: FlutterFlowTheme.of(context)
                                         .bodyMedium
                                         .override(
@@ -569,21 +757,21 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                                 FormFieldController<String>(
                               _model.dropDownValue ??= '',
                             ),
-                            options: List<String>.from([
-                              'cardiology',
-                              'ent',
-                              'pediatrics',
-                              'orthopedics',
-                              'neurology',
-                              'dermatology'
-                            ]),
-                            optionLabels: [
+                            options: [
                               'General Medicine',
                               'Pediatrics',
                               'Cardiology',
                               'Gynecology',
                               'Neurology',
                               'ENT (Ear, Nose, Throat)'
+                            ],
+                            optionLabels: [
+                              'General Medicine',
+                              'Pediatrics',
+                              'Cardiology',
+                              'Gynecology',
+                              'Neurology',
+                              'ENT (Ear, Nose, Throat)',
                             ],
                             onChanged: (val) =>
                                 safeSetState(() => _model.dropDownValue = val),
@@ -681,7 +869,51 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                   ),
                   FFButtonWidget(
                     onPressed: () {
-                      print('Button pressed ...');
+                      String data = _model.dropDownValue ?? "";
+                      updatePatientBookingByDoctorIC(
+                          patientIC: patientData['IC'],
+                          Field: 'Department',
+                          updatedData: data,
+                          collection: 'Booking',
+                          condition: 'IC');
+                      updatePatientBookingByDoctorIC(
+                          patientIC: patientData['IC'],
+                          Field: 'Status',
+                          updatedData: 'Pending',
+                          collection: 'Booking',
+                          condition: 'IC');
+                      updatePatientBookingByDoctorIC(
+                          patientIC: patientData['IC'],
+                          Field: 'Doctor_ID',
+                          updatedData: FieldValue.delete(),
+                          collection: 'Booking',
+                          condition: 'IC');
+                      int index = patientStatus.indexOf(1);
+                      patientStatus[index] = 2;
+                      updateSelectedByDoctorIC(
+                        data: globalIC,
+                        Field: 'Selected_Status',
+                        updatedData: patientStatus,
+                        field: 'Doctor_IC',
+                      );
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text("Update Successful"),
+                            content: const Text(
+                                "The patient's department has been successfully updated."),
+                            actions: [
+                              TextButton(
+                                onPressed: () => {
+                                  context.pushNamed(DoctorDashbaordWidget.routeName),
+                                },
+                                child: const Text("OK"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                     text: 'Change Department',
                     icon: Icon(

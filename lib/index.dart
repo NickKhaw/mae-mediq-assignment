@@ -24,3 +24,8 @@ export '/patient/record_history/record_history_widget.dart'
 export '/admin/edit_doctor/edit_doctor_widget.dart' show EditDoctorWidget;
 export '/patient/edit_user/edit_user_widget.dart' show EditUserWidget;
 export '/doctor/current_booking.dart' show DoctorBookingListPage;
+export '/doctor/current_booking.dart' show DoctorBookingListPage;
+export '/doctor/chosen_patient.dart' show DoctorSelectedListPage;
+export '/doctor/medical_record.dart' show MedicalRecordListPage;
+export 'admin/doctor_active_widget.dart' show DoctorActiveWidget;
+export 'admin/total_patient.dart' show DashboardScreen;

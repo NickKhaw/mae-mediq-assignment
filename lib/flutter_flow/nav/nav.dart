@@ -13,6 +13,7 @@ import '/index.dart';
 export 'package:go_router/go_router.dart';
 export 'serialization_util.dart';
 
+
 const kTransitionInfoKey = '__transition_info__';
 
 GlobalKey<NavigatorState> appNavigatorKey = GlobalKey<NavigatorState>();
@@ -141,6 +142,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => ManageDoctorWidget(),
         ),
         FFRoute(
+          name: DoctorSelectedListPage.routeName,
+          path: DoctorSelectedListPage.routePath,
+          builder: (context, params) => DoctorSelectedListPage(),
+        ),
+        FFRoute(
           name: AddReocrdWidget.routeName,
           path: AddReocrdWidget.routePath,
           builder: (context, params) => AddReocrdWidget(),
@@ -169,7 +175,25 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: DoctorBookingListPage.routeName,
           path: DoctorBookingListPage.routePath,
           builder: (context, params) => DoctorBookingListPage(),
-        )
+        ),
+        FFRoute(
+          name: MedicalRecordListPage.routeName,
+          path: MedicalRecordListPage.routePath,
+          builder: (context, params) {
+            final patientIC = params.getParam('ic', ParamType.String);
+            return MedicalRecordListPage(patientIC: patientIC!);
+          },
+        ),
+        FFRoute(
+          name: DoctorActiveWidget.routeName,
+          path: DoctorActiveWidget.routePath,
+          builder: (context, params) => DoctorActiveWidget(),
+        ),
+        FFRoute(
+          name: DashboardScreen.routeName,
+          path: DashboardScreen.routePath,
+          builder: (context, params) => DashboardScreen(),
+        ),
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
 

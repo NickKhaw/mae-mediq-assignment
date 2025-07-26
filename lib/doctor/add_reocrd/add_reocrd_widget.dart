@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mae_mediq_assignment/globals.dart';
+import '../../globals.dart' as globals;
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -7,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'add_reocrd_model.dart';
 export 'add_reocrd_model.dart';
+import '/index.dart';
 
 /// Create a page like this
 ///
@@ -30,6 +34,10 @@ export 'add_reocrd_model.dart';
 /// | 🔵 [Add Record Button]                            |
 /// | (Saves the above data to Firestore)               |
 /// -----------------------------------------------------
+///
+///
+///
+///
 class AddReocrdWidget extends StatefulWidget {
   const AddReocrdWidget({super.key});
 
@@ -44,6 +52,8 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
   late AddReocrdModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  Map<String, dynamic> patientData = {};
+  List<dynamic> patientStatus = [];
 
   @override
   void initState() {
@@ -58,6 +68,8 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
 
     _model.textController3 ??= TextEditingController();
     _model.textFieldFocusNode3 ??= FocusNode();
+
+    loadInProgressPatientInfo();
   }
 
   @override
@@ -65,6 +77,125 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
     _model.dispose();
 
     super.dispose();
+  }
+
+  void loadInProgressPatientInfo() {
+    final db = FirebaseFirestore.instance;
+
+    db
+        .collection('Selected')
+        .where("Doctor_IC", isEqualTo: globals.globalIC)
+        .get()
+        .then((selectedSnapshot) async {
+      // No matching document
+      if (selectedSnapshot.docs.isEmpty) {
+        print("No patient document found with IC");
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("No Patients Found"),
+                content:
+                    Text("Please select the patient before adding a record."),
+                actions: [
+                  TextButton(
+                    child: Text("OK"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      context.pushNamed(DoctorDashbaordWidget.routeName);
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        });
+
+        return;
+      }
+
+      final selectedDoc = selectedSnapshot.docs.first;
+      final List<dynamic> patientICs =
+          selectedDoc.data()['Patients_Selected'] ?? [];
+
+      final List<dynamic>? statusList =
+          selectedDoc.data()['Selected_Status'] as List<dynamic>?;
+
+      // No status list found
+      if (statusList == null || statusList.isEmpty) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("No Status Found"),
+                content: Text("There is no status for selected patients."),
+                actions: [
+                  TextButton(
+                    child: Text("OK"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      context.pushNamed(DoctorDashbaordWidget.routeName);
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        });
+        return;
+      }
+
+      setState(() {
+        patientStatus = statusList;
+      });
+
+      // Find first patient with status "In Progress"
+      final int index = patientStatus.indexOf(1);
+
+      if (index == -1 || index >= patientICs.length) {
+        print("No patient is currently in progress.");
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("No Patient In Progress"),
+                content: Text("Please start a call before adding a record."),
+                actions: [
+                  TextButton(
+                    child: Text("OK"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      context.pushNamed(DoctorDashbaordWidget.routeName);
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        });
+        return;
+      }
+
+      String inProgressPatientIC = patientICs[index];
+
+      final snapshot = await db
+          .collection('Patient')
+          .where("IC", isEqualTo: inProgressPatientIC)
+          .get();
+
+      if (snapshot.docs.isEmpty) {
+        print("No patient data found with IC: $inProgressPatientIC");
+        return;
+      }
+
+      setState(() {
+        patientData = snapshot.docs.first.data();
+      });
+    });
   }
 
   @override
@@ -193,7 +324,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                     ),
                               ),
                               Text(
-                                'John Tan',
+                                patientData['Name'] ?? 'N/A',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
@@ -239,7 +370,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                     ),
                               ),
                               Text(
-                                '990101-10-5678',
+                                patientData['IC'] ?? 'N/A',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
@@ -285,7 +416,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                     ),
                               ),
                               Text(
-                                '012-3456789',
+                                patientData['Phone Num'] ?? 'N/A',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
@@ -331,7 +462,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                     ),
                               ),
                               Text(
-                                'Male',
+                                patientData['Gender'] ?? 'N/A',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
@@ -377,7 +508,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                     ),
                               ),
                               Text(
-                                'ENT (Ear, Nose, Throat)',
+                                globalDepartment,
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
@@ -906,9 +1037,97 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                     ),
                   ),
                   FFButtonWidget(
-                    onPressed: () {
-                      print('Button pressed ...');
-                    },
+                    onPressed: patientData.isNotEmpty
+                        ? () {
+                            if (_model.textController1.text != null ||
+                                _model.textController2.text != null ||
+                                _model.textController3.text != null) {
+                              var db = FirebaseFirestore.instance;
+                              db.collection('Record').add({
+                                'Doctor_IC': globals.globalIC,
+                                'Patient_IC': patientData['IC'],
+                                'Department': globalDepartment,
+                                'Diagnosis': _model.textController1.text,
+                                'Treatment': _model.textController2.text,
+                                'Notes': _model.textController3.text,
+                                'Timestamp': Timestamp.now(),
+                              }).then((value) {
+                                print("Record Added");
+                                Navigator.pop(context);
+                              }).catchError((error) {
+                                print("Failed to add record: $error");
+                              });
+
+                              int index = patientStatus.indexOf(1);
+                              patientStatus[index] = 2;
+
+                              FirebaseFirestore.instance
+                                  .collection('Selected')
+                                  .where("Doctor_IC",
+                                      isEqualTo: globals.globalIC)
+                                  .get()
+                                  .then((snapshot) {
+                                if (snapshot.docs.isNotEmpty) {
+                                  final docRef = snapshot.docs.first.reference;
+
+                                  docRef.update({
+                                    'Selected_Status': patientStatus,
+                                  }).then((_) {
+                                    print(
+                                        'Selected_Status updated successfully!');
+                                  }).catchError((error) {
+                                    print(
+                                        'Error updating Selected_Status: $error');
+                                  });
+                                } else {
+                                  print("No matching document found.");
+                                }
+                              });
+
+                              FirebaseFirestore.instance
+                                  .collection('Booking')
+                                  .where("IC",
+                                      isEqualTo: patientData['IC'])
+                                  .get()
+                                  .then((snapshot) {
+                                if (snapshot.docs.isNotEmpty) {
+                                  final docRef = snapshot.docs.first.reference;
+
+                                  docRef.update({
+                                    'Status': "Done",
+                                  }).then((_) {
+                                    print(
+                                        'Selected_Status updated successfully!');
+                                  }).catchError((error) {
+                                    print(
+                                        'Error updating Selected_Status: $error');
+                                  });
+                                } else {
+                                  print("No matching document found.");
+                                }
+                              });
+                            } else {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text("Alert"),
+                                      content: Text("Please Fill Up the Field."),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: Text("OK"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+
+                            }
+                          }
+                        : null,
                     text: 'Add Record',
                     icon: Icon(
                       Icons.add_rounded,

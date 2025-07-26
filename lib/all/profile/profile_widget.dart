@@ -1,5 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mae_mediq_assignment/globals.dart';
-
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -11,6 +11,14 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'profile_model.dart';
 export 'profile_model.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'dart:typed_data';
+import '../function.dart';
 
 class ProfileWidget extends StatefulWidget {
   const ProfileWidget({super.key});
@@ -27,8 +35,68 @@ class _ProfileWidgetState extends State<ProfileWidget>
   late ProfileModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  XFile? _pickedFile; // works on all platforms
+  String? _uploadedImageUrl;
+  String? _fetchedProfilePicUrl;
 
   final animationsMap = <String, AnimationInfo>{};
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile == null) return;
+
+    setState(() {
+      _pickedFile = pickedFile;
+    });
+
+    await _uploadToImgbb(_pickedFile!);
+  }
+
+  Future<void> _uploadToImgbb(XFile imageFile) async {
+    final apiKey = '3fcc5f4d0876ee563e8ac241caf8ebc7';
+    Uint8List imageBytes;
+
+    if (kIsWeb) {
+      // No compression on web
+      imageBytes = await imageFile.readAsBytes();
+    } else {
+      // Compress image for mobile platforms
+      imageBytes = await compressImage(imageFile);
+    }
+
+    final base64Image = base64Encode(imageBytes);
+    final url = Uri.parse('https://api.imgbb.com/1/upload?key=$apiKey');
+
+    final response = await http.post(
+      url,
+      body: {'image': base64Image},
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      final imageUrl = jsonResponse['data']['url'];
+      print('Image uploaded: $imageUrl');
+      storeProfilePic("Doctor", "IC", globalIC, 'Profile Pic', imageUrl);
+      globalUrl = imageUrl;
+
+      setState(() {
+        _uploadedImageUrl = imageUrl;
+      });
+    } else {
+      print('Upload failed: ${response.body}');
+    }
+  }
+
+  Future<Uint8List> compressImage(XFile file) async {
+    final compressedBytes = await FlutterImageCompress.compressWithFile(
+      file.path,
+      minWidth: 800,
+      minHeight: 800,
+      quality: 75,
+    );
+
+    return compressedBytes!;
+  }
 
   @override
   void initState() {
@@ -123,12 +191,17 @@ class _ProfileWidgetState extends State<ProfileWidget>
           !anim.applyInitialState),
       this,
     );
+
+    fetchProfilePicUrl("Doctor", "IC", globalIC).then((url) {
+      setState(() {
+        _fetchedProfilePicUrl = url;
+      });
+    });
   }
 
   @override
   void dispose() {
     _model.dispose();
-
     super.dispose();
   }
 
@@ -184,27 +257,29 @@ class _ProfileWidgetState extends State<ProfileWidget>
               mainAxisSize: MainAxisSize.max,
               children: [
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 15.0, 0.0, 0.0),
-                  child: Card(
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    color: Color(0xFF4B39EF),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50.0),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(2.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(60.0),
-                        child: Image.network(
-                          'https://images.unsplash.com/photo-1592520113018-180c8bc831c9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTI3fHxwcm9maWxlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60',
-                          width: 100.0,
-                          height: 100.0,
-                          fit: BoxFit.cover,
-                        ),
+                  padding: EdgeInsets.all(2.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(60.0),
+                    child: GestureDetector(
+                      onTap: () async {
+                        await _pickImage();
+                      },
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundImage: _pickedFile != null && !kIsWeb
+                            ? FileImage(File(_pickedFile!.path))
+                            : _uploadedImageUrl != null
+                                ? NetworkImage(_uploadedImageUrl!)
+                                    as ImageProvider<Object>
+                                : (_fetchedProfilePicUrl != null
+                                    ? NetworkImage(globalUrl)
+                                        as ImageProvider<Object>
+                                    : const NetworkImage(
+                                        'https://images.unsplash.com/photo-1592520113018-180c8bc831c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60',
+                                      ) as ImageProvider<Object>),
                       ),
                     ),
-                  ).animateOnPageLoad(
-                      animationsMap['cardOnPageLoadAnimation']!),
+                  ),
                 ),
                 Divider(
                   height: 44.0,

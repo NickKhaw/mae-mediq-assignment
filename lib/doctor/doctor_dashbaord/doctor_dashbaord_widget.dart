@@ -30,6 +30,8 @@ class _DoctorDashbaordWidgetState extends State<DoctorDashbaordWidget> {
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  
+
   @override
   void initState() {
     super.initState();
@@ -161,8 +163,8 @@ class _DoctorDashbaordWidgetState extends State<DoctorDashbaordWidget> {
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: Image.network(
-                              'https://images.unsplash.com/photo-1525875975471-999f65706a10?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTYyMDF8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NTA3NzYxNTd8&ixlib=rb-4.1.0&q=80&w=1080',
+                            image: Image.network(globals.globalUrl==""?
+                              globals.globalDefaultPic:globals.globalUrl,
                             ).image,
                           ),
                           shape: BoxShape.circle,
@@ -306,7 +308,8 @@ class _DoctorDashbaordWidgetState extends State<DoctorDashbaordWidget> {
                                 50.0, 0.0, 0.0, 0.0),
                             child: FFButtonWidget(
                               onPressed: () {
-                                print('Button pressed ...');
+                                context.pushNamed(
+                                    DoctorSelectedListPage.routeName);
                               },
                               text: 'Call\n',
                               options: FFButtonOptions(
