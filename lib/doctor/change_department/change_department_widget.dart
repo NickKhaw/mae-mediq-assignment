@@ -884,7 +884,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                           condition: 'IC');
                       updatePatientBookingByDoctorIC(
                           patientIC: patientData['IC'],
-                          Field: 'Doctor_ID',
+                          Field: 'Doctor_IC',
                           updatedData: FieldValue.delete(),
                           collection: 'Booking',
                           condition: 'IC');

@@ -194,11 +194,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: DashboardScreen.routePath,
           builder: (context, params) => DashboardScreen(),
         ),
-        FFRoute(
-          name: DoctorBookingListPage.routeName,
-          path: DoctorBookingListPage.routePath,
-          builder: (context, params) => DoctorBookingListPage(),
-        )
+       
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
 
