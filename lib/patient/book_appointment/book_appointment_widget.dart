@@ -1,5 +1,4 @@
 import 'package:mae_mediq_assignment/globals.dart';
-
 import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -13,7 +12,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'book_appointment_model.dart';
 export 'book_appointment_model.dart';
-import '../../globals.dart' as globals;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../Functions.dart';
 
 class BookAppointmentWidget extends StatefulWidget {
   const BookAppointmentWidget({super.key});
@@ -296,9 +296,7 @@ class _BookAppointmentWidgetState extends State<BookAppointmentWidget> {
                                             (oldValue, newValue) {
                                           return TextEditingValue(
                                             selection: newValue.selection,
-                                            text: newValue.text
-                                                .toCapitalization(
-                                                    TextCapitalization.words),
+                                            text: newValue.text                                    
                                           );
                                         }),
                                     ],
@@ -777,16 +775,65 @@ class _BookAppointmentWidgetState extends State<BookAppointmentWidget> {
                         final IC = _model.dateOfBirthTextController.text.trim();
                         final PhoneNum = _model.ageTextController.text.trim();
                         final Gender = _model.choiceChipsValue;
-                        final Department = _model.dropDownValue;
-
+                        final Department = _model.dropDownValue.toString();
+                        String? department_status = await getValueFromDocumentID('Department_Status', 'departments', Department);
+                        if(department_status == 'false'){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Current department was closed. Sorry for causing any inconvinience'),
+                                backgroundColor: Colors.red,
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
+                            return;
+                        }
+                        int count = await countDataRow('Booking');
+                        String TicketNum = generateTicketId('T', count +1);
                         if(Name == globalName &&
                            IC == globalIC &&
                            PhoneNum == globalPhone &&
                            Gender == globalGender){
+                            if(await checkDataExistence("Booking", "IC", IC)){
                             ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('You have already booked an appointment'),
+                                backgroundColor: Colors.red,
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
+                            return;
+                          }
+                          ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('Booking successfully'),
                               backgroundColor: Colors.green,
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                          FirebaseFirestore.instance.collection('Booking').add({
+                            'Department': Department,
+                            'Doctor_IC': '',
+                            'Gender': Gender,
+                            'IC': IC,
+                            'Name': Name,
+                            'Phone Num': PhoneNum,
+                            'Ticket ID': TicketNum,
+                            'Status': 'Pending',
+                            'Timestamp': FieldValue.serverTimestamp(),
+                          }).then((value) {
+                            print("User Added: ${value.id}");
+                          }).catchError((error) {
+                            print("Failed to add user: $error");
+                          }); 
+                          
+
+                        }else{
+                          print("$Name,$IC,$PhoneNum,$Gender");
+                          print("$globalName");
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Please fill in the correct information'),
+                              backgroundColor: Colors.red,
                               duration: Duration(seconds: 2),
                             ),
                           );
