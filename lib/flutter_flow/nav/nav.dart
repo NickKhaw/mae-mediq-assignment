@@ -172,6 +172,31 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => EditUserWidget(),
         ),
         FFRoute(
+          name: CheckQueueWidget.routeName,
+          path: CheckQueueWidget.routePath,
+          builder: (context, params) => CheckQueueWidget(),
+        ),
+        FFRoute(
+          name: PrecheckQueueWidget.routeName,
+          path: PrecheckQueueWidget.routePath,
+          builder: (context, params) => PrecheckQueueWidget(),
+        ),
+        FFRoute(
+          name: AddDoctorWidget.routeName,
+          path: AddDoctorWidget.routePath,
+          builder: (context, params) => AddDoctorWidget(),
+        ),
+        FFRoute(
+          name: ReviewsPage.routeName,
+          path: ReviewsPage.routePath,
+          builder: (context, params) => ReviewsPage(),
+        ),
+        FFRoute(
+          name: Review.routeName,
+          path: Review.routePath,
+          builder: (context, params) => Review(),
+        ),
+        FFRoute(
           name: DoctorBookingListPage.routeName,
           path: DoctorBookingListPage.routePath,
           builder: (context, params) => DoctorBookingListPage(),
