@@ -1,3 +1,6 @@
+import 'package:mae_mediq_assignment/patient/check_queue/check_queue_widget.dart';
+import 'package:mae_mediq_assignment/patient/review/review_widget.dart';
+
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -7,6 +10,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'patient_dashboard_model.dart';
 export 'patient_dashboard_model.dart';
 import '../../globals.dart' as globals;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../Functions.dart';
 
 /// a main page for patient.
 ///
@@ -24,6 +29,7 @@ class PatientDashboardWidget extends StatefulWidget {
 
 class _PatientDashboardWidgetState extends State<PatientDashboardWidget> {
   late PatientDashboardModel _model;
+  bool todayReviewExist = false;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -38,6 +44,13 @@ class _PatientDashboardWidgetState extends State<PatientDashboardWidget> {
     _model.dispose();
 
     super.dispose();
+  }
+
+  Future <void> countReview()async{
+    bool cr = await hasReviewToday(globals.globalIC);
+    setState(() {
+      todayReviewExist = cr;
+    });
   }
 
   @override
@@ -196,7 +209,16 @@ class _PatientDashboardWidgetState extends State<PatientDashboardWidget> {
                     hoverColor: Colors.transparent,
                     highlightColor: Colors.transparent,
                     onTap: () async {
-                      context.pushNamed(BookAppointmentWidget.routeName);
+                      await countReview();
+                      String? value = await getDataWithCon('Booking', 'IC', globals.globalIC, 'Status');
+                      if (value == 'Pending' || value == 'Approved'){
+                        context.pushNamed(CheckQueueWidget.routeName);
+                      }else if (value == 'Done' && !todayReviewExist){
+                        context.pushNamed(Review.routeName);
+                      }else{
+                        context.pushNamed(PrecheckQueueWidget.routeName);
+                      }
+                         
                     },
                     child: Container(
                       width: double.infinity,
@@ -259,7 +281,7 @@ class _PatientDashboardWidgetState extends State<PatientDashboardWidget> {
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   0.0, 12.0, 0.0, 0.0),
                               child: Text(
-                                'how many patient infront ',
+                                'Track Your Queue',
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
                                     .titleMedium
@@ -283,7 +305,7 @@ class _PatientDashboardWidgetState extends State<PatientDashboardWidget> {
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   0.0, 4.0, 0.0, 0.0),
                               child: Text(
-                                'Check current queue',
+                                'Check your queue status',
                                 textAlign: TextAlign.center,
                                 style: FlutterFlowTheme.of(context)
                                     .bodySmall
@@ -370,7 +392,7 @@ class _PatientDashboardWidgetState extends State<PatientDashboardWidget> {
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 12.0, 0.0, 0.0),
                                   child: Text(
-                                    'Take Number',
+                                    'Book Appointment',
                                     textAlign: TextAlign.center,
                                     style: FlutterFlowTheme.of(context)
                                         .titleMedium
@@ -431,103 +453,90 @@ class _PatientDashboardWidgetState extends State<PatientDashboardWidget> {
                       ),
                     ],
                   ),
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 8.0,
-                          color: Color(0x1A000000),
-                          offset: Offset(
-                            0.0,
-                            2.0,
-                          ),
-                        )
-                      ],
-                      borderRadius: BorderRadius.circular(16.0),
-                      border: Border.all(
-                        color: Color(0xFFB0C4DE),
+                  GestureDetector(
+                    onTap: () {
+                      context.pushNamed(RecordHistoryWidget.routeName);
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 8.0,
+                            color: Color(0x1A000000),
+                            offset: Offset(0.0, 2.0),
+                          )
+                        ],
+                        borderRadius: BorderRadius.circular(16.0),
+                        border: Border.all(
+                          color: Color(0xFFB0C4DE),
+                        ),
                       ),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(20.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 48.0,
-                            height: 48.0,
-                            decoration: BoxDecoration(
-                              color: Color(0xFFF3E5F5),
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            child: Align(
-                              alignment: AlignmentDirectional(0.0, 0.0),
-                              child: Icon(
-                                Icons.history_rounded,
-                                color: Colors.purple,
-                                size: 24.0,
+                      child: Padding(
+                        padding: EdgeInsets.all(20.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 48.0,
+                              height: 48.0,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFF3E5F5),
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              child: Align(
+                                alignment: AlignmentDirectional(0.0, 0.0),
+                                child: Icon(
+                                  Icons.history_rounded,
+                                  color: Colors.purple,
+                                  size: 24.0,
+                                ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 12.0, 0.0, 0.0),
-                            child: Text(
-                              'Medical History',
-                              textAlign: TextAlign.center,
-                              style: FlutterFlowTheme.of(context)
-                                  .titleMedium
-                                  .override(
-                                    font: GoogleFonts.interTight(
-                                      fontWeight: FontWeight.w600,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .titleMedium
-                                          .fontStyle,
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                              child: Text(
+                                'Medical History',
+                                textAlign: TextAlign.center,
+                                style: FlutterFlowTheme.of(context).titleMedium.override(
+                                      font: GoogleFonts.interTight(
+                                        fontWeight: FontWeight.w600,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .titleMedium
+                                            .fontStyle,
+                                      ),
+                                      color: Colors.purple,
+                                      letterSpacing: 0.0,
                                     ),
-                                    color: Colors.purple,
-                                    letterSpacing: 0.0,
-                                    fontWeight: FontWeight.w600,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .titleMedium
-                                        .fontStyle,
-                                  ),
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 4.0, 0.0, 0.0),
-                            child: Text(
-                              'View past records',
-                              textAlign: TextAlign.center,
-                              style: FlutterFlowTheme.of(context)
-                                  .bodySmall
-                                  .override(
-                                    font: GoogleFonts.inter(
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .bodySmall
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .bodySmall
-                                          .fontStyle,
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
+                              child: Text(
+                                'View past records',
+                                textAlign: TextAlign.center,
+                                style: FlutterFlowTheme.of(context).bodySmall.override(
+                                      font: GoogleFonts.inter(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .bodySmall
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .bodySmall
+                                            .fontStyle,
+                                      ),
+                                      color: Color(0xFF888888),
+                                      letterSpacing: 0.0,
                                     ),
-                                    color: Color(0xFF888888),
-                                    letterSpacing: 0.0,
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .bodySmall
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .bodySmall
-                                        .fontStyle,
-                                  ),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
+
                 ]
                     .divide(SizedBox(height: 24.0))
                     .addToStart(SizedBox(height: 32.0))
