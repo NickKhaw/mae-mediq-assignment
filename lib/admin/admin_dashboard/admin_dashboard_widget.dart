@@ -160,7 +160,7 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget> {
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 4.0, 0.0, 0.0),
                             child: Text(
-                              'Sarah Johnson',
+                              globalName,
                               style: FlutterFlowTheme.of(context)
                                   .displaySmall
                                   .override(
