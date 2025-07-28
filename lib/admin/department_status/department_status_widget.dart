@@ -1,3 +1,5 @@
+import 'package:mae_mediq_assignment/Functions.dart';
+
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'department_status_model.dart';
 export 'department_status_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// Create a department status page for admin which show all different
 /// department quite number and a accepting patient switch at the right for
@@ -22,20 +25,101 @@ class DepartmentStatusWidget extends StatefulWidget {
 
 class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
   late DepartmentStatusModel _model;
-
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  int GMQueue = 0;
+  int PQueue = 0;
+  int CQueue = 0;
+  int GQueue = 0;
+  int NQueue = 0;
+  int EQueue = 0;
+
+  Future<void> _updateDepartmentStatus(String department, bool isAccepting) async {
+    try {
+      await _firestore.collection('Department_Status').doc('departments').update(
+        {
+          department: isAccepting,
+        },
+      );
+    } catch (e) {
+      print('Error updating department status: $e');
+      // Optional: Show error to user
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to update status')),
+      );
+      // Revert the UI change
+      safeSetState(() {
+        switch(department) {
+          case 'General Medicine': _model.switchValue1 = !isAccepting; break;
+          case 'Pediatrics': _model.switchValue2 = !isAccepting; break;
+          case 'Cardiology': _model.switchValue3 = !isAccepting; break;
+          case 'Gynecology': _model.switchValue4 = !isAccepting; break;
+          case 'Neurology': _model.switchValue5 = !isAccepting; break;
+          case 'ENT': _model.switchValue6 = !isAccepting; break;
+        }
+      });
+    }
+  }
+
+  Future<bool> _getDepartmentStatus(String department) async {
+    try {
+      DocumentSnapshot doc = await _firestore.collection('Department_Status').doc('departments').get();
+      if (doc.exists) {
+        final data = doc.data() as Map<String, dynamic>?;
+        return data?[department] ?? false;
+      }
+    } catch (e) {
+      print('Error fetching department status: $e');
+    }
+    return false; // Default to false if not found
+  }
+
+  Future<void> _getQueueCount() async {
+    try {
+      GMQueue = await countDataRowWithCon('Booking', 'Department', 'General Medicine');
+      PQueue = await countDataRowWithCon('Booking', 'Department', 'Pediatrics');
+      CQueue = await countDataRowWithCon('Booking', 'Department', 'Cardiology');
+      GQueue = await countDataRowWithCon('Booking', 'Department', 'Gynecology');
+      NQueue = await countDataRowWithCon('Booking', 'Department', 'Neurology');
+      EQueue = await countDataRowWithCon('Booking', 'Department', 'ENT');
+    } catch (e) {
+      print('Error fetching queue count: $e');
+    }
+  }
+
+  
 
   @override
   void initState() {
+    _getQueueCount();
     super.initState();
     _model = createModel(context, () => DepartmentStatusModel());
 
+    // Set initial values for switches
     _model.switchValue1 = true;
     _model.switchValue2 = true;
     _model.switchValue3 = true;
     _model.switchValue4 = true;
     _model.switchValue5 = true;
     _model.switchValue6 = true;
+
+    // Fetch department status asynchronously after widget is initialized
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final status1 = await _getDepartmentStatus('General Medicine');
+      final status2 = await _getDepartmentStatus('Pediatrics');
+      final status3 = await _getDepartmentStatus('Cardiology');
+      final status4 = await _getDepartmentStatus('Gynecology');
+      final status5 = await _getDepartmentStatus('Neurology');
+      final status6 = await _getDepartmentStatus('ENT');
+      safeSetState(() {
+        _model.switchValue1 = status1;
+        _model.switchValue2 = status2;
+        _model.switchValue3 = status3;
+        _model.switchValue4 = status4;
+        _model.switchValue5 = status5;
+        _model.switchValue6 = status6;
+      });
+    });
   }
 
   @override
@@ -245,7 +329,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                                     padding:
                                                         EdgeInsets.all(8.0),
                                                     child: Text(
-                                                      '14',
+                                                      GMQueue.toString(),
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: FlutterFlowTheme
@@ -294,6 +378,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                         onChanged: (newValue) async {
                                           safeSetState(() =>
                                               _model.switchValue1 = newValue);
+                                              await _updateDepartmentStatus('General Medicine', newValue);
                                         },
                                         activeColor:
                                             FlutterFlowTheme.of(context)
@@ -449,7 +534,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                                     padding:
                                                         EdgeInsets.all(8.0),
                                                     child: Text(
-                                                      '5',
+                                                      PQueue.toString(),
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: FlutterFlowTheme
@@ -498,6 +583,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                         onChanged: (newValue) async {
                                           safeSetState(() =>
                                               _model.switchValue2 = newValue);
+                                              await _updateDepartmentStatus('Pediatrics', newValue);
                                         },
                                         activeColor:
                                             FlutterFlowTheme.of(context)
@@ -653,7 +739,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                                     padding:
                                                         EdgeInsets.all(8.0),
                                                     child: Text(
-                                                      '12',
+                                                      CQueue.toString(),
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: FlutterFlowTheme
@@ -702,6 +788,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                         onChanged: (newValue) async {
                                           safeSetState(() =>
                                               _model.switchValue3 = newValue);
+                                              await _updateDepartmentStatus('Cardiology', newValue);
                                         },
                                         activeColor:
                                             FlutterFlowTheme.of(context)
@@ -856,7 +943,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                                     padding:
                                                         EdgeInsets.all(8.0),
                                                     child: Text(
-                                                      '23',
+                                                      GQueue.toString(),
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: FlutterFlowTheme
@@ -905,6 +992,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                         onChanged: (newValue) async {
                                           safeSetState(() =>
                                               _model.switchValue4 = newValue);
+                                              await _updateDepartmentStatus('Gynecology', newValue);
                                         },
                                         activeColor:
                                             FlutterFlowTheme.of(context)
@@ -1060,7 +1148,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                                     padding:
                                                         EdgeInsets.all(8.0),
                                                     child: Text(
-                                                      '7',
+                                                      NQueue.toString(),
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: FlutterFlowTheme
@@ -1109,6 +1197,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                         onChanged: (newValue) async {
                                           safeSetState(() =>
                                               _model.switchValue5 = newValue);
+                                              await _updateDepartmentStatus('Neurology', newValue);
                                         },
                                         activeColor:
                                             FlutterFlowTheme.of(context)
@@ -1263,7 +1352,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                                     padding:
                                                         EdgeInsets.all(8.0),
                                                     child: Text(
-                                                      '18',
+                                                      EQueue.toString(),
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: FlutterFlowTheme
@@ -1312,6 +1401,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                         onChanged: (newValue) async {
                                           safeSetState(() =>
                                               _model.switchValue6 = newValue);
+                                              await _updateDepartmentStatus('ENT', newValue);
                                         },
                                         activeColor:
                                             FlutterFlowTheme.of(context)
