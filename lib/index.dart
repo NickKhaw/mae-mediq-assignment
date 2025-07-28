@@ -29,4 +29,7 @@ export '/doctor/chosen_patient.dart' show DoctorSelectedListPage;
 export '/doctor/medical_record.dart' show MedicalRecordListPage;
 export 'admin/doctor_active_widget.dart' show DoctorActiveWidget;
 export 'admin/total_patient.dart' show DashboardScreen;
+export '/patient/check_queue/check_queue_widget.dart' show CheckQueueWidget;
+export '/patient/precheck_queue/precheck_queue_widget.dart' show PrecheckQueueWidget;
+export '/admin/add_doctor/add_doctor_widget.dart' show AddDoctorWidget;
 export '/doctor/current_booking.dart' show DoctorBookingListPage;
