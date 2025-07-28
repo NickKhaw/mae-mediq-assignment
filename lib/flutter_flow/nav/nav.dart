@@ -12,6 +12,8 @@ import '/index.dart';
 
 export 'package:go_router/go_router.dart';
 export 'serialization_util.dart';
+import '../../patient/review/review_widget.dart';
+import '../../admin/view_review/view_review_widget.dart';
 
 
 const kTransitionInfoKey = '__transition_info__';
