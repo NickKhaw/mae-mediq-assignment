@@ -130,7 +130,7 @@ class _ManageDoctorWidgetState extends State<ManageDoctorWidget> {
     child: Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: FlutterFlowTheme.of(context).secondaryBackground,
+        color: Colors.white,
         boxShadow: [
           BoxShadow(
             blurRadius: 4.0,
@@ -165,6 +165,7 @@ class _ManageDoctorWidgetState extends State<ManageDoctorWidget> {
                           font: GoogleFonts.interTight(
                             fontWeight: FontWeight.w600,
                           ),
+                          color: Colors.black,
                           letterSpacing: 0.0,
                           fontWeight: FontWeight.w600,
                         ),
@@ -185,14 +186,14 @@ class _ManageDoctorWidgetState extends State<ManageDoctorWidget> {
                         children: [
                           Icon(
                             Icons.email_outlined,
-                            color: FlutterFlowTheme.of(context).secondaryText,
+                            color: Colors.black,
                             size: 16.0,
                           ),
                           Text(
                             doctor['email']!,
                             style: FlutterFlowTheme.of(context).bodySmall.override(
                               font: GoogleFonts.inter(),
-                              color: FlutterFlowTheme.of(context).secondaryText,
+                              color: Colors.black,
                               letterSpacing: 0.0,
                             ),
                           ),
@@ -203,14 +204,14 @@ class _ManageDoctorWidgetState extends State<ManageDoctorWidget> {
                         children: [
                           Icon(
                             Icons.phone_outlined,
-                            color: FlutterFlowTheme.of(context).secondaryText,
+                            color: Colors.black,
                             size: 16.0,
                           ),
                           Text(
                             doctor['phone']!,
                             style: FlutterFlowTheme.of(context).bodySmall.override(
                               font: GoogleFonts.inter(),
-                              color: FlutterFlowTheme.of(context).secondaryText,
+                              color: Colors.black,
                               letterSpacing: 0.0,
                             ),
                           ),
@@ -229,6 +230,7 @@ class _ManageDoctorWidgetState extends State<ManageDoctorWidget> {
                       fillColor: Color(0x00E3F2FD),
                       icon: Icon(
                         Icons.reviews_outlined, // Or Icons.star_outline
+                        color: Colors.black,
                         size: 18.0,
                       ),
                       onPressed: () {
@@ -244,6 +246,7 @@ class _ManageDoctorWidgetState extends State<ManageDoctorWidget> {
                       fillColor: Color(0x00E3F2FD),
                       icon: Icon(
                         Icons.edit_outlined,
+                        color: Colors.black,
                         size: 18.0,
                       ),
                       onPressed: () {
@@ -257,6 +260,7 @@ class _ManageDoctorWidgetState extends State<ManageDoctorWidget> {
                       fillColor: Color(0x00FFEBEE),
                       icon: Icon(
                         Icons.delete_outline,
+                        color: Colors.black,
                         size: 18.0,
                       ),
                       onPressed: () {
@@ -285,6 +289,7 @@ class _ManageDoctorWidgetState extends State<ManageDoctorWidget> {
         key: scaffoldKey,
         backgroundColor: Color(0xFFE6F1F7),
         appBar: AppBar(
+          backgroundColor: Color(0xFF4A90E2),
           automaticallyImplyLeading: false,
           leading: FlutterFlowIconButton(
             borderRadius: 8.0,
@@ -336,7 +341,7 @@ class _ManageDoctorWidgetState extends State<ManageDoctorWidget> {
                         height: 56.0,
                         padding: EdgeInsets.all(0.0),
                         iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 8.0, 0.0),
-                        color: Colors.purple[900],
+                        color: Color(0xFF4A90E2),
                         textStyle: FlutterFlowTheme.of(context).titleMedium.override(
                               font: GoogleFonts.interTight(
                                 fontWeight: FontWeight.w600,
@@ -363,17 +368,17 @@ class _ManageDoctorWidgetState extends State<ManageDoctorWidget> {
                         height: 56.0,
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         decoration: BoxDecoration(
-                          color: Colors.purple[900],
+                          color: Color(0xFF4A90E2),
                           borderRadius: BorderRadius.circular(12.0),
                           border: Border.all(
-                            color: Colors.purple[800]!,
+                            color: Color(0xFF4A90E2),
                             width: 1.0,
                           ),
                         ),
                         child: DropdownButton<String>(
                           value: _selectedDepartment ?? 'All Departments',
                           isExpanded: true,
-                          dropdownColor: Colors.purple[900],
+                          dropdownColor:  Color(0xFF4A90E2),
                           underline: Container(), // Remove default underline
                           icon: Icon(Icons.arrow_drop_down, color: Colors.white),
                           style: FlutterFlowTheme.of(context).titleMedium.override(

@@ -214,7 +214,7 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget> {
                   Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                      color: Colors.white,
                       boxShadow: [
                         BoxShadow(
                           blurRadius: 8.0,
@@ -267,8 +267,7 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget> {
                                           width: 50.0,
                                           height: 50.0,
                                           decoration: BoxDecoration(
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondaryBackground,
+                                            color: Colors.white,
                                             borderRadius:
                                                 BorderRadius.circular(16.0),
                                             border: Border.all(
@@ -297,6 +296,7 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget> {
                                                                   .fontStyle,
                                                         ),
                                                         letterSpacing: 0.0,
+                                                        color: Colors.black,
                                                         fontWeight:
                                                             FlutterFlowTheme.of(
                                                                     context)
@@ -372,8 +372,7 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget> {
                                           width: 50.0,
                                           height: 50.0,
                                           decoration: BoxDecoration(
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondaryBackground,
+                                            color: Colors.white,
                                             borderRadius:
                                                 BorderRadius.circular(16.0),
                                             border: Border.all(
@@ -405,6 +404,7 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget> {
                                                                     .fontStyle,
                                                           ),
                                                           letterSpacing: 0.0,
+                                                          color: Colors.black,
                                                           fontWeight:
                                                               FlutterFlowTheme.of(
                                                                       context)
@@ -473,7 +473,7 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget> {
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                        color: Colors.white,
                         boxShadow: [
                           BoxShadow(
                             blurRadius: 8.0,
@@ -606,7 +606,7 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget> {
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                        color: Colors.white,
                         boxShadow: [
                           BoxShadow(
                             blurRadius: 8.0,

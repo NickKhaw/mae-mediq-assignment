@@ -143,16 +143,16 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
           backgroundColor: Color(0xFF4A90E2),
           automaticallyImplyLeading: false,
           leading: FlutterFlowIconButton(
-            borderRadius: 8.0,
-            buttonSize: 40.0,
-            fillColor: Color(0xFF4A90E2),
+            borderColor: Colors.transparent,
+            borderRadius: 20,
+            borderWidth: 1,
+            buttonSize: 40,
             icon: Icon(
-              Icons.arrow_back,
-              color: Color(0xFF14181B),
-              size: 30.0,
-            ),
-            onPressed: () {
-              print('IconButton pressed ...');
+            Icons.arrow_back_rounded,
+            size: 30,
+  ),
+  onPressed: () async {
+    context.safePop();
             },
           ),
           title: Text(
@@ -165,6 +165,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                   ),
                   fontSize: 30.0,
                   letterSpacing: 0.0,
+                  color: Colors.white,
                   fontWeight: FontWeight.w600,
                   fontStyle:
                       FlutterFlowTheme.of(context).headlineMedium.fontStyle,
@@ -208,8 +209,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                           child: Container(
                             width: double.infinity,
                             decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context)
-                                  .primaryBackground,
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(12.0),
                               border: Border.all(
                                 color: Color(0xFFB0C4DE),
@@ -264,6 +264,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                                             .fontStyle,
                                                   ),
                                                   letterSpacing: 0.0,
+                                                  color: Colors.black,
                                                   fontWeight: FontWeight.w600,
                                                   fontStyle:
                                                       FlutterFlowTheme.of(
@@ -314,9 +315,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                                 width: 35.0,
                                                 height: 30.0,
                                                 decoration: BoxDecoration(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .warning,
+                                                  color: Colors.lightBlue,
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           12.0),
@@ -413,8 +412,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                           child: Container(
                             width: double.infinity,
                             decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context)
-                                  .primaryBackground,
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(12.0),
                               border: Border.all(
                                 color: Color(0xFFB0C4DE),
@@ -469,6 +467,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                                             .fontStyle,
                                                   ),
                                                   letterSpacing: 0.0,
+                                                  color: Colors.black,
                                                   fontWeight: FontWeight.w600,
                                                   fontStyle:
                                                       FlutterFlowTheme.of(
@@ -519,9 +518,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                                 width: 35.0,
                                                 height: 30.0,
                                                 decoration: BoxDecoration(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .success,
+                                                  color: Colors.lightBlue,
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           12.0),
@@ -618,8 +615,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                           child: Container(
                             width: double.infinity,
                             decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context)
-                                  .primaryBackground,
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(12.0),
                               border: Border.all(
                                 color: Color(0xFFB0C4DE),
@@ -674,6 +670,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                                             .fontStyle,
                                                   ),
                                                   letterSpacing: 0.0,
+                                                  color: Colors.black,
                                                   fontWeight: FontWeight.w600,
                                                   fontStyle:
                                                       FlutterFlowTheme.of(
@@ -724,9 +721,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                                 width: 35.0,
                                                 height: 30.0,
                                                 decoration: BoxDecoration(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .warning,
+                                                  color: Colors.lightBlue,
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           12.0),
@@ -823,8 +818,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                           child: Container(
                             width: double.infinity,
                             decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context)
-                                  .primaryBackground,
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(12.0),
                               border: Border.all(
                                 color: Color(0xFFB0C4DE),
@@ -878,6 +872,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                                             .fontStyle,
                                                   ),
                                                   letterSpacing: 0.0,
+                                                  color: Colors.black,
                                                   fontWeight: FontWeight.w600,
                                                   fontStyle:
                                                       FlutterFlowTheme.of(
@@ -928,9 +923,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                                 width: 35.0,
                                                 height: 30.0,
                                                 decoration: BoxDecoration(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .error,
+                                                  color: Colors.lightBlue,
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           12.0),
@@ -1027,8 +1020,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                           child: Container(
                             width: double.infinity,
                             decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context)
-                                  .primaryBackground,
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(12.0),
                               border: Border.all(
                                 color: Color(0xFFB0C4DE),
@@ -1083,6 +1075,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                                             .fontStyle,
                                                   ),
                                                   letterSpacing: 0.0,
+                                                  color: Colors.black,
                                                   fontWeight: FontWeight.w600,
                                                   fontStyle:
                                                       FlutterFlowTheme.of(
@@ -1133,9 +1126,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                                 width: 35.0,
                                                 height: 30.0,
                                                 decoration: BoxDecoration(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .success,
+                                                  color: Colors.lightBlue,
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           12.0),
@@ -1232,8 +1223,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                           child: Container(
                             width: double.infinity,
                             decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context)
-                                  .primaryBackground,
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(12.0),
                               border: Border.all(
                                 color: Color(0xFFB0C4DE),
@@ -1287,6 +1277,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                                             .fontStyle,
                                                   ),
                                                   letterSpacing: 0.0,
+                                                  color: Colors.black,
                                                   fontWeight: FontWeight.w600,
                                                   fontStyle:
                                                       FlutterFlowTheme.of(
@@ -1337,9 +1328,7 @@ class _DepartmentStatusWidgetState extends State<DepartmentStatusWidget> {
                                                 width: 35.0,
                                                 height: 30.0,
                                                 decoration: BoxDecoration(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .warning,
+                                                  color: Colors.lightBlue,
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           12.0),
