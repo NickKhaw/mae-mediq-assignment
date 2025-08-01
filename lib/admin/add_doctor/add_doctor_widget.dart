@@ -132,7 +132,9 @@ class _AddDoctorWidgetState extends State<AddDoctorWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
+      backgroundColor: Color(0xFFE6F1F7),
       appBar: AppBar(
+        backgroundColor: Color(0xFF4A90E2),
         title: Text('Add New Doctor'),
         centerTitle: true,
         elevation: 0,
@@ -146,196 +148,282 @@ class _AddDoctorWidgetState extends State<AddDoctorWidget> {
             children: [
               // IC Number
               TextFormField(
-                controller: _icController,
-                inputFormatters: [icFormatter],
-                decoration: InputDecoration(
-                  labelText: 'IC Number',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter IC number';
-                  }else if (!RegExp(r'^\d{6}-\d{2}-\d{4}$').hasMatch(value)) {
-                    return 'Invalid IC format';
-                  }
-                  return null;
-                },
-              ),
+  controller: _icController,
+  inputFormatters: [icFormatter],
+  decoration: InputDecoration(
+    labelText: 'IC Number',
+    labelStyle: TextStyle(color: Colors.black),
+    filled: true,
+    fillColor: Colors.white,
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color(0xFFB0C4DE), width: 2.0),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color(0xFF5BAAF5), width: 2.0),
+    ),
+  ),
+  keyboardType: TextInputType.number,
+  style: TextStyle(color: Colors.black),
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter IC number';
+    } else if (!RegExp(r'^\d{6}-\d{2}-\d{4}$').hasMatch(value)) {
+      return 'Invalid IC format';
+    }
+    return null;
+  },
+),
               SizedBox(height: 20),
 
               // Name
-              TextFormField(
-                controller: _nameController,
-                decoration: InputDecoration(
-                  labelText: 'Full Name',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter doctor name';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
+TextFormField(
+  controller: _nameController,
+  style: TextStyle(color: Colors.black),
+  decoration: InputDecoration(
+    labelText: 'Full Name',
+    labelStyle: TextStyle(color: Colors.black),
+    filled: true,
+    fillColor: Colors.white,
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color(0xFFB0C4DE), width: 2.0),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color(0xFF5BAAF5), width: 2.0),
+    ),
+  ),
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter doctor name';
+    }
+    return null;
+  },
+),
+SizedBox(height: 20),
 
-              // Email
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter email';
-                  }
-                  if (!value.contains('@')) {
-                    return 'Please enter a valid email';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
+// Email
+TextFormField(
+  controller: _emailController,
+  style: TextStyle(color: Colors.black),
+  decoration: InputDecoration(
+    labelText: 'Email',
+    labelStyle: TextStyle(color: Colors.black),
+    filled: true,
+    fillColor: Colors.white,
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color(0xFFB0C4DE), width: 2.0),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color(0xFF5BAAF5), width: 2.0),
+    ),
+  ),
+  keyboardType: TextInputType.emailAddress,
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter email';
+    }
+    if (!value.contains('@')) {
+      return 'Please enter a valid email';
+    }
+    return null;
+  },
+),
+SizedBox(height: 20),
 
-              // Password
-              TextFormField(
-                controller: _passwordController,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
-                ),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter password';
-                  }
-                  if (value.length < 6) {
-                    return 'Password must be at least 6 characters';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
+// Password
+TextFormField(
+  controller: _passwordController,
+  style: TextStyle(color: Colors.black),
+  decoration: InputDecoration(
+    labelText: 'Password',
+    labelStyle: TextStyle(color: Colors.black),
+    filled: true,
+    fillColor: Colors.white,
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color(0xFFB0C4DE), width: 2.0),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color(0xFF5BAAF5), width: 2.0),
+    ),
+  ),
+  obscureText: true,
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter password';
+    }
+    if (value.length < 6) {
+      return 'Password must be at least 6 characters';
+    }
+    return null;
+  },
+),
+SizedBox(height: 20),
 
-              // Phone Number
-              TextFormField(
-                controller: _phoneController,
-                inputFormatters: [phoneFormatter],
-                decoration: InputDecoration(
-                  labelText: 'Phone Number',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.phone,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter phone number';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
+// Phone Number
+TextFormField(
+  controller: _phoneController,
+  style: TextStyle(color: Colors.black),
+  inputFormatters: [phoneFormatter],
+  decoration: InputDecoration(
+    labelText: 'Phone Number',
+    labelStyle: TextStyle(color: Colors.black),
+    filled: true,
+    fillColor: Colors.white,
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color(0xFFB0C4DE), width: 2.0),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color(0xFF5BAAF5), width: 2.0),
+    ),
+  ),
+  keyboardType: TextInputType.phone,
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter phone number';
+    }
+    return null;
+  },
+),
+SizedBox(height: 20),
 
-              // Gender Dropdown
-              DropdownButtonFormField<String>(
-                value: _gender,
-                decoration: InputDecoration(
-                  labelText: 'Gender',
-                  border: OutlineInputBorder(),
-                ),
-                items: ['Male', 'Female']
-                    .map((gender) => DropdownMenuItem(
-                          value: gender,
-                          child: Text(gender),
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  setState(() => _gender = value);
-                },
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select gender';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
+// Gender Dropdown
+DropdownButtonFormField<String>(
+  value: _gender,
+  dropdownColor: Colors.white,
+  style: TextStyle(color: Colors.black),
+  decoration: InputDecoration(
+    labelText: 'Gender',
+    labelStyle: TextStyle(color: Colors.black),
+    filled: true,
+    fillColor: Colors.white,
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color(0xFFB0C4DE), width: 2.0),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color(0xFF5BAAF5), width: 2.0),
+    ),
+  ),
+  items: ['Male', 'Female']
+      .map((gender) => DropdownMenuItem(
+            value: gender,
+            child: Text(gender),
+          ))
+      .toList(),
+  onChanged: (value) {
+    setState(() => _gender = value);
+  },
+  validator: (value) {
+    if (value == null) {
+      return 'Please select gender';
+    }
+    return null;
+  },
+),
+SizedBox(height: 20),
 
-              // Level Dropdown
-              DropdownButtonFormField<String>(
-                value: _level,
-                decoration: InputDecoration(
-                  labelText: 'Level',
-                  border: OutlineInputBorder(),
-                ),
-                items: _levels
-                    .map((level) => DropdownMenuItem(
-                          value: level,
-                          child: Text(level),
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  setState(() => _level = value);
-                },
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select level';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
+// Level Dropdown
+DropdownButtonFormField<String>(
+  value: _level,
+  dropdownColor: Colors.white,
+  style: TextStyle(color: Colors.black),
+  decoration: InputDecoration(
+    labelText: 'Level',
+    labelStyle: TextStyle(color: Colors.black),
+    filled: true,
+    fillColor: Colors.white,
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color(0xFFB0C4DE), width: 2.0),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color(0xFF5BAAF5), width: 2.0),
+    ),
+  ),
+  items: _levels
+      .map((level) => DropdownMenuItem(
+            value: level,
+            child: Text(level),
+          ))
+      .toList(),
+  onChanged: (value) {
+    setState(() => _level = value);
+  },
+  validator: (value) {
+    if (value == null) {
+      return 'Please select level';
+    }
+    return null;
+  },
+),
+SizedBox(height: 20),
 
-              // Department Dropdown
-              DropdownButtonFormField<String>(
-                value: _department,
-                decoration: InputDecoration(
-                  labelText: 'Department',
-                  border: OutlineInputBorder(),
-                ),
-                items: _departments
-                    .map((dept) => DropdownMenuItem(
-                          value: dept,
-                          child: Text(dept),
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  setState(() => _department = value);
-                },
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select department';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 30),
+// Department Dropdown
+DropdownButtonFormField<String>(
+  dropdownColor: Colors.white,
+  value: _department,
+  style: TextStyle(color: Colors.black),
+  decoration: InputDecoration(
+    labelText: 'Department',
+    labelStyle: TextStyle(color: Colors.black),
+    filled: true,
+    fillColor: Colors.white,
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color(0xFFB0C4DE), width: 2.0),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color(0xFF5BAAF5), width: 2.0),
+    ),
+  ),
+  items: _departments
+      .map((dept) => DropdownMenuItem(
+            value: dept,
+            child: Text(dept),
+          ))
+      .toList(),
+  onChanged: (value) {
+    setState(() => _department = value);
+  },
+  validator: (value) {
+    if (value == null) {
+      return 'Please select department';
+    }
+    return null;
+  },
+),
+SizedBox(height: 20),
 
-              // Room Selection
-              DropdownButtonFormField<String>(
-                value: _room,
-                decoration: InputDecoration(
-                  labelText: 'Room',
-                  border: OutlineInputBorder(),
-                ),
-                items: ['R1','R2','R3','R4','R5']
-                    .map((room) => DropdownMenuItem(
-                          value: room,
-                          child: Text(room),
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  setState(() => _room = value);
-                },
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select gender';
-                  }
-                  return null;
-                },
-              ),
+// Room Dropdown
+DropdownButtonFormField<String>(
+  dropdownColor: Colors.white,
+  value: _room,
+  style: TextStyle(color: Colors.black),
+  decoration: InputDecoration(
+    labelText: 'Room',
+    labelStyle: TextStyle(color: Colors.black),
+    filled: true,
+    fillColor: Colors.white,
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color(0xFFB0C4DE), width: 2.0),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Color(0xFF5BAAF5), width: 2.0),
+    ),
+  ),
+  items: ['R1', 'R2', 'R3', 'R4', 'R5']
+      .map((room) => DropdownMenuItem(
+            value: room,
+            child: Text(room),
+          ))
+      .toList(),
+  onChanged: (value) {
+    setState(() => _room = value);
+  },
+  validator: (value) {
+    if (value == null) {
+      return 'Please select room';
+    }
+    return null;
+  },
+),
+
               SizedBox(height: 20),
 
               // Submit Button

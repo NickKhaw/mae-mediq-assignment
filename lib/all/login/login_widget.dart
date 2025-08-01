@@ -349,40 +349,71 @@ class _LoginWidgetState extends State<LoginWidget> {
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 0.0, 16.0),
-                                  child: Container(
-                                    width: 370.0,
-                                    child: DropdownButtonFormField<String>(
-                                      value: _model.selectedRole,
-                                      decoration: InputDecoration(
-                                        labelText: 'Select Role',
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                          borderSide: BorderSide(
-                                              color: Color(0xFFB0C4DE),
-                                              width: 2.0),
-                                        ),
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                      ),
-                                      items: ['Patient', 'Doctor', 'Admin']
-                                          .map((role) =>
-                                              DropdownMenuItem<String>(
-                                                value: role,
-                                                child: Text(role),
-                                              ))
-                                          .toList(),
-                                      onChanged: (value) => setState(
-                                          () => _model.selectedRole = value),
-                                      validator: (value) => value == null
-                                          ? 'Please select a role'
-                                          : null,
-                                    ),
-                                  ),
-                                ),
+                               Padding(
+  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 16.0),
+  child: Container(
+    width: 370.0,
+    child: DropdownButtonFormField<String>(
+      value: _model.selectedRole,
+      decoration: InputDecoration(
+        labelText: 'Select Role',
+        labelStyle: FlutterFlowTheme.of(context).labelMedium.override(
+              font: GoogleFonts.plusJakartaSans(
+                fontWeight: FontWeight.w500,
+                fontStyle:
+                    FlutterFlowTheme.of(context).labelMedium.fontStyle,
+              ),
+              color: Color(0xFF888888),
+              fontSize: 14.0,
+              letterSpacing: 0.0,
+              fontWeight: FontWeight.w500,
+            ),
+        filled: true,
+        fillColor: Colors.white,
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xFFB0C4DE), // Non-focus color
+            width: 2.0,
+          ),
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xFF5BAAF5), // Focus color
+            width: 2.0,
+          ),
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xFFE57373),
+            width: 2.0,
+          ),
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xFFE57373),
+            width: 2.0,
+          ),
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+      ),
+      style: TextStyle(color: Colors.black),
+      dropdownColor: Colors.white,
+      items: ['Patient', 'Doctor', 'Admin']
+          .map((role) => DropdownMenuItem<String>(
+                value: role,
+                child: Text(role),
+              ))
+          .toList(),
+      onChanged: (value) => setState(() => _model.selectedRole = value),
+      validator: (value) =>
+          value == null ? 'Please select a role' : null,
+    ),
+  ),
+),
+
 
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
