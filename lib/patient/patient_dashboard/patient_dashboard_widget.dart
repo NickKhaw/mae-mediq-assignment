@@ -63,13 +63,19 @@ class _PatientDashboardWidgetState extends State<PatientDashboardWidget> {
           backgroundColor: Color(0xFF4A90E2),
           automaticallyImplyLeading: false,
           title: Text(
-  'Patient Dashboard',
-  style: FlutterFlowTheme.of(context).titleLarge.copyWith(
-        fontSize: 30,
-        fontWeight: FontWeight.w600,
-        color: Colors.white,
-      ),
-),
+            'Patient Dashboard',
+            style: FlutterFlowTheme.of(context).titleLarge.override(
+                  font: GoogleFonts.interTight(
+                    fontWeight: FontWeight.w600,
+                    fontStyle:
+                        FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                  ),
+                  fontSize: 30.0,
+                  letterSpacing: 0.0,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                ),
+          ),
           actions: [
             Row(
               mainAxisSize: MainAxisSize.max,
@@ -213,7 +219,7 @@ class _PatientDashboardWidgetState extends State<PatientDashboardWidget> {
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                        color: Colors.white,
                         boxShadow: [
                           BoxShadow(
                             blurRadius: 8.0,
@@ -338,8 +344,7 @@ class _PatientDashboardWidgetState extends State<PatientDashboardWidget> {
                         child: Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
+                            color: Colors.white,
                             boxShadow: [
                               BoxShadow(
                                 blurRadius: 8.0,
@@ -450,7 +455,7 @@ class _PatientDashboardWidgetState extends State<PatientDashboardWidget> {
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                        color: Colors.white,
                         boxShadow: [
                           BoxShadow(
                             blurRadius: 8.0,

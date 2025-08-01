@@ -48,18 +48,18 @@ class _NotificationWidgetState extends State<NotificationWidget> {
           backgroundColor: Color(0xFF4A90E2),
           automaticallyImplyLeading: false,
           leading: FlutterFlowIconButton(
-            borderRadius: 8.0,
-            buttonSize: 40.0,
-            fillColor: Color(0xFF4A90E2),
-            icon: Icon(
-              Icons.arrow_back,
-              color: Color(0xFF14181B),
-              size: 30.0,
-            ),
-            onPressed: () {
-              print('IconButton pressed ...');
-            },
-          ),
+  borderRadius: 8,
+  buttonSize: 40,
+  fillColor: Color(0xFF4A90E2),
+  icon: Icon(
+    Icons.arrow_back,
+    color: Color(0xFF14181B),
+    size: 30,
+  ),
+  onPressed: () async {
+    context.safePop();
+  },
+),
           title: Text(
             'Notifications',
             style: FlutterFlowTheme.of(context).headlineMedium.override(

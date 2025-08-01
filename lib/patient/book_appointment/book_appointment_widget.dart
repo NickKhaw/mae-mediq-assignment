@@ -69,24 +69,24 @@ class _BookAppointmentWidgetState extends State<BookAppointmentWidget> {
           backgroundColor: Color(0xFF4A90E2),
           automaticallyImplyLeading: false,
           leading: FlutterFlowIconButton(
-            borderRadius: 8.0,
-            buttonSize: 40.0,
-            fillColor: Color(0xFF4A90E2),
-            icon: Icon(
-              Icons.arrow_back,
-              color: Color(0xFF14181B),
-              size: 30.0,
-            ),
-            onPressed: () {
-              print('IconButton pressed ...');
-            },
-          ),
+  borderRadius: 8,
+  buttonSize: 40,
+  fillColor: Color(0xFF4A90E2),
+  icon: Icon(
+    Icons.arrow_back,
+    color: Colors.white,
+    size: 30,
+  ),
+  onPressed: () async {
+    context.safePop();
+  },
+),
           title: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Book Appointment',
+                'Take Number',
                 style: FlutterFlowTheme.of(context).headlineMedium.override(
                       font: GoogleFonts.outfit(
                         fontWeight: FontWeight.w600,
@@ -94,7 +94,7 @@ class _BookAppointmentWidgetState extends State<BookAppointmentWidget> {
                             .headlineMedium
                             .fontStyle,
                       ),
-                      color: Color(0xFF14181B),
+                       color: Colors.white,
                       fontSize: 30.0,
                       letterSpacing: 0.0,
                       fontWeight: FontWeight.w600,
@@ -719,6 +719,7 @@ class _BookAppointmentWidgetState extends State<BookAppointmentWidget> {
                                                       .fontStyle,
                                             ),
                                             letterSpacing: 0.0,
+                                            color: Colors.black,
                                             fontWeight: FontWeight.w500,
                                             fontStyle:
                                                 FlutterFlowTheme.of(context)
@@ -732,8 +733,7 @@ class _BookAppointmentWidgetState extends State<BookAppointmentWidget> {
                                             .secondaryText,
                                         size: 24.0,
                                       ),
-                                      fillColor: FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
+                                      fillColor: Colors.white,
                                       elevation: 2.0,
                                       borderColor: Color(0xFFB0C4DE),
                                       borderWidth: 0.0,

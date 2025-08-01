@@ -24,9 +24,9 @@ class _RecordHistoryWidgetState extends State<RecordHistoryWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+      backgroundColor: Color(0xFFE6F1F7),
       appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.of(context).primary,
+        backgroundColor: Color(0xFF4A90E2),
         automaticallyImplyLeading: false,
         leading: FlutterFlowIconButton(
           borderColor: Colors.transparent,
@@ -90,24 +90,28 @@ class _RecordHistoryWidgetState extends State<RecordHistoryWidget> {
             }
 
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.medical_services,
-                      size: 48,
-                      color: FlutterFlowTheme.of(context).secondaryText,
-                    ),
-                    SizedBox(height: 12),
-                    Text(
-                      'No records found',
-                      style: FlutterFlowTheme.of(context).titleLarge,
-                    ),
-                  ],
-                ),
-              );
-            }
+  return Center(
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          Icons.medical_services,
+          size: 48,
+          color: Colors.black, // Changed to black
+        ),
+        SizedBox(height: 12),
+        Text(
+          'No records found',
+          style: FlutterFlowTheme.of(context).titleLarge.override(
+                fontFamily: 'Outfit',
+                color: Colors.black, // Changed to black
+              ),
+        ),
+      ],
+    ),
+  );
+}
+
 
             return ListView.builder(
               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
