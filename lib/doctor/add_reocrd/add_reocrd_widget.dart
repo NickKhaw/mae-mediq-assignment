@@ -12,32 +12,6 @@ import 'add_reocrd_model.dart';
 export 'add_reocrd_model.dart';
 import '/index.dart';
 
-/// Create a page like this
-///
-/// -----------------------------------------------------
-/// | 🟦 App Bar                                         |
-/// | Title: Add Patient Record                         |
-/// -----------------------------------------------------
-///
-/// | 📄 Patient Info (Loaded from Firebase)            |
-/// | Name: John Tan                                    |
-/// | IC: 990101-10-5678                                |
-/// | Phone: 012-3456789                                |
-/// | Department: General                               |
-/// -----------------------------------------------------
-///
-/// | 📝 Diagnosis        [TextField]                   |
-/// | 💊 Treatment        [TextField or Dropdown]       |
-/// | 🗒️ Notes (Optional) [Multiline TextField]         |
-/// -----------------------------------------------------
-///
-/// | 🔵 [Add Record Button]                            |
-/// | (Saves the above data to Firestore)               |
-/// -----------------------------------------------------
-///
-///
-///
-///
 class AddReocrdWidget extends StatefulWidget {
   const AddReocrdWidget({super.key});
 
@@ -232,7 +206,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                     fontStyle:
                         FlutterFlowTheme.of(context).titleLarge.fontStyle,
                   ),
-                  color: Color(0xFF14181B),
+                  color: Color(0xFFFFFFFF),
                   fontSize: 30.0,
                   letterSpacing: 0.0,
                   fontWeight: FontWeight.w600,
@@ -255,7 +229,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                   Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).primaryBackground,
+                      color: Color(0xFFF1F4F8),
                       borderRadius: BorderRadius.circular(12.0),
                       border: Border.all(
                         color: Color(0xFFB0C4DE),
@@ -288,6 +262,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                             .fontStyle,
                                       ),
                                       letterSpacing: 0.0,
+                                      color: Colors.black,
                                       fontWeight: FontWeight.w600,
                                       fontStyle: FlutterFlowTheme.of(context)
                                           .titleMedium
@@ -317,6 +292,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                             .fontStyle,
                                       ),
                                       letterSpacing: 0.0,
+                                      color: Colors.black,
                                       fontWeight: FontWeight.w600,
                                       fontStyle: FlutterFlowTheme.of(context)
                                           .bodyMedium
@@ -337,6 +313,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                             .fontStyle,
                                       ),
                                       letterSpacing: 0.0,
+                                      color: Colors.black,
                                       fontWeight: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .fontWeight,
@@ -363,6 +340,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                             .fontStyle,
                                       ),
                                       letterSpacing: 0.0,
+                                      color: Colors.black,
                                       fontWeight: FontWeight.w600,
                                       fontStyle: FlutterFlowTheme.of(context)
                                           .bodyMedium
@@ -383,6 +361,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                             .fontStyle,
                                       ),
                                       letterSpacing: 0.0,
+                                      color: Colors.black,
                                       fontWeight: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .fontWeight,
@@ -409,6 +388,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                             .fontStyle,
                                       ),
                                       letterSpacing: 0.0,
+                                      color: Colors.black,
                                       fontWeight: FontWeight.w600,
                                       fontStyle: FlutterFlowTheme.of(context)
                                           .bodyMedium
@@ -429,6 +409,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                             .fontStyle,
                                       ),
                                       letterSpacing: 0.0,
+                                      color: Colors.black,
                                       fontWeight: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .fontWeight,
@@ -455,6 +436,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                             .fontStyle,
                                       ),
                                       letterSpacing: 0.0,
+                                      color: Colors.black,
                                       fontWeight: FontWeight.w600,
                                       fontStyle: FlutterFlowTheme.of(context)
                                           .bodyMedium
@@ -475,6 +457,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                             .fontStyle,
                                       ),
                                       letterSpacing: 0.0,
+                                      color: Colors.black,
                                       fontWeight: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .fontWeight,
@@ -501,6 +484,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                             .fontStyle,
                                       ),
                                       letterSpacing: 0.0,
+                                      color: Colors.black,
                                       fontWeight: FontWeight.w600,
                                       fontStyle: FlutterFlowTheme.of(context)
                                           .bodyMedium
@@ -521,6 +505,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                             .fontStyle,
                                       ),
                                       letterSpacing: 0.0,
+                                      color: Colors.black,
                                       fontWeight: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .fontWeight,
@@ -538,7 +523,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                   Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).primaryBackground,
+                      color: Color(0xFFF1F4F8),
                       borderRadius: BorderRadius.circular(12.0),
                       border: Border.all(
                         color: Color(0xFFB0C4DE),
@@ -571,6 +556,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                             .fontStyle,
                                       ),
                                       letterSpacing: 0.0,
+                                      color: Colors.black,
                                       fontWeight: FontWeight.w600,
                                       fontStyle: FlutterFlowTheme.of(context)
                                           .titleMedium
@@ -609,6 +595,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                                         .fontStyle,
                                               ),
                                               letterSpacing: 0.0,
+                                              color: Colors.black,
                                               fontWeight: FontWeight.w600,
                                               fontStyle:
                                                   FlutterFlowTheme.of(context)
@@ -641,8 +628,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                                       .bodyMedium
                                                       .fontStyle,
                                             ),
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondaryText,
+                                            color: Color(0xFF57636C),
                                             letterSpacing: 0.0,
                                             fontWeight:
                                                 FlutterFlowTheme.of(context)
@@ -686,8 +672,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                             BorderRadius.circular(8.0),
                                       ),
                                       filled: true,
-                                      fillColor: FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
+                                      fillColor: Colors.white,
                                       contentPadding:
                                           EdgeInsetsDirectional.fromSTEB(
                                               12.0, 16.0, 12.0, 16.0),
@@ -707,6 +692,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                           ),
                                           fontSize: 16.0,
                                           letterSpacing: 0.0,
+                                          color: Colors.black,
                                           fontWeight:
                                               FlutterFlowTheme.of(context)
                                                   .bodyMedium
@@ -761,6 +747,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                                         .fontStyle,
                                               ),
                                               letterSpacing: 0.0,
+                                              color: Colors.black,
                                               fontWeight: FontWeight.w600,
                                               fontStyle:
                                                   FlutterFlowTheme.of(context)
@@ -834,8 +821,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                   filled: true,
-                                  fillColor: FlutterFlowTheme.of(context)
-                                      .secondaryBackground,
+                                  fillColor: Colors.white,
                                   contentPadding:
                                       EdgeInsetsDirectional.fromSTEB(
                                           12.0, 16.0, 12.0, 16.0),
@@ -853,6 +839,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                       ),
                                       fontSize: 16.0,
                                       letterSpacing: 0.0,
+                                      color: Colors.black,
                                       fontWeight: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .fontWeight,
@@ -901,6 +888,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                                         .fontStyle,
                                               ),
                                               letterSpacing: 0.0,
+                                              color: Colors.black,
                                               fontWeight: FontWeight.w600,
                                               fontStyle:
                                                   FlutterFlowTheme.of(context)
@@ -979,8 +967,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                             BorderRadius.circular(8.0),
                                       ),
                                       filled: true,
-                                      fillColor: FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
+                                      fillColor: Colors.white,
                                       contentPadding:
                                           EdgeInsetsDirectional.fromSTEB(
                                               12.0, 16.0, 12.0, 16.0),
@@ -1000,6 +987,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
                                           ),
                                           fontSize: 16.0,
                                           letterSpacing: 0.0,
+                                          color: Colors.black,
                                           fontWeight:
                                               FlutterFlowTheme.of(context)
                                                   .bodyMedium

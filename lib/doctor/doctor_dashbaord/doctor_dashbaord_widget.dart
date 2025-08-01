@@ -11,10 +11,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../firebase_options.dart';
 import '../current_booking.dart';
 
-/// a main page for patient.
-///
-/// with book appointment button, view appointment button, view notification
-/// button, view history button and profile button
 class DoctorDashbaordWidget extends StatefulWidget {
   const DoctorDashbaordWidget({super.key});
 
@@ -189,7 +185,7 @@ class _DoctorDashbaordWidgetState extends State<DoctorDashbaordWidget> {
                   Container(
                     height: 100.0,
                     decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                      color: Colors.white,
                       boxShadow: [
                         BoxShadow(
                           blurRadius: 8.0,
@@ -226,6 +222,7 @@ class _DoctorDashbaordWidgetState extends State<DoctorDashbaordWidget> {
                                     ),
                                     fontSize: 18.0,
                                     letterSpacing: 0.0,
+                                    color: Colors.black,
                                     fontWeight: FontWeight.w600,
                                     fontStyle: FlutterFlowTheme.of(context)
                                         .bodyMedium
@@ -259,7 +256,7 @@ class _DoctorDashbaordWidgetState extends State<DoctorDashbaordWidget> {
                   Container(
                     height: 100.0,
                     decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                      color: Colors.white,
                       boxShadow: [
                         BoxShadow(
                           blurRadius: 8.0,
@@ -296,6 +293,7 @@ class _DoctorDashbaordWidgetState extends State<DoctorDashbaordWidget> {
                                     ),
                                     fontSize: 18.0,
                                     letterSpacing: 0.0,
+                                    color: Colors.black,
                                     fontWeight: FontWeight.w600,
                                     fontStyle: FlutterFlowTheme.of(context)
                                         .bodyMedium
@@ -356,7 +354,7 @@ class _DoctorDashbaordWidgetState extends State<DoctorDashbaordWidget> {
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                        color: Colors.white,
                         boxShadow: [
                           BoxShadow(
                             blurRadius: 8.0,
@@ -426,6 +424,7 @@ class _DoctorDashbaordWidgetState extends State<DoctorDashbaordWidget> {
                                                 ),
                                                 fontSize: 20.0,
                                                 letterSpacing: 0.0,
+                                                color: Colors.green,
                                                 fontWeight: FontWeight.w600,
                                                 fontStyle:
                                                     FlutterFlowTheme.of(context)
@@ -510,8 +509,7 @@ class _DoctorDashbaordWidgetState extends State<DoctorDashbaordWidget> {
                         child: Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
+                            color: Colors.white,
                             boxShadow: [
                               BoxShadow(
                                 blurRadius: 8.0,
@@ -649,7 +647,7 @@ class _DoctorDashbaordWidgetState extends State<DoctorDashbaordWidget> {
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                        color: Colors.white,
                         boxShadow: [
                           BoxShadow(
                             blurRadius: 8.0,

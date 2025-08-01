@@ -13,30 +13,6 @@ import 'change_department_model.dart';
 export 'change_department_model.dart';
 import '/index.dart';
 
-/// Create a change department  page
-///
-/// -----------------------------------------------------
-/// | 🟦 App Bar                                         |
-/// | Title: Change Department                          |
-/// -----------------------------------------------------
-///
-/// | 📄 Patient Info (Loaded from Firebase)            |
-/// | Name: John Tan                                    |
-/// | IC: 990101-10-5678                                |
-/// | Phone: 012-3456789                                |
-/// | Gender: Male                                      |
-/// | Current Department: General                       |
-/// -----------------------------------------------------
-///
-/// | 🏥 Select New Department   [Dropdown]             |
-/// | (e.g.
-///
-/// Cardiology, ENT, Pediatrics)                |
-/// -----------------------------------------------------
-///
-/// | 🔵 [Change Department Button]                     |
-/// | (Updates the department in Firestore)             |
-/// -----------------------------------------------------
 class ChangeDepartmentWidget extends StatefulWidget {
   const ChangeDepartmentWidget({super.key});
 
@@ -307,7 +283,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                   Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).primaryBackground,
+                      color: Color(0xFFF1F4F8),
                       borderRadius: BorderRadius.circular(12.0),
                       border: Border.all(
                         color: Color(0xFFB0C4DE),
@@ -357,6 +333,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                                                       .fontStyle,
                                             ),
                                             letterSpacing: 0.0,
+                                            color: Colors.black,
                                             fontWeight: FontWeight.w600,
                                             fontStyle:
                                                 FlutterFlowTheme.of(context)
@@ -424,8 +401,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                                                     .bodyMedium
                                                     .fontStyle,
                                           ),
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryText,
+                                          color: Colors.black,
                                           letterSpacing: 0.0,
                                           fontWeight: FontWeight.w600,
                                           fontStyle:
@@ -447,6 +423,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                                                     .fontStyle,
                                           ),
                                           letterSpacing: 0.0,
+                                          color: Colors.black,
                                           fontWeight: FontWeight.w500,
                                           fontStyle:
                                               FlutterFlowTheme.of(context)
@@ -473,8 +450,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                                                     .bodyMedium
                                                     .fontStyle,
                                           ),
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryText,
+                                          color: Colors.black,
                                           letterSpacing: 0.0,
                                           fontWeight: FontWeight.w600,
                                           fontStyle:
@@ -496,6 +472,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                                                     .fontStyle,
                                           ),
                                           letterSpacing: 0.0,
+                                          color: Colors.black,
                                           fontWeight: FontWeight.w500,
                                           fontStyle:
                                               FlutterFlowTheme.of(context)
@@ -522,8 +499,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                                                     .bodyMedium
                                                     .fontStyle,
                                           ),
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryText,
+                                          color: Colors.black,
                                           letterSpacing: 0.0,
                                           fontWeight: FontWeight.w600,
                                           fontStyle:
@@ -545,6 +521,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                                                     .fontStyle,
                                           ),
                                           letterSpacing: 0.0,
+                                          color: Colors.black,
                                           fontWeight: FontWeight.w500,
                                           fontStyle:
                                               FlutterFlowTheme.of(context)
@@ -571,8 +548,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                                                     .bodyMedium
                                                     .fontStyle,
                                           ),
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryText,
+                                          color: Colors.black,
                                           letterSpacing: 0.0,
                                           fontWeight: FontWeight.w600,
                                           fontStyle:
@@ -594,6 +570,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                                                     .fontStyle,
                                           ),
                                           letterSpacing: 0.0,
+                                          color: Colors.black,
                                           fontWeight: FontWeight.w500,
                                           fontStyle:
                                               FlutterFlowTheme.of(context)
@@ -620,8 +597,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                                                     .bodyMedium
                                                     .fontStyle,
                                           ),
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryText,
+                                          color: Colors.black,
                                           letterSpacing: 0.0,
                                           fontWeight: FontWeight.w600,
                                           fontStyle:
@@ -643,6 +619,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                                                     .fontStyle,
                                           ),
                                           letterSpacing: 0.0,
+                                          color: Colors.black,
                                           fontWeight: FontWeight.w500,
                                           fontStyle:
                                               FlutterFlowTheme.of(context)
@@ -661,7 +638,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                   Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).primaryBackground,
+                      color: Color(0xFFF1F4F8),
                       borderRadius: BorderRadius.circular(12.0),
                       border: Border.all(
                         color: Color(0xFFB0C4DE),
@@ -711,6 +688,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                                                       .fontStyle,
                                             ),
                                             letterSpacing: 0.0,
+                                            color: Colors.black,
                                             fontWeight: FontWeight.w600,
                                             fontStyle:
                                                 FlutterFlowTheme.of(context)
@@ -788,6 +766,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                                   ),
                                   fontSize: 16.0,
                                   letterSpacing: 0.0,
+                                  color: Colors.black,
                                   fontWeight: FontWeight.w500,
                                   fontStyle: FlutterFlowTheme.of(context)
                                       .bodyMedium
@@ -799,8 +778,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
                               color: FlutterFlowTheme.of(context).primaryText,
                               size: 24.0,
                             ),
-                            fillColor: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
+                            fillColor: Color(0xFFFFFFFF),
                             elevation: 0.0,
                             borderColor: Color(0xFFB0C4DE),
                             borderWidth: 1.0,
