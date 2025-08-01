@@ -235,9 +235,9 @@ class _EditUserWidgetState extends State<EditUserWidget> {
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                                 filled: true,
-                                fillColor: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
+                                fillColor: Colors.white,
                               ),
+                              style: TextStyle(color: Colors.black),
                               textCapitalization: TextCapitalization.words,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -318,10 +318,9 @@ class _EditUserWidgetState extends State<EditUserWidget> {
                                   setState(() => _model.dropDownValue = val),
                               height: 48.0,
                               textStyle:
-                                  FlutterFlowTheme.of(context).bodyMedium,
+                                  FlutterFlowTheme.of(context).bodyMedium.copyWith(color: Colors.black),
                               hintText: 'Select...',
-                              fillColor: FlutterFlowTheme.of(context)
-                                  .secondaryBackground,
+                              fillColor:Colors.white,
                               borderColor: const Color(0xFFB0C4DE),
                               borderWidth: 2.0,
                               borderRadius: 8.0,
@@ -359,9 +358,9 @@ class _EditUserWidgetState extends State<EditUserWidget> {
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                                 filled: true,
-                                fillColor: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
+                                fillColor: Colors.white,
                               ),
+                              style: TextStyle(color: Colors.black),
                               keyboardType: TextInputType.phone,
                               inputFormatters: [
                                 FilteringTextInputFormatter.digitsOnly,
@@ -424,9 +423,9 @@ class _EditUserWidgetState extends State<EditUserWidget> {
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                                 filled: true,
-                                fillColor: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
+                                fillColor: Colors.white,
                               ),
+                              style: TextStyle(color: Colors.black),
                               keyboardType: TextInputType.emailAddress,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
