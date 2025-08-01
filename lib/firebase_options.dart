@@ -40,6 +40,14 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyAgkd3wws-UFevhBnHGpvYmShnVR_uByUw',
+    appId: '1:1061990831640:android:5ff8db9c96abc59b01556d',
+    messagingSenderId: '1061990831640',
+    projectId: 'medicq-498f1',
+    storageBucket: 'medicq-498f1.firebasestorage.app',
+  );
+
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyDqMvVw5TWxQVHblxFtqbqK88KMwy5mcG8',
     appId: '1:1061990831640:web:968427eb54b26e8501556d',
@@ -48,14 +56,6 @@ class DefaultFirebaseOptions {
     authDomain: 'medicq-498f1.firebaseapp.com',
     storageBucket: 'medicq-498f1.firebasestorage.app',
     measurementId: 'G-5741HEFS1H',
-  );
-
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAgkd3wws-UFevhBnHGpvYmShnVR_uByUw',
-    appId: '1:1061990831640:android:5ff8db9c96abc59b01556d',
-    messagingSenderId: '1061990831640',
-    projectId: 'medicq-498f1',
-    storageBucket: 'medicq-498f1.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
