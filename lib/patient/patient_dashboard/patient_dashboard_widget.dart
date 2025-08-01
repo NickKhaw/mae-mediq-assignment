@@ -13,10 +13,6 @@ import '../../globals.dart' as globals;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../Functions.dart';
 
-/// a main page for patient.
-///
-/// with book appointment button, view appointment button, view notification
-/// button, view history button and profile button
 class PatientDashboardWidget extends StatefulWidget {
   const PatientDashboardWidget({super.key});
 
@@ -67,19 +63,13 @@ class _PatientDashboardWidgetState extends State<PatientDashboardWidget> {
           backgroundColor: Color(0xFF4A90E2),
           automaticallyImplyLeading: false,
           title: Text(
-            'Patient Dashboard',
-            style: FlutterFlowTheme.of(context).titleLarge.override(
-                  font: GoogleFonts.interTight(
-                    fontWeight: FontWeight.w600,
-                    fontStyle:
-                        FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                  ),
-                  fontSize: 30.0,
-                  letterSpacing: 0.0,
-                  fontWeight: FontWeight.w600,
-                  fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                ),
-          ),
+  'Patient Dashboard',
+  style: FlutterFlowTheme.of(context).titleLarge.copyWith(
+        fontSize: 30,
+        fontWeight: FontWeight.w600,
+        color: Colors.white,
+      ),
+),
           actions: [
             Row(
               mainAxisSize: MainAxisSize.max,
