@@ -60,29 +60,29 @@ void fetctDataInListFormat() async {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
-      appBar: AppBar(
-        title: const Text(
-          'Doctors List',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Colors.blue[800],
-        elevation: 0,
-      ),
+  backgroundColor: const Color(0xFFE6F1F7), // same as View Patient page
+  appBar: AppBar(
+    title: const Text(
+      'Doctors List',
+      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+    ),
+    backgroundColor: const Color(0xFF4A90E2), // same blue as View Patient page
+    elevation: 0,
+  ),
       body: Column(
         children: [
           // Filter and Total Count Section
           Container(
             padding: const EdgeInsets.all(16.0),
-            color: Colors.blue[800],
+            color: const Color(0xFF4A90E2),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 // Filter Dropdown
                 DropdownButton<String>(
                   value: _selectedDepartment ?? 'All',
-                  dropdownColor: Colors.white,
-                  style: const TextStyle(color: Colors.black),
+                  dropdownColor: Colors.black,
+                  style: const TextStyle(color: Colors.white),
                   icon: const Icon(Icons.filter_list, color: Colors.white),
                   items: _getDepartments().map((department) {
                     return DropdownMenuItem<String>(
@@ -115,6 +115,7 @@ void fetctDataInListFormat() async {
               itemBuilder: (context, index) {
                 final doctor = _filteredDoctors[index];
                 return Card(
+                  color: Colors.white, // ⬅️ Set container background color
                   elevation: 4,
                   margin: const EdgeInsets.only(bottom: 16.0),
                   shape: RoundedRectangleBorder(
@@ -153,20 +154,22 @@ void fetctDataInListFormat() async {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                doctor['Department']!,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                'IC: ${doctor['IC']}',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey[500],
-                                ),
-                              ),
+  doctor['Department']!,
+  style: const TextStyle(
+    fontSize: 16,
+    color: Colors.indigo, // dark blue
+    fontWeight: FontWeight.w600,
+  ),
+),
+const SizedBox(height: 4),
+Text(
+  'IC: ${doctor['IC']}',
+  style: const TextStyle(
+    fontSize: 14,
+    color: Colors.black, // black IC text
+  ),
+),
+
                             ],
                           ),
                         ),

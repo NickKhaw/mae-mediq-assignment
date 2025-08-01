@@ -95,30 +95,52 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Admin Dashboard"),backgroundColor: const Color(0xFF4A90E2),),
-      backgroundColor: const Color.fromARGB(255, 114, 137, 216),
+      appBar: AppBar(title: Text("Report"),backgroundColor: const Color(0xFF4A90E2)),
+      backgroundColor: const Color(0xFFE6F1F7),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 0, 0, 0),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Today Patients", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10),
-                  Text("$todayCount", style: TextStyle(fontSize: 36)),
-                ],
-              ),
-            ),
+  padding: EdgeInsets.all(16),
+  decoration: BoxDecoration(
+    color: Colors.white, // white background
+    borderRadius: BorderRadius.circular(12),
+  ),
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        "Today Patients",
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.black, // black text
+        ),
+      ),
+      SizedBox(height: 10),
+      Text(
+        "$todayCount",
+        style: TextStyle(
+          fontSize: 36,
+          color: Colors.black, // black text
+        ),
+      ),
+    ],
+  ),
+),
+
             SizedBox(height: 30),
-            Text("Last 7 Days Report", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(
+  "Last 7 Days Report",
+  style: TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    color: Colors.black, // make text black
+  ),
+),
+SizedBox(height: 25), // ✅ This adds space
             SizedBox(height: 200, child: buildChart()),
             SizedBox(height: 20),
             ElevatedButton.icon(
@@ -135,41 +157,70 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget buildChart() {
-    if (last7DaysData.isEmpty) {
-      return Center(child: CircularProgressIndicator());
-    }
+  if (last7DaysData.isEmpty) {
+    return Center(child: CircularProgressIndicator());
+  }
 
-    final barGroups = last7DaysData.entries.toList().asMap().entries.map((entry) {
-      int index = entry.key;
-      String label = entry.value.key;
-      int value = entry.value.value;
+  final barGroups = last7DaysData.entries.toList().asMap().entries.map((entry) {
+    int index = entry.key;
+    String label = entry.value.key;
+    int value = entry.value.value;
 
-      return BarChartGroupData(
-        x: index,
-        barRods: [
-          BarChartRodData(toY: value.toDouble(), color: const Color.fromARGB(255, 7, 72, 125)),
-        ],
-      );
-    }).toList();
+    return BarChartGroupData(
+      x: index,
+      barRods: [
+        BarChartRodData(
+          toY: value.toDouble(),
+          color: const Color.fromARGB(255, 7, 72, 125),
+        ),
+      ],
+    );
+  }).toList();
 
-    return BarChart(
-      BarChartData(
-        barGroups: barGroups,
-        titlesData: FlTitlesData(
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: (value, _) {
-                int index = value.toInt();
-                if (index >= 0 && index < last7DaysData.length) {
-                  return Text(last7DaysData.keys.elementAt(index), style: TextStyle(fontSize: 10));
-                }
-                return Text('');
-              },
-            ),
+  return BarChart(
+    BarChartData(
+      barGroups: barGroups,
+      titlesData: FlTitlesData(
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            getTitlesWidget: (value, _) {
+              int index = value.toInt();
+              if (index >= 0 && index < last7DaysData.length) {
+                return Text(
+                  last7DaysData.keys.elementAt(index),
+                  style: TextStyle(fontSize: 10, color: Colors.black),
+                );
+              }
+              return Text('');
+            },
           ),
         ),
+        leftTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            getTitlesWidget: (value, _) {
+              return Text(
+                value.toInt().toString(),
+                style: TextStyle(fontSize: 10, color: Colors.black),
+              );
+            },
+          ),
+        ),
+        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
       ),
-    );
-  }
+      gridData: FlGridData(
+        show: true,
+        drawHorizontalLine: true,
+        horizontalInterval: 1,
+        getDrawingHorizontalLine: (value) => FlLine(
+          color: Colors.black12,
+          strokeWidth: 1,
+        ),
+      ),
+      borderData: FlBorderData(show: false),
+    ),
+  );
+}
 }

@@ -48,10 +48,12 @@ class _ReviewsPageState extends State<ReviewsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Doctor Reviews'),
-        centerTitle: true,
-      ),
+  appBar: AppBar(
+    title: const Text('Doctor Reviews'),
+    centerTitle: true,
+    backgroundColor: const Color(0xFF4A90E2), // Blue AppBar like View Patient
+  ),
+  backgroundColor: const Color(0xFFE6F1F7), // Light blue background like View Patient
       body: _doctorIC == null
           ? const Center(child: CircularProgressIndicator())
           : StreamBuilder<QuerySnapshot>(
@@ -69,7 +71,12 @@ class _ReviewsPageState extends State<ReviewsPage> {
                 }
 
                 if (snapshot.data!.docs.isEmpty) {
-                  return const Center(child: Text('No reviews for this doctor yet'));
+                  return const Center(
+  child: Text(
+    'No reviews for this doctor yet',
+    style: TextStyle(color: Colors.black),
+  ),
+);
                 }
 
                 return ListView.builder(
