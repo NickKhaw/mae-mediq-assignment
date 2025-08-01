@@ -224,7 +224,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
             fillColor: Color(0xFF4A90E2),
             icon: Icon(
               Icons.arrow_back,
-              color: Color(0xFF14181B),
+              color: Colors.white,
               size: 30.0,
             ),
             onPressed: () async {
@@ -292,7 +292,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                 Container(
                   width: 350.0,
                   decoration: BoxDecoration(
-                    color: FlutterFlowTheme.of(context).primaryBackground,
+                    color: Color(0xFFF1F4F8),
                     borderRadius: BorderRadius.circular(12.0),
                     border: Border.all(
                       color: Color(0xFFB0C4DE),
@@ -321,6 +321,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                           .fontStyle,
                                     ),
                                     letterSpacing: 0.0,
+                                    color: Colors.black,
                                     fontWeight: FontWeight.w600,
                                     fontStyle: FlutterFlowTheme.of(context)
                                         .bodyMedium
@@ -341,6 +342,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                           .fontStyle,
                                     ),
                                     letterSpacing: 0.0,
+                                    color: Colors.black,
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .bodyMedium
                                         .fontWeight,
@@ -367,6 +369,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                           .fontStyle,
                                     ),
                                     letterSpacing: 0.0,
+                                    color: Colors.black,
                                     fontWeight: FontWeight.w600,
                                     fontStyle: FlutterFlowTheme.of(context)
                                         .bodyMedium
@@ -387,6 +390,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                           .fontStyle,
                                     ),
                                     letterSpacing: 0.0,
+                                    color: Colors.black,
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .bodyMedium
                                         .fontWeight,
@@ -413,6 +417,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                           .fontStyle,
                                     ),
                                     letterSpacing: 0.0,
+                                    color: Colors.black,
                                     fontWeight: FontWeight.w600,
                                     fontStyle: FlutterFlowTheme.of(context)
                                         .bodyMedium
@@ -433,6 +438,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                           .fontStyle,
                                     ),
                                     letterSpacing: 0.0,
+                                    color: Colors.black,
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .bodyMedium
                                         .fontWeight,
@@ -459,6 +465,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                           .fontStyle,
                                     ),
                                     letterSpacing: 0.0,
+                                    color: Colors.black,
                                     fontWeight: FontWeight.w600,
                                     fontStyle: FlutterFlowTheme.of(context)
                                         .bodyMedium
@@ -479,6 +486,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                           .fontStyle,
                                     ),
                                     letterSpacing: 0.0,
+                                    color: Colors.black,
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .bodyMedium
                                         .fontWeight,
@@ -505,6 +513,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                           .fontStyle,
                                     ),
                                     letterSpacing: 0.0,
+                                    color: Colors.black,
                                     fontWeight: FontWeight.w600,
                                     fontStyle: FlutterFlowTheme.of(context)
                                         .bodyMedium
@@ -525,6 +534,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                           .fontStyle,
                                     ),
                                     letterSpacing: 0.0,
+                                    color: Colors.black,
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .bodyMedium
                                         .fontWeight,
@@ -549,6 +559,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                     icon: Icon(
                       Icons.person,
                       size: 15.0,
+                      color: Colors.white,
                     ),
                     options: FFButtonOptions(
                       width: 150.0,
@@ -566,7 +577,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                       .bodyLarge
                                       .fontStyle,
                                 ),
-                                color: Color(0xFF14181B),
+                                color: Colors.white,
                                 fontSize: 16.0,
                                 letterSpacing: 0.0,
                                 fontWeight: FontWeight.w600,
@@ -607,7 +618,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                       .bodyLarge
                                       .fontStyle,
                                 ),
-                                color: Color(0xFF14181B),
+                                color: Colors.white,
                                 fontSize: 16.0,
                                 letterSpacing: 0.0,
                                 fontWeight: FontWeight.w600,
