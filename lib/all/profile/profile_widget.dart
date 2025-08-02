@@ -76,7 +76,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
       final jsonResponse = json.decode(response.body);
       final imageUrl = jsonResponse['data']['url'];
       print('Image uploaded: $imageUrl');
-      storeProfilePic("Doctor", "IC", globalIC, 'Profile Pic', imageUrl);
+      storeProfilePic(globalRole, "IC", globalIC, 'Profile Pic', imageUrl);
       globalUrl = imageUrl;
 
       setState(() {
@@ -97,6 +97,19 @@ class _ProfileWidgetState extends State<ProfileWidget>
 
     return compressedBytes!;
   }
+
+  ImageProvider<Object> _getProfileImage() {
+  if (_pickedFile != null && !kIsWeb) {
+    return FileImage(File(_pickedFile!.path));
+  } else if (_uploadedImageUrl != null) {
+    return NetworkImage(_uploadedImageUrl!);
+  } else if (_fetchedProfilePicUrl != null) {
+    return NetworkImage(globalUrl);
+  } else {
+    return NetworkImage(globalDefaultPic);
+  }
+}
+
 
   @override
   void initState() {
@@ -192,7 +205,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
       this,
     );
 
-    fetchProfilePicUrl("Doctor", "IC", globalIC).then((url) {
+    fetchProfilePicUrl(globalRole, "IC", globalIC).then((url) {
       setState(() {
         _fetchedProfilePicUrl = url;
       });
@@ -266,17 +279,8 @@ class _ProfileWidgetState extends State<ProfileWidget>
                       },
                       child: CircleAvatar(
                         radius: 50,
-                        backgroundImage: _pickedFile != null && !kIsWeb
-                            ? FileImage(File(_pickedFile!.path))
-                            : _uploadedImageUrl != null
-                                ? NetworkImage(_uploadedImageUrl!)
-                                    as ImageProvider<Object>
-                                : (_fetchedProfilePicUrl != null
-                                    ? NetworkImage(globalUrl)
-                                        as ImageProvider<Object>
-                                    : const NetworkImage(
-                                        'https://images.unsplash.com/photo-1592520113018-180c8bc831c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=60',
-                                      ) as ImageProvider<Object>),
+                        backgroundImage: _getProfileImage(),
+
                       ),
                     ),
                   ),

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'admin_dashboard_model.dart';
 export 'admin_dashboard_model.dart';
+import '../../globals.dart';
 
 class AdminDashboardWidget extends StatefulWidget {
   const AdminDashboardWidget({super.key});
@@ -31,11 +32,11 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget> {
     super.initState();
     _model = createModel(context, () => AdminDashboardModel());
 
-    calculateTodayTotalAmount("Record").then((value)=>{
-      setState(() {
-        total_patient = value;
-      })
-    });
+    calculateTodayTotalAmount("Record").then((value) => {
+          setState(() {
+            total_patient = value;
+          })
+        });
 
     calculateAmountByCondition("Doctor", "Status", true).then((value) {
       setState(() {
@@ -64,27 +65,26 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget> {
     return count.toString();
   }
 
- Future<String> calculateTodayTotalAmount(String collection) async {
-  var db = FirebaseFirestore.instance;
-  int count = 0;
-  DateTime now = DateTime.now();
+  Future<String> calculateTodayTotalAmount(String collection) async {
+    var db = FirebaseFirestore.instance;
+    int count = 0;
+    DateTime now = DateTime.now();
 
-  final snapshot = await db.collection(collection).get();
+    final snapshot = await db.collection(collection).get();
 
-  for (var doc in snapshot.docs) {
-    Timestamp ts = doc["Timestamp"];
-    DateTime date = ts.toDate();
+    for (var doc in snapshot.docs) {
+      Timestamp ts = doc["Timestamp"];
+      DateTime date = ts.toDate();
 
-    if (date.year == now.year &&
-        date.month == now.month &&
-        date.day == now.day) {
-      count++;
+      if (date.year == now.year &&
+          date.month == now.month &&
+          date.day == now.day) {
+        count++;
+      }
     }
+
+    return count.toString();
   }
-
-  return count.toString();
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +189,7 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget> {
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: Image.network(
-                              'https://images.unsplash.com/photo-1525875975471-999f65706a10?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTYyMDF8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NTA3NzYxNTd8&ixlib=rb-4.1.0&q=80&w=1080',
+                              globalUrl == "" ? globalDefaultPic : globalUrl,
                             ).image,
                           ),
                           shape: BoxShape.circle,
@@ -239,8 +239,7 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget> {
                             hoverColor: Colors.transparent,
                             highlightColor: Colors.transparent,
                             onTap: () async {
-                              context
-                                  .pushNamed(DashboardScreen.routeName);
+                              context.pushNamed(DashboardScreen.routeName);
                             },
                             child: Container(
                               width: 125.0,
