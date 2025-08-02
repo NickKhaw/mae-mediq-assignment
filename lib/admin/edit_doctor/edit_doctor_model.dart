@@ -13,6 +13,7 @@ class EditDoctorModel extends FlutterFlowModel<EditDoctorWidget> {
   String? Function(BuildContext, String?)? textController1Validator;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode2;
+  FormFieldController<String>? roomValueController;
   TextEditingController? textController2;
   String? Function(BuildContext, String?)? textController2Validator;
   // State field(s) for TextField widget.
@@ -22,6 +23,10 @@ class EditDoctorModel extends FlutterFlowModel<EditDoctorWidget> {
   // State field(s) for DropDown widget.
   String? dropDownValue;
   FormFieldController<String>? dropDownValueController;
+
+  get roomValue => null;
+
+  set roomValue(roomValue) {}
 
   @override
   void initState(BuildContext context) {}

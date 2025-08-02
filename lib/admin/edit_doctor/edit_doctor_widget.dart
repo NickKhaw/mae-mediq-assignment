@@ -1,3 +1,5 @@
+import 'package:mae_mediq_assignment/globals.dart';
+
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -9,18 +11,9 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'edit_doctor_model.dart';
 export 'edit_doctor_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-/// Create an edit doctor page as below
-///
-/// -----------------------------------------------------
-/// | 🟦 App Bar: Edit Doctor                           |
-/// -----------------------------------------------------
-/// | Name:           [TextField]                       |
-/// | Email:          [TextField]                       |
-/// | Phone:          [TextField]                       |
-/// | Department:     [Dropdown]                        |
-/// | 🔵 [Save Changes Button]                          |
-/// -----------------------------------------------------
+
 class EditDoctorWidget extends StatefulWidget {
   const EditDoctorWidget({super.key});
 
@@ -44,18 +37,39 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
     _model.textController1 ??= TextEditingController();
     _model.textFieldFocusNode1 ??= FocusNode();
 
-    _model.textController2 ??= TextEditingController();
-    _model.textFieldFocusNode2 ??= FocusNode();
-
     _model.textController3 ??= TextEditingController();
     _model.textFieldFocusNode3 ??= FocusNode();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      retrieveData();
+    });
   }
 
   @override
   void dispose() {
+    _model.roomValueController?.dispose();
     _model.dispose();
-
     super.dispose();
+  }
+
+  Future <void> retrieveData() async {
+    try {
+      // Get the doctor document from Firestore
+      final doctorRef = FirebaseFirestore.instance.collection('Doctor').doc(globalDoctorID);
+      final doctorSnapshot = await doctorRef.get();
+
+      if (doctorSnapshot.exists) {
+        final doctorData = doctorSnapshot.data()!;
+        _model.textController1.text = doctorData['Name'] ?? '';
+        _model.roomValue = doctorData['Room'] ?? '';
+        _model.textController3.text = doctorData['Phone Num'] ?? '';
+        _model.dropDownValue = doctorData['Department'] ?? '';
+      } else {
+        print('Doctor document does not exist');
+      }
+    } catch (e) {
+      print('Error retrieving data: $e');
+    }
   }
 
   @override
@@ -86,7 +100,7 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
             },
           ),
           title: Text(
-            'Edit Doctor Profile',
+            'Edit Doctor',
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   font: GoogleFonts.interTight(
                     fontWeight: FontWeight.w600,
@@ -163,6 +177,7 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                                             .fontStyle,
                                       ),
                                       letterSpacing: 0.0,
+                                      color: Colors.black,
                                       fontWeight: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .fontWeight,
@@ -199,8 +214,7 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                                 filled: true,
-                                fillColor: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
+                                fillColor: Colors.white,
                               ),
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
@@ -213,8 +227,7 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                                           .bodyMedium
                                           .fontStyle,
                                     ),
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
+                                    color: Colors.black,
                                     letterSpacing: 0.0,
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .bodyMedium
@@ -247,113 +260,46 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Email',
-                            style: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
+                            'Room',
+                            style: FlutterFlowTheme.of(context).labelMedium.override(
                                   font: GoogleFonts.inter(
                                     fontWeight: FontWeight.w600,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontStyle,
+                                    fontStyle: FlutterFlowTheme.of(context).labelMedium.fontStyle,
                                   ),
                                   letterSpacing: 0.0,
+                                  color: Colors.black,
                                   fontWeight: FontWeight.w600,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
                                 ),
                           ),
-                          Container(
+                          FlutterFlowDropDown<String>(
+                            controller: _model.roomValueController ??= 
+                                FormFieldController<String>(null),
+                            options: ['R1', 'R2', 'R3', 'R4'],
+                            onChanged: (val) => 
+                                safeSetState(() => _model.roomValue = val),
                             width: double.infinity,
-                            child: TextFormField(
-                              controller: _model.textController2,
-                              focusNode: _model.textFieldFocusNode2,
-                              autofocus: false,
-                              textInputAction: TextInputAction.next,
-                              obscureText: false,
-                              decoration: InputDecoration(
-                                hintText: 'Enter email address',
-                                hintStyle: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      font: GoogleFonts.inter(
-                                        fontWeight: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .fontWeight,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .fontStyle,
-                                      ),
-                                      letterSpacing: 0.0,
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .fontStyle,
-                                    ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0xFFB0C4DE),
-                                    width: 2.0,
+                            height: 56.0,
+                            textStyle: FlutterFlowTheme.of(context).bodyMedium.override(
+                                  font: GoogleFonts.inter(
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                  borderRadius: BorderRadius.circular(8.0),
+                                  color: Colors.black
                                 ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0xFF5BAAF5),
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: FlutterFlowTheme.of(context).error,
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                focusedErrorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: FlutterFlowTheme.of(context).error,
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                filled: true,
-                                fillColor: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    font: GoogleFonts.inter(
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .fontStyle,
-                                    ),
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
-                                    letterSpacing: 0.0,
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .fontStyle,
-                                  ),
-                              keyboardType: TextInputType.emailAddress,
-                              cursorColor: Color(0xFF5BAAF5),
-                              validator: _model.textController2Validator
-                                  .asValidator(context),
+                            hintText: 'Select room',
+                            icon: Icon(
+                              Icons.keyboard_arrow_down_rounded,
+                              color: FlutterFlowTheme.of(context).secondaryText,
                             ),
+                            fillColor: Colors.white,
+                            elevation: 0.0,
+                            borderColor: Color(0xFFB0C4DE),
+                            borderWidth: 2.0,
+                            borderRadius: 8.0,
+                            margin: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                            hidesUnderline: true,
                           ),
                         ].divide(SizedBox(height: 8.0)),
-                      ),
+                        ),
                       Column(
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -398,6 +344,7 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                                             .fontStyle,
                                       ),
                                       letterSpacing: 0.0,
+                                      color: Colors.black,
                                       fontWeight: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .fontWeight,
@@ -434,8 +381,7 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                                 filled: true,
-                                fillColor: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
+                                fillColor: Colors.white,
                               ),
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
@@ -448,8 +394,7 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                                           .bodyMedium
                                           .fontStyle,
                                     ),
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
+                                    color: Colors.black,
                                     letterSpacing: 0.0,
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .bodyMedium
@@ -482,6 +427,7 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                                         .fontStyle,
                                   ),
                                   letterSpacing: 0.0,
+                                  color: Colors.black,
                                   fontWeight: FontWeight.w600,
                                   fontStyle: FlutterFlowTheme.of(context)
                                       .labelMedium
@@ -492,12 +438,12 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                             controller: _model.dropDownValueController ??=
                                 FormFieldController<String>(null),
                             options: [
-                              'Cardiology',
-                              'Neurology',
-                              'Orthopedics',
+                              'General Medicine',
                               'Pediatrics',
-                              'Emergency Medicine',
-                              'Internal Medicine'
+                              'Cardiology',
+                              'Gynecology',
+                              'Neurology',
+                              'ENT (Ear, Nose, Throat)'
                             ],
                             onChanged: (val) =>
                                 safeSetState(() => _model.dropDownValue = val),
@@ -514,8 +460,7 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                                         .bodyMedium
                                         .fontStyle,
                                   ),
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryText,
+                                  color: Colors.black,
                                   letterSpacing: 0.0,
                                   fontWeight: FlutterFlowTheme.of(context)
                                       .bodyMedium
@@ -527,11 +472,10 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                             hintText: 'Select department',
                             icon: Icon(
                               Icons.keyboard_arrow_down_rounded,
-                              color: FlutterFlowTheme.of(context).secondaryText,
+                              color: Colors.black,
                               size: 24.0,
                             ),
-                            fillColor: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
+                            fillColor: Colors.white,
                             elevation: 0.0,
                             borderColor: Color(0xFFB0C4DE),
                             borderWidth: 2.0,
@@ -545,8 +489,37 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                         ].divide(SizedBox(height: 8.0)),
                       ),
                       FFButtonWidget(
-                        onPressed: () {
-                          print('Button pressed ...');
+                        onPressed: () async {
+                          // Validate form first
+                          if (_model.formKey.currentState?.validate() ?? false) {
+                            try {
+                              // Get reference to the doctor document
+                              final doctorRef = FirebaseFirestore.instance
+                                  .collection('Doctor')
+                                  .doc(globalDoctorID); // You need to specify the doctor ID
+                              
+                              // Update data in Firestore
+                              await doctorRef.update({
+                                'Name': _model.textController1.text,
+                                'Room': _model.roomValue, 
+                                'Phone Num': _model.textController3.text,
+                                'Department': _model.dropDownValue,
+                              });
+
+                              // Show success message
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Doctor details updated successfully!')),
+                              );
+
+                              // Optionally navigate back
+                              context.pop();
+                            } catch (e) {
+                              // Show error message
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Error updating doctor: $e')),
+                              );
+                            }
+                          }
                         },
                         text: 'Save Changes',
                         options: FFButtonOptions(
