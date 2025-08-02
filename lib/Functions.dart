@@ -1,7 +1,8 @@
 //ID generator for ticket IDs
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'globals.dart';
 
-String generateTicketId(String alphabet,int number) {
+String generateTicketId(String alphabet, int number) {
   return '$alphabet${number.toString().padLeft(5, '0')}';
 }
 
@@ -13,13 +14,18 @@ int extractTicketNumber(String ticketId) {
 
 //Count data row
 Future<int> countDataRow(String collection) async {
-  QuerySnapshot snapshot = await FirebaseFirestore.instance.collection(collection).get();
+  QuerySnapshot snapshot =
+      await FirebaseFirestore.instance.collection(collection).get();
   return snapshot.size;
 }
 
 //Count with condition
-Future<int> countDataRowWithCon(String collection,String variable, String value) async {
-  QuerySnapshot snapshot = await FirebaseFirestore.instance.collection(collection).where(variable, isEqualTo: value).get();
+Future<int> countDataRowWithCon(
+    String collection, String variable, String value) async {
+  QuerySnapshot snapshot = await FirebaseFirestore.instance
+      .collection(collection)
+      .where(variable, isEqualTo: value)
+      .get();
   return snapshot.size;
 }
 
@@ -38,7 +44,8 @@ Future<bool> hasReviewToday(String patientIC) async {
 }
 
 //Check data existence with the selected field
-Future<bool> checkDataExistence(String collection, String field, String value) async {
+Future<bool> checkDataExistence(
+    String collection, String field, String value) async {
   QuerySnapshot snapshot = await FirebaseFirestore.instance
       .collection(collection)
       .where(field, isEqualTo: value)
@@ -66,10 +73,9 @@ Future<String?> getDataWithCon(
   }
 }
 
-
 Future<String?> getValueFromDocumentID(
-  String collection, 
-  String documentID, 
+  String collection,
+  String documentID,
   String targetField,
 ) async {
   try {
@@ -89,3 +95,48 @@ Future<String?> getValueFromDocumentID(
   }
 }
 
+void storedocumentquery(String Collection, Map<String, dynamic> doc) {
+  var db = FirebaseFirestore.instance;
+  db.collection(Collection).add(doc);
+}
+
+Future<List<Map<String, dynamic>>> getNotifBySenderIC(String collection,
+    String SenderICField, String recieverICfield, String recieverIC) async {
+  QuerySnapshot snapshot =
+      await FirebaseFirestore.instance.collection(collection).get();
+  List<Map<String, dynamic>> dataList = [];
+
+  for (var doc in snapshot.docs) {
+    var data = doc.data() as Map<String, dynamic>;
+    if (data.containsKey(SenderICField) &&
+        data[recieverICfield] == recieverIC) {
+      data['docId'] = doc.id;
+      dataList.add(data);
+    }
+  }
+
+  return dataList;
+}
+
+void markAsRead(String docId) async {
+  await FirebaseFirestore.instance
+      .collection("Notifications")
+      .doc(docId)
+      .update({"read": true});
+}
+
+Future<int> countUnreadlist(
+    String collection, String SenderICField, String recieverICfield) async {
+  int count = 0;
+  List<Map<String, dynamic>> data = await getNotifBySenderIC(
+      collection, SenderICField, recieverICfield, globalIC);
+  print(data);
+
+  for (Map<String, dynamic> i in data) {
+    if (i["read"] == false) {
+      count++;
+    }
+  }
+
+  return count;
+}

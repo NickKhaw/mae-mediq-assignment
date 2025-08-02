@@ -195,7 +195,7 @@ class _AddReocrdWidgetState extends State<AddReocrdWidget> {
               size: 30.0,
             ),
             onPressed: () async {
-              context.safePop();
+              context.pushNamed(DoctorDashbaordWidget.routeName);
             },
           ),
           title: Text(

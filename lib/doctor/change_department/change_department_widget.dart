@@ -249,7 +249,7 @@ class _ChangeDepartmentWidgetState extends State<ChangeDepartmentWidget> {
               size: 30.0,
             ),
             onPressed: () async {
-              context.safePop();
+              context.pushNamed(DoctorDashbaordWidget.routeName);
             },
           ),
           title: Text(

@@ -33,3 +33,4 @@ export '/patient/check_queue/check_queue_widget.dart' show CheckQueueWidget;
 export '/patient/precheck_queue/precheck_queue_widget.dart' show PrecheckQueueWidget;
 export '/admin/add_doctor/add_doctor_widget.dart' show AddDoctorWidget;
 export '/doctor/current_booking.dart' show DoctorBookingListPage;
+export 'package:mae_mediq_assignment/doctor/notification/doctorNotificationwidget.dart' show DoctorNotificationWidget;

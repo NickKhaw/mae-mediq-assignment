@@ -10,6 +10,7 @@ import '../../globals.dart' as globals;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../firebase_options.dart';
 import '../current_booking.dart';
+import '../../Functions.dart';
 
 class DoctorDashbaordWidget extends StatefulWidget {
   const DoctorDashbaordWidget({super.key});
@@ -25,8 +26,7 @@ class _DoctorDashbaordWidgetState extends State<DoctorDashbaordWidget> {
   late DoctorDashbaordModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-
-  
+  int unreadCount = 0;
 
   @override
   void initState() {
@@ -34,6 +34,16 @@ class _DoctorDashbaordWidgetState extends State<DoctorDashbaordWidget> {
     _model = createModel(context, () => DoctorDashbaordModel());
     _model.switchValue = false;
     fetchStatusFromFirestore();
+    unreadCount = 0;
+    loadData();
+  }
+
+  void loadData() async {
+    int count = await countUnreadlist("Notifications", "adminIC", "doctorIC");
+    print(count);
+    setState(() {
+      unreadCount = count;
+    });
   }
 
   void fetchStatusFromFirestore() async {
@@ -81,10 +91,55 @@ class _DoctorDashbaordWidgetState extends State<DoctorDashbaordWidget> {
                   fontSize: 30.0,
                   letterSpacing: 0.0,
                   fontWeight: FontWeight.w600,
-                  fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
                 ),
           ),
-          actions: [],
+          actions: [
+            Padding(
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 25.0, 0.0),
+              child: Stack(
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.notifications_none,
+                      color: Colors.white,
+                      size: 28.0,
+                    ),
+                    onPressed: () async {
+                      context.pushNamed(DoctorNotificationWidget.routeName);
+                    },
+                  ),
+                  // Badge for unread count
+                  if (unreadCount > 0)
+                    Positioned(
+                      right: 6,
+                      top: 6,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: const BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                        constraints: const BoxConstraints(
+                          minWidth: 20,
+                          minHeight: 20,
+                        ),
+                        child: Center(
+                          child: Text(
+                            '$unreadCount',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
           centerTitle: false,
           elevation: 0.0,
         ),
@@ -159,8 +214,10 @@ class _DoctorDashbaordWidgetState extends State<DoctorDashbaordWidget> {
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: Image.network(globals.globalUrl==""?
-                              globals.globalDefaultPic:globals.globalUrl,
+                            image: Image.network(
+                              globals.globalUrl == ""
+                                  ? globals.globalDefaultPic
+                                  : globals.globalUrl,
                             ).image,
                           ),
                           shape: BoxShape.circle,

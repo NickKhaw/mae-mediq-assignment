@@ -5,6 +5,7 @@ import 'package:mae_mediq_assignment/flutter_flow/flutter_flow_util.dart';
 import '../../globals.dart' as globals;
 import '/index.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../Functions.dart';
 
 class DoctorSelectedListPage extends StatefulWidget {
   static String routeName = 'Selected_Patient';
@@ -169,39 +170,39 @@ class _DoctorSelectedListPageState extends State<DoctorSelectedListPage> {
 
             return Center(
               child: Container(
-              width: screenWidth * 0.75,
-              height: screenHeight * 0.8,
-              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-              padding: EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: Colors.blueAccent,
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.3),
-                  width: 1.5,
-                ),
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Colors.blueAccent.withOpacity(0.9),
-                    Colors.blueAccent.withOpacity(0.7),
+                width: screenWidth * 0.75,
+                height: screenHeight * 0.8,
+                margin: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                padding: EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Colors.blueAccent,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.3),
+                    width: 1.5,
+                  ),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Colors.blueAccent.withOpacity(0.9),
+                      Colors.blueAccent.withOpacity(0.7),
+                    ],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue.withOpacity(0.4),
+                      blurRadius: 20,
+                      spreadRadius: 2,
+                      offset: Offset(0, 10),
+                    ),
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      blurRadius: 6,
+                      offset: Offset(0, 4),
+                    ),
                   ],
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.blue.withOpacity(0.4),
-                    blurRadius: 20,
-                    spreadRadius: 2,
-                    offset: Offset(0, 10),
-                  ),
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    blurRadius: 6,
-                    offset: Offset(0, 4),
-                  ),
-                ],
-              ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -352,6 +353,14 @@ class _DoctorSelectedListPageState extends State<DoctorSelectedListPage> {
                                     content: Text(
                                         "${item['Name']} status updated to In Progress")),
                               );
+
+                              storedocumentquery("Notifications",
+                                  {"doctorIC": globals.globalIC,
+                                   "message": "You are now being called. Please proceed to the consultation room.",
+                                   "patientIC":item['IC'],
+                                   "read": "false",
+                                   "Timestamp" : FieldValue.serverTimestamp(), 
+                                   });
                             }
                           : null,
                     ),

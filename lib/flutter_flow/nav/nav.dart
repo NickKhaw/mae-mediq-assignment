@@ -221,6 +221,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: DashboardScreen.routePath,
           builder: (context, params) => DashboardScreen(),
         ),
+        FFRoute(
+          name: DoctorNotificationWidget.routeName,
+          path: DoctorNotificationWidget.routePath,
+          builder: (context, params) => DoctorNotificationWidget(),
+        ),
        
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

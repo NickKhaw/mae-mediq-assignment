@@ -99,17 +99,16 @@ class _ProfileWidgetState extends State<ProfileWidget>
   }
 
   ImageProvider<Object> _getProfileImage() {
-  if (_pickedFile != null && !kIsWeb) {
-    return FileImage(File(_pickedFile!.path));
-  } else if (_uploadedImageUrl != null) {
-    return NetworkImage(_uploadedImageUrl!);
-  } else if (_fetchedProfilePicUrl != null) {
-    return NetworkImage(globalUrl);
-  } else {
-    return NetworkImage(globalDefaultPic);
+    if (_pickedFile != null && !kIsWeb) {
+      return FileImage(File(_pickedFile!.path));
+    } else if (_uploadedImageUrl != null) {
+      return NetworkImage(_uploadedImageUrl!);
+    } else if (_fetchedProfilePicUrl != null) {
+      return NetworkImage(globalUrl);
+    } else {
+      return NetworkImage(globalDefaultPic);
+    }
   }
-}
-
 
   @override
   void initState() {
@@ -241,7 +240,14 @@ class _ProfileWidgetState extends State<ProfileWidget>
               size: 30.0,
             ),
             onPressed: () async {
-              context.safePop();
+              if (globalRole == "Patient") {
+                context.pushNamed(PatientDashboardWidget.routeName);
+              }else if(globalRole == "Doctor"){
+                context.pushNamed(DoctorDashbaordWidget.routeName);
+              }else if(globalRole == "Admin"){
+                context.pushNamed(AdminDashboardWidget.routeName);
+              }
+              
             },
           ),
           title: Text(
@@ -280,7 +286,6 @@ class _ProfileWidgetState extends State<ProfileWidget>
                       child: CircleAvatar(
                         radius: 50,
                         backgroundImage: _getProfileImage(),
-
                       ),
                     ),
                   ),
