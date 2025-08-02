@@ -100,7 +100,7 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
             },
           ),
           title: Text(
-            'Edit Doctor Profile',
+            'Edit Doctor',
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   font: GoogleFonts.interTight(
                     fontWeight: FontWeight.w600,
