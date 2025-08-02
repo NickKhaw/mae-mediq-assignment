@@ -75,7 +75,8 @@ class _ManageDoctorWidgetState extends State<ManageDoctorWidget> {
         'specialty': data['Department']?.toString() ?? 'No Specialty',
         'email': data['Email']?.toString() ?? 'No Email',
         'phone': data['Phone Num']?.toString() ?? 'No Phone',
-        'department': data['Department']?.toString(), // Added for easier filtering
+        'department': data['Department']?.toString(),
+        'room': data['Room']?.toString() ?? 'No Room', // Added for easier filtering
       };
     }).toList();
 
@@ -215,7 +216,26 @@ class _ManageDoctorWidgetState extends State<ManageDoctorWidget> {
                             ),
                           ),
                         ].divide(SizedBox(width: 4.0)),
-                      ),
+                      ),Row(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Icon(
+            Icons.meeting_room_outlined,
+            color: Colors.black,
+            size: 16.0,
+          ),
+          SizedBox(width: 4.0),
+          Text(
+            doctor['room'] ?? 'No Room',
+            style: FlutterFlowTheme.of(context).bodySmall.override(
+              font: GoogleFonts.inter(),
+              color: Colors.black,
+              letterSpacing: 0.0,
+            ),
+          ),
+        ],
+      ),
+    
                     ].divide(SizedBox(height: 8.0)),
                   ),
                 ),
