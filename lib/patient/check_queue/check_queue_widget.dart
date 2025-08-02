@@ -220,17 +220,22 @@ Widget build(BuildContext context) {
               // Hospital Info
               Card(
                 elevation: 4,
+                color: Color(0xFF0A2342), // Dark blue background
                 child: ListTile(
+                  tileColor: Color(0xFF0A2342), // Dark blue background
                   title: Text(
                     hospitalName,
                     style: FlutterFlowTheme.of(context).titleMedium.override(
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.bold,
+                          color: Colors.white, // White text
                         ),
                   ),
                   subtitle: Text(
                     hospitalAddress,
-                    style: FlutterFlowTheme.of(context).bodyMedium,
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                          color: Colors.white, // White text
+                        ),
                   ),
                 ),
               ),
@@ -241,7 +246,7 @@ Widget build(BuildContext context) {
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.blue[50],
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: Colors.blueAccent),
                 ),
@@ -257,7 +262,7 @@ Widget build(BuildContext context) {
                       style: const TextStyle(
                         fontSize: 48,
                         fontWeight: FontWeight.bold,
-                        color: Colors.red,
+                        color: Colors.blueAccent,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -325,7 +330,7 @@ Widget build(BuildContext context) {
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.pink[50],
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
