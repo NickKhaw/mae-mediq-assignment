@@ -346,6 +346,14 @@ class _DoctorSelectedListPageState extends State<DoctorSelectedListPage> {
                                 'Selected_Status': statuses,
                               });
 
+                              // Add a notification for the patient
+                              await db.collection('Notifications').add({
+                                'patientIC': item['IC'],
+                                'message': "It's your turn. Please be ready for your consultation.",
+                                'timestamp': FieldValue.serverTimestamp(),
+                                'read': false,
+                              });
+
                               print("Updated status for ${item['IC']} to 1.");
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(

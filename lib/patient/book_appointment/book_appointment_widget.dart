@@ -820,13 +820,18 @@ class _BookAppointmentWidgetState extends State<BookAppointmentWidget> {
                             'Ticket ID': TicketNum,
                             'Status': 'Pending',
                             'Timestamp': FieldValue.serverTimestamp(),
-                          }).then((value) {
-                            print("User Added: ${value.id}");
+                          }).then((value) async {
+                            print("User Added: \\${value.id}");
+                            // Add notification for the patient
+                            await FirebaseFirestore.instance.collection('Notifications').add({
+                              'patientIC': IC,
+                              'message': 'You have successfully taken a number for your appointment.',
+                              'timestamp': FieldValue.serverTimestamp(),
+                              'read': false,
+                            });
                           }).catchError((error) {
-                            print("Failed to add user: $error");
-                          }); 
-                          
-
+                            print("Failed to add user: \\${error}");
+                          });
                         }else{
                           print("$Name,$IC,$PhoneNum,$Gender");
                           print("$globalName");

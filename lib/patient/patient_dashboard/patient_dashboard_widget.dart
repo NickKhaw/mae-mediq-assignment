@@ -375,7 +375,7 @@ class _PatientDashboardWidgetState extends State<PatientDashboardWidget> {
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 12.0, 0.0, 0.0),
                                 child: Text(
-                                  'Book Appointment',
+                                  'Take Number',
                                   textAlign: TextAlign.center,
                                   style: FlutterFlowTheme.of(context)
                                       .titleMedium
