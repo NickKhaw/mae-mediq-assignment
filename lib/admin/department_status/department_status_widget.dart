@@ -9,10 +9,6 @@ import 'department_status_model.dart';
 export 'department_status_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-/// Create a department status page for admin which show all different
-/// department quite number and a accepting patient switch at the right for
-/// each department with scrolling function
-///
 class DepartmentStatusWidget extends StatefulWidget {
   const DepartmentStatusWidget({super.key});
 

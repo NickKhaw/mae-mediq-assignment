@@ -10,17 +10,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'doctor_register_model.dart';
 export 'doctor_register_model.dart';
 
-/// Register Doctor Page
-/// 🎯 Design Idea:
-/// Form layout with labels + textboxes:
-///
-/// Name, IC, Department (dropdown), Position, Password
-///
-/// [Register] and [Clear Form] buttons at the bottom
-///
-/// Keep form short.
-///
-/// Use dropdowns for department & role for consistency.
 class DoctorRegisterWidget extends StatefulWidget {
   const DoctorRegisterWidget({super.key});
 
