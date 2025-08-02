@@ -6,6 +6,9 @@ import 'package:mae_mediq_assignment/flutter_flow/flutter_flow_util.dart';
 import 'package:mae_mediq_assignment/globals.dart';
 import 'package:mae_mediq_assignment/index.dart';
 import '../../Functions.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 class Review extends StatefulWidget {
@@ -154,9 +157,37 @@ class _ReviewState extends State<Review> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFE6F1F7),
       appBar: AppBar(
-        title: const Text('Leave a Review'),
-        centerTitle: true,
+        backgroundColor: Color(0xFF4A90E2),
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Leave a Review',
+          style: FlutterFlowTheme.of(context).titleLarge.override(
+                font: GoogleFonts.interTight(
+                  fontWeight: FontWeight.w600,
+                  fontStyle:
+                      FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                ),
+                fontSize: 30.0,
+                letterSpacing: 0.0,
+                fontWeight: FontWeight.w600,
+                fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+              ),
+        ),
+        leading: FlutterFlowIconButton(
+          borderRadius: 8.0,
+          buttonSize: 40.0,
+          icon: Icon(
+            Icons.arrow_back,
+            size: 30.0,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        centerTitle: false,
+        elevation: 0.0,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -165,6 +196,7 @@ class _ReviewState extends State<Review> {
             // Doctor Details Card
             Card(
               elevation: 4,
+              color: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -187,14 +219,15 @@ class _ReviewState extends State<Review> {
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
+                              color: Colors.black,
                             ),
                           ),
                           const SizedBox(height: 4),
                           Text(
                             DocSpecialization,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
-                              color: Colors.grey[600],
+                              color: Colors.black87,
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -204,7 +237,7 @@ class _ReviewState extends State<Review> {
                               const SizedBox(width: 4),
                               Text(
                                 "Seremban Hospital",
-                                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                                style: const TextStyle(fontSize: 14, color: Colors.black87),
                               ),
                             ],
                           ),
@@ -215,7 +248,7 @@ class _ReviewState extends State<Review> {
                               const SizedBox(width: 4),
                               Text(
                                 '$DocRating ($DocRatedAmount reviews)',
-                                style: const TextStyle(fontSize: 14),
+                                style: const TextStyle(fontSize: 14, color: Colors.black),
                               ),
                             ],
                           ),
@@ -232,6 +265,7 @@ class _ReviewState extends State<Review> {
             // Review Form
             Card(
               elevation: 4,
+              color: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -247,6 +281,7 @@ class _ReviewState extends State<Review> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
+                          color: Colors.black,
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -257,6 +292,7 @@ class _ReviewState extends State<Review> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
+                          color: Colors.black,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -279,7 +315,7 @@ class _ReviewState extends State<Review> {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: Colors.blue[50],
+                              color: Color(0xFF4A90E2),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
@@ -287,6 +323,7 @@ class _ReviewState extends State<Review> {
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
+                                color: Colors.white,
                               ),
                             ),
                           ),
@@ -300,15 +337,29 @@ class _ReviewState extends State<Review> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
+                          color: Colors.black,
                         ),
                       ),
                       const SizedBox(height: 8),
                       TextFormField(
                         maxLines: 5,
+                        style: const TextStyle(color: Colors.black),
                         decoration: InputDecoration(
                           hintText: 'Share your experience with this doctor...',
+                          hintStyle: const TextStyle(color: Colors.black54),
+                          fillColor: Colors.white,
+                          filled: true,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: Colors.black),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: Colors.black54),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: Color(0xFF4A90E2)),
                           ),
                         ),
                         validator: (value) {
@@ -326,6 +377,8 @@ class _ReviewState extends State<Review> {
                         width: double.infinity,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF4A90E2),
+                            foregroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -341,7 +394,7 @@ class _ReviewState extends State<Review> {
                               ? const CircularProgressIndicator(color: Colors.white)
                               : const Text(
                                   'Submit Review',
-                                  style: TextStyle(fontSize: 16),
+                                  style: TextStyle(fontSize: 16, color: Colors.white),
                                 ),
                         ),
                       ),

@@ -135,9 +135,34 @@ class _AddDoctorWidgetState extends State<AddDoctorWidget> {
       backgroundColor: Color(0xFFE6F1F7),
       appBar: AppBar(
         backgroundColor: Color(0xFF4A90E2),
-        title: Text('Add New Doctor'),
-        centerTitle: true,
-        elevation: 0,
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Add New Doctor',
+          style: FlutterFlowTheme.of(context).titleLarge.override(
+                font: GoogleFonts.interTight(
+                  fontWeight: FontWeight.w600,
+                  fontStyle:
+                      FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                ),
+                fontSize: 30.0,
+                letterSpacing: 0.0,
+                fontWeight: FontWeight.w600,
+                fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
+              ),
+        ),
+        leading: FlutterFlowIconButton(
+          borderRadius: 8.0,
+          buttonSize: 40.0,
+          icon: Icon(
+            Icons.arrow_back,
+            size: 30.0,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        centerTitle: false,
+        elevation: 0.0,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
