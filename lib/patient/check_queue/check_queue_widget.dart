@@ -195,9 +195,9 @@ class _CheckQueueWidgetState extends State<CheckQueueWidget> {
 Widget build(BuildContext context) {
   return Scaffold(
     key: scaffoldKey,
-    backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+    backgroundColor: Color(0xFFE6F1F7),
     appBar: AppBar(
-      backgroundColor: FlutterFlowTheme.of(context).primary,
+      backgroundColor: Color(0xFF4A90E2),
       automaticallyImplyLeading: true,
       title: Text(
         'Check Queue',
