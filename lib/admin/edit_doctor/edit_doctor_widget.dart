@@ -177,6 +177,7 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                                             .fontStyle,
                                       ),
                                       letterSpacing: 0.0,
+                                      color: Colors.black,
                                       fontWeight: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .fontWeight,
@@ -213,8 +214,7 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                                 filled: true,
-                                fillColor: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
+                                fillColor: Colors.white,
                               ),
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
@@ -227,8 +227,7 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                                           .bodyMedium
                                           .fontStyle,
                                     ),
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
+                                    color: Colors.black,
                                     letterSpacing: 0.0,
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .bodyMedium
@@ -268,6 +267,7 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                                     fontStyle: FlutterFlowTheme.of(context).labelMedium.fontStyle,
                                   ),
                                   letterSpacing: 0.0,
+                                  color: Colors.black,
                                   fontWeight: FontWeight.w600,
                                 ),
                           ),
@@ -283,14 +283,14 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                                   font: GoogleFonts.inter(
                                     fontWeight: FontWeight.w600,
                                   ),
-                                  color: FlutterFlowTheme.of(context).primaryText,
+                                  color: Colors.black
                                 ),
                             hintText: 'Select room',
                             icon: Icon(
                               Icons.keyboard_arrow_down_rounded,
                               color: FlutterFlowTheme.of(context).secondaryText,
                             ),
-                            fillColor: FlutterFlowTheme.of(context).secondaryBackground,
+                            fillColor: Colors.white,
                             elevation: 0.0,
                             borderColor: Color(0xFFB0C4DE),
                             borderWidth: 2.0,
@@ -344,6 +344,7 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                                             .fontStyle,
                                       ),
                                       letterSpacing: 0.0,
+                                      color: Colors.black,
                                       fontWeight: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .fontWeight,
@@ -380,8 +381,7 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                                 filled: true,
-                                fillColor: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
+                                fillColor: Colors.white,
                               ),
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
@@ -394,8 +394,7 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                                           .bodyMedium
                                           .fontStyle,
                                     ),
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
+                                    color: Colors.black,
                                     letterSpacing: 0.0,
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .bodyMedium
@@ -428,6 +427,7 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                                         .fontStyle,
                                   ),
                                   letterSpacing: 0.0,
+                                  color: Colors.black,
                                   fontWeight: FontWeight.w600,
                                   fontStyle: FlutterFlowTheme.of(context)
                                       .labelMedium
@@ -460,8 +460,7 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                                         .bodyMedium
                                         .fontStyle,
                                   ),
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryText,
+                                  color: Colors.black,
                                   letterSpacing: 0.0,
                                   fontWeight: FlutterFlowTheme.of(context)
                                       .bodyMedium
@@ -473,11 +472,10 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                             hintText: 'Select department',
                             icon: Icon(
                               Icons.keyboard_arrow_down_rounded,
-                              color: FlutterFlowTheme.of(context).secondaryText,
+                              color: Colors.black,
                               size: 24.0,
                             ),
-                            fillColor: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
+                            fillColor: Colors.white,
                             elevation: 0.0,
                             borderColor: Color(0xFFB0C4DE),
                             borderWidth: 2.0,
