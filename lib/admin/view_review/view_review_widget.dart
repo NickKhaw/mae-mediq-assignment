@@ -92,49 +92,69 @@ class _ReviewsPageState extends State<ReviewsPage> {
                         final patientName = nameSnapshot.data ?? 'Loading...';
                         
                         return Card(
-                          margin: const EdgeInsets.only(bottom: 16),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Doctor Details
-                                Text(
-                                  'Doctor: $_doctorName (IC: ${_doctorIC ?? 'N/A'})',
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 8),
-                                
-                                // Patient Details
-                                Text(
-                                  'Patient: $patientName (IC: ${data['Patient_IC'] ?? 'N/A'})',
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 8),
-                                
-                                // Rating
-                                Row(
-                                  children: [
-                                    const Text('Rating: '),
-                                    _buildRatingStars(data['Star']?.toDouble() ?? 0),
-                                    Text(' (${data['Star'] ?? 0})'),
-                                  ],
-                                ),
-                                const SizedBox(height: 8),
-                                
-                                // Comment
-                                Text('Comment: ${data['Comment'] ?? 'No comment'}'),
-                                const SizedBox(height: 8),
-                                
-                                // Timestamp
-                                Text(
-                                  'Date: ${_formatTimestamp(data['Timestamp'])}',
-                                  style: TextStyle(color: Colors.grey[600], fontSize: 12),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
+  color: Colors.white,
+  margin: const EdgeInsets.only(bottom: 16),
+  elevation: 2,
+  child: Padding(
+    padding: const EdgeInsets.all(16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Doctor Name only
+        Text(
+          'Doctor: $_doctorName',
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        const SizedBox(height: 8),
+
+        // Patient Name only
+        Text(
+          'Patient: $patientName',
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        const SizedBox(height: 8),
+
+        // Rating
+        Row(
+          children: [
+            const Text(
+              'Rating: ',
+              style: TextStyle(color: Colors.black),
+            ),
+            _buildRatingStars(data['Star']?.toDouble() ?? 0),
+            Text(
+              ' (${data['Star'] ?? 0})',
+              style: const TextStyle(color: Colors.black),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+
+        // Comment
+        Text(
+          'Comment: ${data['Comment'] ?? 'No comment'}',
+          style: const TextStyle(color: Colors.black),
+        ),
+        const SizedBox(height: 8),
+
+        // Timestamp
+        Text(
+          'Date: ${_formatTimestamp(data['Timestamp'])}',
+          style: TextStyle(
+            color: Colors.grey[600],
+            fontSize: 12,
+          ),
+        ),
+      ],
+    ),
+  ),
+);
                       },
                     );
                   },

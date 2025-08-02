@@ -60,9 +60,9 @@ class _PrecheckQueueWidgetState extends State<PrecheckQueueWidget> {
 Widget build(BuildContext context) {
   return Scaffold(
     key: scaffoldKey,
-    backgroundColor: Colors.white,
+    backgroundColor: Color(0xFFE6F1F7),
     appBar: AppBar(
-      backgroundColor: FlutterFlowTheme.of(context).primary,
+      backgroundColor: Color(0xFF4A90E2),
       title: const Text(
         'Appointment Status',
         style: TextStyle(
@@ -82,29 +82,28 @@ Widget build(BuildContext context) {
           children: [
             Icon(
               booking_exist == true
-                ? Icons.schedule
-                : Icons.calendar_today_outlined,
+                  ? Icons.schedule
+                  : Icons.calendar_today_outlined,
               size: 100,
-              color: Colors.grey,
+              color: booking_exist == true ? Colors.grey : Colors.black, // Updated icon color
             ),
             SizedBox(height: 20),
-            
             Text(
               booking_exist == true
-                ? 'You can only book one appointment a day.'
-                : "You haven't booked an appointment yet.",
+                  ? 'You can only book one appointment a day.'
+                  : "You haven't booked an appointment yet.",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
-                color: Colors.black54,
+                color: booking_exist == true ? Colors.black54 : Colors.black, // Updated text color
               ),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 12),
             Text(
               booking_exist == true
-                ? 'Please wait until tomorrow to book again.'
-                : "Please go to the booking section to make one.",
+                  ? 'Please wait until tomorrow to book again.'
+                  : "Please go to the booking section to make one.",
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.black45,
