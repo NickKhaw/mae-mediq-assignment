@@ -76,7 +76,8 @@ class _ManageDoctorWidgetState extends State<ManageDoctorWidget> {
         'email': data['Email']?.toString() ?? 'No Email',
         'phone': data['Phone Num']?.toString() ?? 'No Phone',
         'department': data['Department']?.toString(),
-        'room': data['Room']?.toString() ?? 'No Room', // Added for easier filtering
+        'room': data['Room']?.toString() ?? 'No Room',
+        'ic': data['IC']?.toString() ?? 'No IC', // Added IC field
       };
     }).toList();
 
@@ -145,7 +146,7 @@ class _ManageDoctorWidgetState extends State<ManageDoctorWidget> {
         ),
       ),
       child: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(24.0), // Increased from 16.0 to 24.0
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
@@ -180,6 +181,24 @@ class _ManageDoctorWidgetState extends State<ManageDoctorWidget> {
                           letterSpacing: 0.0,
                           fontWeight: FontWeight.w500,
                         ),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Icon(
+                            Icons.badge_outlined,
+                            color: Colors.black,
+                            size: 16.0,
+                          ),
+                          Text(
+                            doctor['ic'] ?? 'No IC',
+                            style: FlutterFlowTheme.of(context).bodySmall.override(
+                              font: GoogleFonts.inter(),
+                              color: Colors.black,
+                              letterSpacing: 0.0,
+                            ),
+                          ),
+                        ].divide(SizedBox(width: 4.0)),
                       ),
                       Row(
                         mainAxisSize: MainAxisSize.max,
@@ -236,7 +255,7 @@ class _ManageDoctorWidgetState extends State<ManageDoctorWidget> {
         ],
       ),
     
-                    ].divide(SizedBox(height: 8.0)),
+                    ].divide(SizedBox(height: 12.0)), // Increased from 8.0 to 12.0
                   ),
                 ),
                 Column(
