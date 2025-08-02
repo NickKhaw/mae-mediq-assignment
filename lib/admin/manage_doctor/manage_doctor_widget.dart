@@ -1,5 +1,3 @@
-import 'package:mae_mediq_assignment/admin/view_review/view_review_widget.dart';
-
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -11,6 +9,7 @@ export 'manage_doctor_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../add_doctor/add_doctor_widget.dart';
 import '../view_review/view_review_widget.dart';
+import '../edit_doctor/edit_doctor_widget.dart';
 import '../../globals.dart';
 
 class ManageDoctorWidget extends StatefulWidget {
@@ -250,6 +249,8 @@ class _ManageDoctorWidgetState extends State<ManageDoctorWidget> {
                         size: 18.0,
                       ),
                       onPressed: () {
+                        globalDoctorID = doctor['id'];
+                        context.pushNamed(EditDoctorWidget.routeName);
                         print('Edit ${doctor['name']} pressed ...');
                       },
                     ),
