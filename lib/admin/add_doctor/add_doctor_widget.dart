@@ -90,7 +90,6 @@ class _AddDoctorWidgetState extends State<AddDoctorWidget> {
         'Level': _level,
         'Department': _department,
         'Room': _room,
-        'Profile Pic': '',
         'Status': false,
         'Rating': 0,
          // For role-based access control
