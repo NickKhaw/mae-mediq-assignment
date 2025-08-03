@@ -95,3 +95,53 @@ Future<String?> getValueFromDocumentID(
   }
 }
 
+
+
+//juei tien
+void storedocumentquery(String Collection, Map<String, dynamic> doc) {
+  var db = FirebaseFirestore.instance;
+  db.collection(Collection).add(doc);
+}
+
+Future<List<Map<String, dynamic>>> getNotifBySenderIC(String collection,
+    String SenderICField, String recieverICfield, String recieverIC) async {
+  QuerySnapshot snapshot =
+      await FirebaseFirestore.instance.collection(collection).get();
+  List<Map<String, dynamic>> dataList = [];
+
+  for (var doc in snapshot.docs) {
+    var data = doc.data() as Map<String, dynamic>;
+    if (data.containsKey(SenderICField) &&
+        data[recieverICfield] == recieverIC) {
+      data['docId'] = doc.id;
+      dataList.add(data);
+    }
+  }
+
+  return dataList;
+}
+
+void markAsRead(String docId) async {
+  await FirebaseFirestore.instance
+      .collection("Notifications")
+      .doc(docId)
+      .update({"read": true});
+}
+
+Future<int> countUnreadlist(
+    String collection, String SenderICField, String recieverICfield) async {
+  int count = 0;
+  List<Map<String, dynamic>> data = await getNotifBySenderIC(
+      collection, SenderICField, recieverICfield, globalIC);
+  print(data);
+
+  for (Map<String, dynamic> i in data) {
+    if (i["read"] == false) {
+      count++;
+    }
+  }
+
+  return count;
+}
+
+
