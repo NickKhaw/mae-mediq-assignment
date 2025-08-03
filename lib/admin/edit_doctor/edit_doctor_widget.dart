@@ -1,5 +1,5 @@
 import 'package:mae_mediq_assignment/globals.dart';
-
+import '../../Functions.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -12,7 +12,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'edit_doctor_model.dart';
 export 'edit_doctor_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 
 class EditDoctorWidget extends StatefulWidget {
   const EditDoctorWidget({super.key});
@@ -28,6 +27,7 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
   late EditDoctorModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  String DoctorIC = '';
 
   @override
   void initState() {
@@ -52,10 +52,11 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
     super.dispose();
   }
 
-  Future <void> retrieveData() async {
+  Future<void> retrieveData() async {
     try {
       // Get the doctor document from Firestore
-      final doctorRef = FirebaseFirestore.instance.collection('Doctor').doc(globalDoctorID);
+      final doctorRef =
+          FirebaseFirestore.instance.collection('Doctor').doc(globalDoctorID);
       final doctorSnapshot = await doctorRef.get();
 
       if (doctorSnapshot.exists) {
@@ -64,6 +65,9 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
         _model.roomValue = doctorData['Room'] ?? '';
         _model.textController3.text = doctorData['Phone Num'] ?? '';
         _model.dropDownValue = doctorData['Department'] ?? '';
+        setState(() {
+          DoctorIC = doctorData['IC'] ?? "";
+        });
       } else {
         print('Doctor document does not exist');
       }
@@ -261,10 +265,14 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                         children: [
                           Text(
                             'Room',
-                            style: FlutterFlowTheme.of(context).labelMedium.override(
+                            style: FlutterFlowTheme.of(context)
+                                .labelMedium
+                                .override(
                                   font: GoogleFonts.inter(
                                     fontWeight: FontWeight.w600,
-                                    fontStyle: FlutterFlowTheme.of(context).labelMedium.fontStyle,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontStyle,
                                   ),
                                   letterSpacing: 0.0,
                                   color: Colors.black,
@@ -272,19 +280,20 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                                 ),
                           ),
                           FlutterFlowDropDown<String>(
-                            controller: _model.roomValueController ??= 
+                            controller: _model.roomValueController ??=
                                 FormFieldController<String>(null),
                             options: ['R1', 'R2', 'R3', 'R4'],
-                            onChanged: (val) => 
+                            onChanged: (val) =>
                                 safeSetState(() => _model.roomValue = val),
                             width: double.infinity,
                             height: 56.0,
-                            textStyle: FlutterFlowTheme.of(context).bodyMedium.override(
-                                  font: GoogleFonts.inter(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  color: Colors.black
-                                ),
+                            textStyle: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                    font: GoogleFonts.inter(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    color: Colors.black),
                             hintText: 'Select room',
                             icon: Icon(
                               Icons.keyboard_arrow_down_rounded,
@@ -295,11 +304,12 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                             borderColor: Color(0xFFB0C4DE),
                             borderWidth: 2.0,
                             borderRadius: 8.0,
-                            margin: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                            margin: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
                             hidesUnderline: true,
                           ),
                         ].divide(SizedBox(height: 8.0)),
-                        ),
+                      ),
                       Column(
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -491,32 +501,57 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                       FFButtonWidget(
                         onPressed: () async {
                           // Validate form first
-                          if (_model.formKey.currentState?.validate() ?? false) {
+                          if (_model.formKey.currentState?.validate() ??
+                              false) {
                             try {
                               // Get reference to the doctor document
                               final doctorRef = FirebaseFirestore.instance
                                   .collection('Doctor')
-                                  .doc(globalDoctorID); // You need to specify the doctor ID
-                              
+                                  .doc(
+                                      globalDoctorID); // You need to specify the doctor ID
+
                               // Update data in Firestore
                               await doctorRef.update({
                                 'Name': _model.textController1.text,
-                                'Room': _model.roomValueController?.value ??"", 
+                                'Room': _model.roomValueController?.value ?? "",
                                 'Phone Num': _model.textController3.text,
                                 'Department': _model.dropDownValue,
                               });
 
                               // Show success message
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Doctor details updated successfully!')),
+                                SnackBar(
+                                    content: Text(
+                                        'Doctor details updated successfully!')),
                               );
+                                String Name= _model.textController1.text;
+                                String Room= _model.roomValueController?.value ?? "";
+                                String Phone_Num= _model.textController3.text;
+                                String Department= _model.dropDownValue ?? "Unknown";
+                              storedocumentquery("Notifications", {
+                                "adminIC": globalIC,
+                                "message": 
+                                    "Dear Doctor, your profile information has been successfully updated.\n\n"
+                                    "If you did not make this change or have any concerns, please contact the admin immediately.\n\n"
+                                    "Changed info:\n"
+                                    "1) Name: $Name\n"
+                                    "2) Room: $Room\n"
+                                    "3) Phone Number: $Phone_Num\n"
+                                    "4) Department: $Department\n\n"
+                                    "Thank you.",
+                                "doctorIC": DoctorIC,
+                                "read": false,
+                                "Timestamp": FieldValue.serverTimestamp(),
+                              });
+
 
                               // Optionally navigate back
                               context.pop();
                             } catch (e) {
                               // Show error message
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Error updating doctor: $e')),
+                                SnackBar(
+                                    content: Text('Error updating doctor: $e')),
                               );
                             }
                           }
