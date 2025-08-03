@@ -1,5 +1,6 @@
 //ID generator for ticket IDs
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'globals.dart';
 
 String generateTicketId(String alphabet,int number) {
   return '$alphabet${number.toString().padLeft(5, '0')}';
