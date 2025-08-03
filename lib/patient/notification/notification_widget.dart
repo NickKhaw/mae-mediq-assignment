@@ -153,9 +153,8 @@ class _NotificationWidgetState extends State<NotificationWidget> {
             color: Colors.white,
             size: 28,
           ),
-          onPressed: () {
-          Navigator.pushReplacementNamed(
-              context, PatientDashboardWidget.routeName);
+          onPressed: () async {
+            context.pushNamed(PatientDashboardWidget.routeName);
           },
         ),
         title: Text(
