@@ -608,6 +608,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                   padding: EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
                   child: FFButtonWidget(
                     onPressed: () async {
+                      globalUrl = "";
                       context.goNamed(LoginWidget.routeName);
                     },
                     text: 'Log Out',
