@@ -501,7 +501,7 @@ class _EditDoctorWidgetState extends State<EditDoctorWidget> {
                               // Update data in Firestore
                               await doctorRef.update({
                                 'Name': _model.textController1.text,
-                                'Room': _model.roomValue, 
+                                'Room': _model.roomValueController?.value ??"", 
                                 'Phone Num': _model.textController3.text,
                                 'Department': _model.dropDownValue,
                               });
