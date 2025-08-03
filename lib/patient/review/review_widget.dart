@@ -98,8 +98,8 @@ class _ReviewState extends State<Review> {
                   child: const Text('Confirm'),
                   onPressed: () {
                     Navigator.of(context).pop(); // Close the dialog
-                    Future.microtask(() {
-                      context.pushNamed(PrecheckQueueWidget.routeName);
+                    Navigator.of(context).pop(); // Pop the review page
+                    Navigator.of(context).pushNamed(PrecheckQueueWidget.routeName);
                     });
                   },
                 ),
