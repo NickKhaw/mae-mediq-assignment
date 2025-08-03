@@ -97,11 +97,10 @@ class _ReviewState extends State<Review> {
                 TextButton(
                   child: const Text('Confirm'),
                   onPressed: () {
-                    Navigator.of(context).pop(); // Close the dialog
-                    Navigator.of(context).pop(); // Pop the review page
-                    Navigator.of(context).pushNamed(PrecheckQueueWidget.routeName);
-                    });
-                  },
+                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context).pop(); // Pop the review page
+                  Navigator.of(context).pushNamed(PrecheckQueueWidget.routeName);
+                },
                 ),
               ],
             );
