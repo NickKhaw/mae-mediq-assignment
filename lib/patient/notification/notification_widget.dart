@@ -154,12 +154,8 @@ class _NotificationWidgetState extends State<NotificationWidget> {
             size: 28,
           ),
           onPressed: () {
-            if (Navigator.canPop(context)) {
-              Navigator.pop(context);
-            } else {
-              Navigator.pushReplacementNamed(
-                  context, PatientDashboardWidget.routeName);
-            }
+          Navigator.pushReplacementNamed(
+              context, PatientDashboardWidget.routeName);
           },
         ),
         title: Text(
