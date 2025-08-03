@@ -26,6 +26,7 @@ class PatientDashboardWidget extends StatefulWidget {
 class _PatientDashboardWidgetState extends State<PatientDashboardWidget> {
   late PatientDashboardModel _model;
   bool todayReviewExist = false;
+  int UnreadNotiAmount = 0;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -33,13 +34,29 @@ class _PatientDashboardWidgetState extends State<PatientDashboardWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => PatientDashboardModel());
-    countReview(); // Initialize state on load
+    countReview(); 
+    NotificationChecker();// Initialize state on load
   }
 
   @override
   void dispose() {
     _model.dispose();
     super.dispose();
+  }
+
+  Future <void> NotificationChecker() async {
+    try {
+      int UnreadNum = await countUnreadNotifications('Notifications', 'patientIC', globals.globalIC);
+      setState(() {
+        UnreadNotiAmount = UnreadNum;
+        print('Unread Notifications: $UnreadNotiAmount');
+      });
+    } catch (e) {
+      print('Error in NotificationChecker: $e');
+      setState(() {
+        UnreadNotiAmount = 0;
+      });
+    }
   }
 
   Future<void> countReview() async {
@@ -62,39 +79,74 @@ class _PatientDashboardWidgetState extends State<PatientDashboardWidget> {
       key: scaffoldKey,
       backgroundColor: Color(0xFFE6F1F7),
       appBar: AppBar(
-        backgroundColor: Color(0xFF4A90E2),
+        backgroundColor: const Color(0xFF4A90E2),
         automaticallyImplyLeading: false,
+        centerTitle: true,
+        elevation: 0,
         title: Text(
           'Patient Dashboard',
-          style: FlutterFlowTheme.of(context).titleLarge.override(
-                font: GoogleFonts.interTight(
-                  fontWeight: FontWeight.w600,
-                  fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-                ),
-                fontSize: 30.0,
-                letterSpacing: 0.0,
-                fontWeight: FontWeight.w600,
-                fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
-              ),
+          style: GoogleFonts.interTight(
+            fontSize: 26,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
         ),
         actions: [
-          Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 25.0, 0.0),
-            child: IconButton(
-              icon: Icon(
+  Padding(
+    padding: const EdgeInsets.only(right: 20),
+    child: GestureDetector(
+      onTap: () {
+        context.pushNamed(NotificationWidget.routeName);
+      },
+      child: SizedBox(
+        width: 36,
+        height: 36,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            const Align(
+              alignment: Alignment.center,
+              child: Icon(
                 Icons.notifications_none,
-                color: FlutterFlowTheme.of(context).info,
-                size: 24.0,
+                size: 28,
+                color: Colors.white,
               ),
-              onPressed: () async {
-                context.pushNamed(NotificationWidget.routeName);
-              },
             ),
-          ),
-        ],
-        centerTitle: false,
-        elevation: 0.0,
+            if (UnreadNotiAmount > 0)
+              Positioned(
+                top: 2,
+                right: -4,
+                child: Container(
+                  padding: const EdgeInsets.all(2),
+                  constraints: const BoxConstraints(
+                    minWidth: 16,
+                    minHeight: 16,
+                  ),
+                  decoration: const BoxDecoration(
+                    color: Colors.red,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: Text(
+                      UnreadNotiAmount > 99 ? '99+' : '$UnreadNotiAmount',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
+    ),
+  ),
+],
+
+      ),
+
       body: SafeArea(
         top: true,
         child: Padding(
@@ -375,7 +427,7 @@ class _PatientDashboardWidgetState extends State<PatientDashboardWidget> {
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 12.0, 0.0, 0.0),
                                 child: Text(
-                                  'Take Number',
+                                  'Book Appointment',
                                   textAlign: TextAlign.center,
                                   style: FlutterFlowTheme.of(context)
                                       .titleMedium
