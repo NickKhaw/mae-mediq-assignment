@@ -124,7 +124,7 @@ class _RecordHistoryWidgetState extends State<RecordHistoryWidget> {
                 return Container(
                   margin: EdgeInsets.only(bottom: 12),
                   decoration: BoxDecoration(
-                    color: FlutterFlowTheme.of(context).primaryBackground,
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
@@ -180,14 +180,14 @@ class _RecordHistoryWidgetState extends State<RecordHistoryWidget> {
                                                       style: GoogleFonts.inter(
                                                         fontSize: 17,
                                                         fontWeight: FontWeight.w600,
-                                                        color: FlutterFlowTheme.of(context).primaryText,
+                                                        color: Colors.black,
                                                       ),
                                                     ),
                                                     Text(
                                                       data['Doctor_IC'],
                                                       style: GoogleFonts.inter(
                                                         fontSize: 14,
-                                                        color: FlutterFlowTheme.of(context).secondaryText,
+                                                        color: Colors.black,
                                                       ),
                                                     ),
                                                   ],
@@ -242,7 +242,7 @@ class _RecordHistoryWidgetState extends State<RecordHistoryWidget> {
                               child: Container(
                                 padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context).secondaryBackground.withOpacity(0.5),
+                                  color: Colors.white,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Column(
@@ -265,7 +265,7 @@ class _RecordHistoryWidgetState extends State<RecordHistoryWidget> {
                                           style: GoogleFonts.inter(
                                             fontSize: 14,
                                             height: 1.4,
-                                            color: FlutterFlowTheme.of(context).primaryText,
+                                            color: Colors.black,
                                           ),
                                         ),
                                       ),
@@ -292,15 +292,27 @@ class _RecordHistoryWidgetState extends State<RecordHistoryWidget> {
     required String label,
     required String value,
   }) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 6),
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 6),
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 2,
+            offset: Offset(0, 1),
+          ),
+        ],
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(
             icon,
             size: 22,
-            color: FlutterFlowTheme.of(context).secondaryText,
+            color: FlutterFlowTheme.of(context).primary,
           ),
           SizedBox(width: 10),
           Expanded(
@@ -308,7 +320,7 @@ class _RecordHistoryWidgetState extends State<RecordHistoryWidget> {
               text: TextSpan(
                 style: GoogleFonts.inter(
                   fontSize: 13,
-                  color: FlutterFlowTheme.of(context).primaryText,
+                  color: Colors.black,
                 ),
                 children: [
                   TextSpan(
